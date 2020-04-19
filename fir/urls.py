@@ -7,5 +7,5 @@ from . import views
 app_name = 'fir'
 
 urlpatterns = [
-    
+    path('create_fir/', views.create_fir_view, name='create_fir')
 ]

@@ -10,18 +10,18 @@ class User(auth.models.User, auth.models.PermissionsMixin):
         return self.username
 
 
-class PoliceStationRecordKeeper():
+class PoliceStationRecordKeeper(models.Model):
     
-    user = models.ForeignKey("account.User", related_name='police_station_record_keepers', on_delete=models.CASCADE)
+    user = models.ForeignKey(auth.models.User, related_name='police_station_record_keepers', on_delete=models.CASCADE)
     police_station = models.ForeignKey("location.PoliceStation", related_name='police_station_record_keepers', on_delete=models.CASCADE)
     sub_division = models.ForeignKey("location.SubDivision", related_name='police_station_record_keepers', on_delete=models.CASCADE)
 
 
-class CourtRecordKeeper():
+class CourtRecordKeeper(models.Model):
     
-    user = models.ForeignKey("account.User", related_name='court_record_keepers', on_delete=models.CASCADE)
+    user = models.ForeignKey(auth.models.User, related_name='court_record_keepers', on_delete=models.CASCADE)
 
 
-class SSPRecordKeeper():
+class SSPRecordKeeper(models.Model):
 
-    user = models.ForeignKey("account.User", related_name='ssp_record_keepers', on_delete=models.CASCADE)
+    user = models.ForeignKey(auth.models.User, related_name='ssp_record_keepers', on_delete=models.CASCADE)

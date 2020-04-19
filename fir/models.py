@@ -18,22 +18,22 @@ class FIR(models.Model):
     date_created = models.DateField(auto_now=True)
 
     io_name = models.CharField(max_length=50)
-    accused_name = models.TextField()
-    accused_status = models.CharField(max_length=50, choices=ACCUSED_STATUS_CHOICES)
+    accused_name = models.TextField(blank=True)
+    accused_status = models.CharField(max_length=50, choices=ACCUSED_STATUS_CHOICES, blank=True)
     limitation_period = models.PositiveIntegerField()
     
     current_status = models.CharField(max_length=50, choices=CURRENT_STATUS_CHOICES)
     ssp_approved = models.BooleanField(default=False)
     put_in_court = models.BooleanField(default=False)
-    put_in_court_date = models.DateField()
+    put_in_court_date = models.DateField(blank=True, null=True)
 
     received_in_court = models.BooleanField(default=False)
-    received_in_court_date = models.DateField()
-    court_status = models.CharField(max_length=50, choices=COURT_STATUS_CHOICES)
-    reverted_by_court_date = models.DateField()
+    received_in_court_date = models.DateField(blank=True, null=True)
+    court_status = models.CharField(max_length=50, choices=COURT_STATUS_CHOICES, blank=True,  null=True)
+    reverted_by_court_date = models.DateField(blank=True,  null=True)
 
-    received_from_court_date = models.DateField()
-    appointed_io = models.CharField(max_length=50)
+    received_from_court_date = models.DateField(blank=True,  null=True)
+    appointed_io = models.CharField(max_length=50, blank=True,  null=True)
 
 
     def __str__(self):
