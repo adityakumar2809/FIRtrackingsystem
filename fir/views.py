@@ -36,7 +36,7 @@ def update_fir_police_station_view(request, pk):
 
     police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
 
-    if request.user.pk in police_station_record_keepers:
+    if (request.user.pk in police_station_record_keepers) and (acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station) :
         if request.method == 'POST':
             form = forms.UpdateFIRPoliceStationForm(request.POST)
             if form.is_valid():
@@ -106,3 +106,31 @@ def update_fir_court_view(request, pk):
             return render(request, 'fir/update_fir_court.html', {'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def add_new_phase_view(request, pk):
+
+    police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+
+    if (request.user.pk in police_station_record_keepers) and (acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station):
+        fir_object = models.FIR.objects.get(pk__exact=pk)
+        fir_phase_list = models.FIR.objects.all().filter(fir_no__exact=fir_object.fir_no, police_station__exact=fir_object.police_station, sub_division__exact=fir_object.sub_division)
+
+        fir_object = models.FIR.objects.get(fir_no__exact=fir_object.fir_no, phase__exact=len(fir_phase_list), police_station__exact=fir_object.police_station, sub_division__exact=fir_object.sub_division)
+
+        if len(fir_phase_list)==3:
+            return redirect('fault', fault='Not more than 3 phases of an FIR could exist')
+
+        fir_object_new = models.FIR.objects.create(sub_division=fir_object.sub_division,
+                                                   police_station=fir_object.police_station,
+                                                   fir_no=fir_object.fir_no,
+                                                   phase=len(fir_phase_list)+1,
+                                                   io_name=fir_object.appointed_io,
+                                                   accused_name=fir_object.accused_name,
+                                                   accused_status=fir_object.accused_status,
+                                                   )
+        return redirect('fir:update_fir_police_station', pk=fir_object_new.pk)
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+

@@ -17,12 +17,12 @@ class FIR(models.Model):
     phase = models.PositiveIntegerField(choices=PHASE_CHOICES)
     date_created = models.DateField(auto_now=True)
 
-    io_name = models.CharField(max_length=50)
-    accused_name = models.TextField(blank=True)
-    accused_status = models.CharField(max_length=50, choices=ACCUSED_STATUS_CHOICES, blank=True)
-    limitation_period = models.PositiveIntegerField()
+    io_name = models.CharField(max_length=50, blank=True, null=True)
+    accused_name = models.TextField(blank=True, null=True)
+    accused_status = models.CharField(max_length=50, choices=ACCUSED_STATUS_CHOICES, blank=True, null=True)
+    limitation_period = models.PositiveIntegerField(blank=True, null=True)
     
-    current_status = models.CharField(max_length=50, choices=CURRENT_STATUS_CHOICES)
+    current_status = models.CharField(max_length=50, choices=CURRENT_STATUS_CHOICES, blank=True, null=True)
     ssp_approved = models.BooleanField(default=False)
     put_in_court = models.BooleanField(default=False)
     put_in_court_date = models.DateField(blank=True, null=True)
