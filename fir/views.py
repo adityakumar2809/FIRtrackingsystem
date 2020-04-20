@@ -134,3 +134,15 @@ def add_new_phase_view(request, pk):
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
+
+@login_required
+def list_firs_police_station_view(request):
+
+    police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in police_station_record_keepers:
+        fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        return render(request, 'fir/list_firs_police_station.html', {'fir_list':fir_list})
+
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')

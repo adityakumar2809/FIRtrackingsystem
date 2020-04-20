@@ -12,4 +12,5 @@ urlpatterns = [
     path('update_fir_ssp/<int:pk>', views.update_fir_ssp_view, name='update_fir_ssp'),
     path('update_fir_court/<int:pk>', views.update_fir_court_view, name='update_fir_court'),
     path('add_new_phase/<int:pk>', views.add_new_phase_view, name='add_new_phase'),
+    path('list_firs_police_station/', views.list_firs_police_station_view, name='list_firs_police_station'),
 ]
