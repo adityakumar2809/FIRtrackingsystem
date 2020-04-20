@@ -1,8 +1,27 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
 {% block content %}
-    <form method="POST">
+
+    <br><br><br><br>
+    <form method="POST" class="center">
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Submit</button>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.username}}
+                <label for="username">Username</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6  offset-s3">
+                {{form.password}}
+                <label for="password">Password</label>
+            </div>
+        </div>
+
+         <button class="btn waves-effect waves-light" type="submit">
+         Submit <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock content %}

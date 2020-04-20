@@ -1,8 +1,54 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
 {% block content %}
-    <form method='POST'>
+
+    <br>
+    <form method='POST' class='center'>
+
         {% csrf_token %}
-        {{form.as_p}}
-        <button type='submit'>Submit</button>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.fir_no}}
+                <label for="FIR No">FIR No.</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.io_name}}
+                <label for="Investigating Officer">Investigating Officer</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.accused_name|add_class:'materialize-textarea'}}
+                <label for="Accused Name">Accused Name</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.accused_status}}
+                <label for="Accused Status">Accused Status</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.limitation_period}}
+                <label for="Limitation Period">Limitation Period</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.current_status}}
+                <label for="Current Status">Current Status</label>
+            </div>
+        </div>
+
+         <button class="btn waves-effect waves-light" type="submit">
+         Submit <i class="material-icons right">send</i>
+        </button>
     </form>
+    <br><br><br><br>
 {% endblock content %}
