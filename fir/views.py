@@ -146,3 +146,34 @@ def list_firs_police_station_view(request):
 
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def list_firs_ssp_view(request):
+
+    ssp_record_keepers = [u['user'] for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in ssp_record_keepers:
+
+        if request.method == 'POST':
+            form = forms.ChooseLocationForm(request.POST)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                sub_division = form.cleaned_data['sub_division']
+                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                form = forms.ChooseLocationForm()
+                return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
+            else:
+                return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
+        else:
+            form = forms.ChooseLocationForm()
+            fir_list = []
+            return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+def load_police_stations_view(request):
+    sub_division_pk = request.GET.get('sub_division')
+    police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
+    return render(request, 'fir/load_police_stations.html', {'police_station_list': police_station_list})
