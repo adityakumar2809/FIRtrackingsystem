@@ -7,7 +7,7 @@ class FIR(models.Model):
 
     PHASE_CHOICES=[(1,1),(2,2),(3,3)]
     ACCUSED_STATUS_CHOICES = [('arrested','Arrested'),('not_arrested','Not Arrested'),('po','PO')]
-    CURRENT_STATUS_CHOICES = [('under_invertigation','Under Invertigation'),('challan_filed','Challan Filed'),('untraced','Untraced'),('cancelled','Cancelled')]
+    CURRENT_STATUS_CHOICES = [('under_investigation','Under Investigation'),('challan_filed','Challan Filed'),('untraced','Untraced'),('cancelled','Cancelled')]
     COURT_STATUS_CHOICES = [('pending','Pending'),('accepted','Accepted'),('reinvestigation','Reinvestigation')]
 
     sub_division = models.ForeignKey("location.SubDivision", related_name='firs', on_delete=models.CASCADE)
