@@ -201,3 +201,10 @@ def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
     return render(request, 'fir/load_police_stations.html', {'police_station_list': police_station_list})
+
+
+def load_police_stations_mat_view(request):
+    sub_division_pk = request.GET.get('sub_division')
+    mat_dropdown_ul_id = request.GET.get('mat_dropdown_ul_id')
+    police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
+    return render(request, 'fir/load_police_stations_mat.html', {'police_station_list': police_station_list, 'mat_dropdown_ul_id':mat_dropdown_ul_id})

@@ -16,4 +16,5 @@ urlpatterns = [
     path('list_firs_ssp/', views.list_firs_ssp_view, name='list_firs_ssp'),
     path('list_firs_court/', views.list_firs_court_view, name='list_firs_court'),
     path('ajax/load_ps/', views.load_police_stations_view, name='load_police_stations'),
+    path('ajax/load_ps_mat/', views.load_police_stations_mat_view, name='load_police_stations_mat'),
 ]
