@@ -24,13 +24,13 @@
     {% endblock head %}
 </head>
 
-<body class="teal lighten-5">
+<body class="indigo lighten-5">
     {% block nav %} 
     {% endblock nav %}
 
     <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper teal darken-1">
+            <div class="nav-wrapper indigo darken-1">
                 <a href="{% url 'home' %}" class="left brand-logo">&nbsp;FIR Tracking System</a>
                 <ul class="right hide-on-med-and-down">
                     {% if user.is_authenticated %}
