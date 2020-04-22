@@ -1,0 +1,4 @@
+<option value="">---Select---</option>
+{% for police_station in police_station_list %}
+<option value="{{ police_station.pk }}">{{ police_station.name }}</option>
+{% endfor %}

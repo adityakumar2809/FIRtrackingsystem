@@ -1,0 +1,175 @@
+{% extends 'base.html' %} 
+{% load staticfiles %} 
+{% load widget_tweaks %} 
+{% load templatetag %}
+{% block content %}
+
+<style>
+    table.highlight>tbody>tr:hover {
+        background-color: #7986cb;
+    }
+
+    .table_div{
+        margin: 2%;
+    }
+
+</style>
+
+<div class="table_div">
+        <table class="centered responsive-table highlight">
+            <thead class="indigo lighten-2">
+                <tr>
+                    <th>Fir No.</th>
+                    <th>Date Registered</th>
+                    <th>Investigating Officer</th>
+                    <th>Accused Name</th>
+                    <th>Accused Status</th>
+                    <th>Limitation Period</th>
+                    <th>Current Status</th>
+                    <th>SSP Approved</th>
+                    <th>Submitted in Court</th>
+                    <th>Date of Submission in Court</th>
+                    <th>Received in Court</th>
+                    <th>Date of Receiving by Court</th>
+                    <th>Status in Court</th>
+                    <th>Date of Reverting by Court</th>
+                    <th>Date of Receiving in Police Station</th>
+                    <th>New Appointed Investigating Officer</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fir in fir_list %}
+                    <tr>
+
+                        <td>{{fir.fir_no}}</td>
+
+                        <td>{{fir.date_created|date:'d-m-y'}}</td>
+
+                        {% if fir.io_name %}
+                            <td>{{fir.io_name}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.accused_name %}
+                            <td>{{fir.accused_name}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.accused_status == "arrested" %}
+                            <td>Arrested</td>
+                        {% elif fir.accused_status == "not_arrested" %}
+                            <td>Not-Arrested</td>
+                        {% elif fir.accused_status == "po" %}
+                            <td>P.O.</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        
+                        {% if fir.limitation_period %}
+                            <td>{{fir.limitation_period}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.current_status == "challan_filed" %}
+                            <td>Challan Filed</td>
+                        {% elif fir.current_status == "untraced" %}
+                            <td>Untraced</td>
+                        {% elif fir.current_status == "under_investigation" %}
+                            <td>Under Investigation</td>
+                        {% elif fir.current_status == "cancelled" %}
+                            <td>Cancelled</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.ssp_approved %}
+                            <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_court %}
+                            <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_court_date %}
+                            <td>{{fir.put_in_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.received_in_court %}
+                            <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.received_in_court_date %}
+                            <td>{{fir.received_in_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.court_status == "pending" %}
+                            <td>Pending</td>
+                        {% elif fir.court_status == "accepted" %}
+                            <td>Accepted</td>
+                        {% elif fir.court_status == "reinvestigation" %}
+                            <td>Re-investigation</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.reverted_by_court_date %}
+                            <td>{{fir.reverted_by_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.received_from_court_date %}
+                            <td>{{fir.received_from_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.appointed_io %}
+                            <td>{{fir.appointed_io}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        <td>
+                            <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        </td>
+
+                        {% if fir.pk|is_next_phase_possible %}
+                            <td>
+                                    <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                        <i class="material-icons">add</i>
+                                    </a>   
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    </tr>
+
+                    {% if fir.pk|is_last_phase %}
+                        <tr class="indigo lighten-4">
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+<div>
+{% endblock content %}

@@ -1,0 +1,8 @@
+<li id="{{mat_dropdown_ul_id}}0" tabindex="0" class="selected">
+    <span>---Select---</span>
+</li>
+{% for police_station in police_station_list %}
+<li id="{{mat_dropdown_ul_id}}{{forloop.counter}}" tabindex="0" class="">
+    <span>{{ police_station.name }}</span>
+</li>
+{% endfor %}

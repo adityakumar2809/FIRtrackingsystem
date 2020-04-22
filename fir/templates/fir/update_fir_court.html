@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content %}
+    <br>
+    <form method='POST' class="center">
+
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3"> 
+                <label for="id_received_in_court">
+                    {{form.received_in_court}}
+                    <span>Received in the court</span>
+                </label>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.received_in_court_date|add_class:'datepicker'}}
+                <label for="Date of receiving in the Court">Date of receiving in the Court</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.court_status}}
+                <label for="Court Status">Court Status</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.reverted_by_court_date|add_class:'datepicker'}}
+                <label for="Date of reverting by the Court">Date of reverting by the Court</label>
+            </div>
+        </div>
+
+        <button class="btn waves-effect waves-light" type="submit">
+         Submit <i class="material-icons right">send</i>
+        </button>
+        
+    </form>
+    <br><br><br><br>
+{% endblock content %}
