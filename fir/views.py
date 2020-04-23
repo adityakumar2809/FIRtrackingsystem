@@ -51,7 +51,7 @@ def update_fir_police_station_view(request, pk):
                 fir.received_from_court_date = form.cleaned_data['received_from_court_date']
                 fir.appointed_io = form.cleaned_data['appointed_io']
                 fir.save()
-                return redirect('success', msg='FIR Updated Successfully')
+                return redirect('fir:list_firs_police_station')
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -73,7 +73,7 @@ def update_fir_ssp_view(request, pk):
                 fir = models.FIR.objects.get(pk__exact=pk)
                 fir.ssp_approved = form.cleaned_data['ssp_approved']
                 fir.save()
-                return redirect('success', msg='FIR Updated Successfully')
+                return redirect('fir:list_firs_ssp')
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -171,6 +171,7 @@ def list_firs_ssp_view(request):
             return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
 
 @login_required
 def list_firs_court_view(request):
