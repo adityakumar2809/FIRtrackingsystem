@@ -175,7 +175,7 @@
                         {% endif %}
 
                         <td>
-                            <a href="{% url 'fir:update_fir_ssp' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                            <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                 <i class="material-icons">edit</i>
                             </a>   
                         </td>
