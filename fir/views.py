@@ -21,7 +21,7 @@ def create_fir_view(request):
                 fir.sub_division = ps_record_keeper.sub_division 
                 fir.police_station = ps_record_keeper.police_station
                 fir.save()
-                return redirect('success', msg='FIR Successfully created')
+                return redirect('fir:list_firs_police_station')
             else:
                 return redirect('fault', fault='Input parameters of Create FIR Form are not valid')
         else:

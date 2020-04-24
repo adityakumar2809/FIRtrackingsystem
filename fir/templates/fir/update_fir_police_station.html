@@ -38,6 +38,15 @@
             </div>
         </div>
         <div class="row">
+            <div class="input-field col s6 offset-s3"> 
+                <label for="id_put_in_court">
+                    {{form.put_in_court}}
+                    <span>Submitted in Court</span>
+                </label>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
             <div class="input-field col s6 offset-s3">
                 {{form.put_in_court_date|add_class:'datepicker'}}
                 <label for="Date of submission to the Court">Date of submission to the Court</label>
