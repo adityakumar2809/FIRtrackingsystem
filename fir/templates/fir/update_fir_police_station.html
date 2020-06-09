@@ -18,14 +18,12 @@
                 <label for="Accused Name">Accused Name</label>
             </div>
         </div>
-
         <div class="row">
             <div class="input-field col s6 offset-s3">
                 {{form.under_section}}
                 <label for="Under Section">Under Section</label>
             </div>
         </div>
-
         <div class="row">
             <div class="input-field col s6 offset-s3">
                 {{form.accused_status}}
@@ -42,6 +40,21 @@
             <div class="input-field col s6 offset-s3">
                 {{form.current_status}}
                 <label for="Current Status">Current Status</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-s3"> 
+                <label for="id_put_in_ssp_office">
+                    {{form.put_in_ssp_office}}
+                    <span>Submitted in SSP Office</span>
+                </label>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.put_in_ssp_office_date|add_class:'datepicker'}}
+                <label for="Date of submission to the SSP Office">Date of submission to the SSP Office</label>
             </div>
         </div>
         <div class="row">

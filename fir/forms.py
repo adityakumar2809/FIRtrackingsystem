@@ -28,6 +28,8 @@ class UpdateFIRPoliceStationForm(forms.ModelForm):
                   'accused_status',
                   'limitation_period',
                   'current_status',
+                  'put_in_ssp_office',
+                  'put_in_ssp_office_date',
                   'put_in_court',
                   'put_in_court_date',
                   'received_from_court_date', 

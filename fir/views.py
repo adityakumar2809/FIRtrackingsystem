@@ -47,6 +47,8 @@ def update_fir_police_station_view(request, pk):
                 fir.accused_status = form.cleaned_data['accused_status']
                 fir.limitation_period = form.cleaned_data['limitation_period']
                 fir.current_status = form.cleaned_data['current_status']
+                fir.put_in_ssp_office = form.cleaned_data['put_in_ssp_office']
+                fir.put_in_ssp_office_date = form.cleaned_data['put_in_ssp_office_date']
                 fir.put_in_court = form.cleaned_data['put_in_court']
                 fir.put_in_court_date = form.cleaned_data['put_in_court_date']
                 fir.received_from_court_date = form.cleaned_data['received_from_court_date']

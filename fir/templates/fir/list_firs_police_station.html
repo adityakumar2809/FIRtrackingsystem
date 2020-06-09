@@ -28,6 +28,8 @@
                     <th>Accused Status</th>
                     <th>Limitation Period</th>
                     <th>Current Status</th>
+                    <th>Submission to SSP</th>
+                    <th>Date of Submission to SSP</th>
                     <th>SSP Approved</th>
                     <th>Submitted in Court</th>
                     <th>Date of Submission in Court</th>
@@ -92,6 +94,18 @@
                             <td>Under Investigation</td>
                         {% elif fir.current_status == "cancelled" %}
                             <td>Cancelled</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_ssp_office %}
+                            <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_ssp_office_date %}
+                            <td>{{fir.put_in_ssp_office_date|date:'d-m-y'}}</td>
                         {% else %}
                             <td><i class="material-icons black-text">remove</i></td>
                         {% endif %}
@@ -173,7 +187,7 @@
 
                     {% if fir.pk|is_last_phase %}
                         <tr class="indigo lighten-4">
-                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                     {% endif %}
                 {% endfor %}

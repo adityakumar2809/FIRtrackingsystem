@@ -24,7 +24,10 @@ class FIR(models.Model):
     limitation_period = models.PositiveIntegerField(blank=True, null=True)
     
     current_status = models.CharField(max_length=50, choices=CURRENT_STATUS_CHOICES, blank=True, null=True)
+    put_in_ssp_office = models.BooleanField(default=False)
+    put_in_ssp_office_date = models.DateField(blank=True, null=True)
     ssp_approved = models.BooleanField(default=False)
+
     put_in_court = models.BooleanField(default=False)
     put_in_court_date = models.DateField(blank=True, null=True)
 
