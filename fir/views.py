@@ -43,6 +43,7 @@ def update_fir_police_station_view(request, pk):
                 fir = models.FIR.objects.get(pk__exact=pk)
                 fir.io_name = form.cleaned_data['io_name']
                 fir.accused_name = form.cleaned_data['accused_name']
+                fir.under_section = form.cleaned_data['under_section']
                 fir.accused_status = form.cleaned_data['accused_status']
                 fir.limitation_period = form.cleaned_data['limitation_period']
                 fir.current_status = form.cleaned_data['current_status']
@@ -128,6 +129,7 @@ def add_new_phase_view(request, pk):
                                                    phase=len(fir_phase_list)+1,
                                                    io_name=fir_object.appointed_io,
                                                    accused_name=fir_object.accused_name,
+                                                   under_section=fir_object.under_section,
                                                    accused_status=fir_object.accused_status,
                                                    )
         return redirect('fir:update_fir_police_station', pk=fir_object_new.pk)
@@ -173,7 +175,6 @@ def list_firs_ssp_view(request):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
-'''
 @login_required
 def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
 
@@ -197,7 +198,6 @@ def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
             return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
-'''
 
 @login_required
 def list_firs_court_view(request):
@@ -224,7 +224,6 @@ def list_firs_court_view(request):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
-'''
 @login_required
 def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk):
 
@@ -248,7 +247,6 @@ def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk)
             return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
-'''
 
 
 def load_police_stations_view(request):

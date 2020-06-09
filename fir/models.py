@@ -19,6 +19,7 @@ class FIR(models.Model):
 
     io_name = models.CharField(max_length=50, blank=True, null=True)
     accused_name = models.TextField(blank=True, null=True)
+    under_section = models.CharField(max_length=50, blank=True, null=True)
     accused_status = models.CharField(max_length=50, choices=ACCUSED_STATUS_CHOICES, blank=True, null=True)
     limitation_period = models.PositiveIntegerField(blank=True, null=True)
     

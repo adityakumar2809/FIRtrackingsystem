@@ -11,6 +11,7 @@ class CreateFIRForm(forms.ModelForm):
         fields = ['fir_no',
                   'io_name',
                   'accused_name',
+                  'under_section',
                   'accused_status',
                   'limitation_period',
                   'current_status',
@@ -23,6 +24,7 @@ class UpdateFIRPoliceStationForm(forms.ModelForm):
         model = models.FIR
         fields = ['io_name',
                   'accused_name',
+                  'under_section',
                   'accused_status',
                   'limitation_period',
                   'current_status',

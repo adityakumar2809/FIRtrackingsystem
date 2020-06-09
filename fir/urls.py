@@ -18,6 +18,7 @@ urlpatterns = [
     # Court
     path('update_fir_court/<int:pk>/<int:sub_division_pk>/<int:police_station_pk>', views.update_fir_court_view, name='update_fir_court'),
     path('list_firs_court/', views.list_firs_court_view, name='list_firs_court'),
+    path('list_firs_court/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_court_with_param_view, name='list_firs_court_with_param'),
 
 
     # SSP
@@ -25,8 +26,5 @@ urlpatterns = [
     path('list_firs_ssp/', views.list_firs_ssp_view, name='list_firs_ssp'),
     path('ajax/load_ps/', views.load_police_stations_view, name='load_police_stations'),
     path('ajax/load_ps_mat/', views.load_police_stations_mat_view, name='load_police_stations_mat'),
-    
-    
-    # path('list_firs_ssp/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_ssp_with_param_view, name='list_firs_ssp_with_param'),
-    # path('list_firs_court/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_court_with_param_view, name='list_firs_court_with_param'),
+    path('list_firs_ssp/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_ssp_with_param_view, name='list_firs_ssp_with_param'),
 ]

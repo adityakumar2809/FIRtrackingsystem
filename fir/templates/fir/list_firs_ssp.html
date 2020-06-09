@@ -53,6 +53,7 @@
                     <th>Date Registered</th>
                     <th>Investigating Officer</th>
                     <th>Accused Name</th>
+                    <th>Under Section</th>
                     <th>Accused Status</th>
                     <th>Limitation Period</th>
                     <th>Current Status</th>
@@ -84,6 +85,12 @@
 
                         {% if fir.accused_name %}
                             <td>{{fir.accused_name}}</td>
+                        {% else %}
+                            <td><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.under_section %}
+                            <td>{{fir.under_section}}</td>
                         {% else %}
                             <td><i class="material-icons black-text">remove</i></td>
                         {% endif %}
@@ -184,7 +191,7 @@
 
                     {% if fir.pk|is_last_phase %}
                         <tr class="indigo lighten-4">
-                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                         </tr>
                     {% endif %}
                 {% endfor %}
