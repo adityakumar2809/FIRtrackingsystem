@@ -173,6 +173,7 @@ def list_firs_ssp_view(request):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
+'''
 @login_required
 def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
 
@@ -196,7 +197,7 @@ def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
             return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
-
+'''
 
 @login_required
 def list_firs_court_view(request):
@@ -223,6 +224,7 @@ def list_firs_court_view(request):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
+'''
 @login_required
 def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk):
 
@@ -246,6 +248,7 @@ def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk)
             return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+'''
 
 
 def load_police_stations_view(request):
