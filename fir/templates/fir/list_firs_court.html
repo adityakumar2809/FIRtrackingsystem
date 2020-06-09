@@ -2,24 +2,12 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load templatetag%}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/list_css.css' %}">
+{% endblock %}
+
 {% block content %}
-
-    <style>
-        table.highlight>tbody>tr:hover {
-            background-color: #7986cb;
-        }
-
-        .table_div{
-            border: 3px solid #7986cb;
-        }
-
-        .table_wrapper{
-            overflow-x: scroll;
-            margin: 2%;
-        }
-
-    </style>
-
     <br>
     <form method='POST' id='location_form' class="center" data-police-stations-url="{% url 'fir:load_police_stations' %}" data-police-stations-url-mat="{% url 'fir:load_police_stations_mat' %}">
         {% csrf_token %}
@@ -221,36 +209,10 @@
 
 {% block tail %}
     <script>
-        
-        /*
-        $(".police_station_dropdown li").click(function(){
-            $(".police_station_dropdown li").removeClass("selected");
-            $(this).addClass("selected");
-        });
-        */
-
-
         $("#id_sub_division").change(function(){
             var url = $("#location_form").attr("data-police-stations-url");
             var url_mat = $("#location_form").attr("data-police-stations-url-mat");
             var sub_division_pk =  $(this).val();
-            //var mat_dropdown_ul_id = $(".police_station_dropdown ul")[0].id;
-            //var mat_dropdown_ul_id_sym = "#" + $(".police_station_dropdown ul")[0].id;
-
-
-            /*
-            $.ajax({
-                url: url_mat,
-                data: {
-                    'mat_dropdown_ul_id': mat_dropdown_ul_id,
-                    'sub_division': sub_division_pk
-                },
-                success: function(data){
-                    $(mat_dropdown_ul_id_sym).html(data);
-                }
-            });
-            */
-
 
             $.ajax({
                 url: url,

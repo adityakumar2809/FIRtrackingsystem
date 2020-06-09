@@ -4,21 +4,9 @@
 {% load templatetag %}
 {% block content %}
 
-<style>
-    table.highlight>tbody>tr:hover {
-        background-color: #7986cb;
-    }
-
-    .table_div{
-        border: 3px solid #7986cb;
-    }
-
-    .table_wrapper{
-        overflow-x: scroll;
-        margin: 2%;
-    }
-
-</style>
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/list_css.css' %}">
+{% endblock %}
 
 <div class="table_wrapper" data-fl-scrolls>
         <table class="centered responsive-table highlight table_div">

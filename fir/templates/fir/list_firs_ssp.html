@@ -4,21 +4,9 @@
 {% load templatetag%}
 {% block content %}
 
-    <style>
-        table.highlight>tbody>tr:hover {
-            background-color: #7986cb;
-        }
-
-        .table_div{
-            border: 3px solid #7986cb;
-        }
-
-        .table_wrapper{
-            overflow-x: scroll;
-            margin: 2%;
-        }
-
-    </style>
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/list_css.css' %}">
+{% endblock %}
 
     <br>
     <form method='POST' id='location_form' class="center" data-police-stations-url="{% url 'fir:load_police_stations' %}" data-police-stations-url-mat="{% url 'fir:load_police_stations_mat' %}">
