@@ -87,8 +87,30 @@ def update_fir_ssp_view(request, pk, sub_division_pk, police_station_pk):
 
 
 @login_required
-def update_fir_court_view(request, pk, sub_division_pk, police_station_pk):
+def update_fir_court_view(request, pk):
 
+    court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+
+    if (request.user.pk in court_record_keepers) and (acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station) :
+        if request.method == 'POST':
+            form = forms.UpdateFIRCourtForm(request.POST)
+            if form.is_valid():
+                fir = models.FIR.objects.get(pk__exact=pk)
+                fir.received_in_court = form.cleaned_data['received_in_court']
+                fir.received_in_court_date = form.cleaned_data['received_in_court_date']
+                fir.court_status = form.cleaned_data['court_status']
+                fir.reverted_by_court_date = form.cleaned_data['reverted_by_court_date']
+                fir.save()
+                return redirect('fir:list_firs_court')
+            else:
+                return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
+        else:
+            form = forms.UpdateFIRCourtForm(instance=models.FIR.objects.get(pk__exact=pk))
+            return render(request, 'fir/update_fir_court.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    '''
     court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
 
     if request.user.pk in court_record_keepers:
@@ -109,6 +131,8 @@ def update_fir_court_view(request, pk, sub_division_pk, police_station_pk):
             return render(request, 'fir/update_fir_court.html', {'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+    
+    '''
 
 
 @login_required
@@ -245,6 +269,17 @@ def list_firs_court_view(request):
     court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
 
     if request.user.pk in court_record_keepers:
+        fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list})
+
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    '''
+
+    court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in court_record_keepers:
 
         if request.method == 'POST':
             form = forms.ChooseLocationForm(request.POST)
@@ -268,8 +303,11 @@ def list_firs_court_view(request):
             return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+    
+    '''
 
 
+'''
 @login_required
 def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk):
 
@@ -298,6 +336,7 @@ def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk)
             return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+'''
 
 
 def load_police_stations_view(request):

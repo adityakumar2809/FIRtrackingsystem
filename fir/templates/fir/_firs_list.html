@@ -188,7 +188,10 @@
 
                     {% if user.pk in court_record_keepers %}
                         <td>
-                            <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                            {% comment %} 
+                                <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                            {% endcomment %}
+                            <a href="{% url 'fir:update_fir_court' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                 <i class="material-icons">edit</i>
                             </a>   
                         </td>

@@ -29,6 +29,8 @@ class PoliceStationRecordKeeper(models.Model):
 class CourtRecordKeeper(models.Model):
     
     user = models.ForeignKey(auth.models.User, related_name='court_record_keepers', on_delete=models.CASCADE)
+    police_station = models.ForeignKey("location.PoliceStation", related_name='court_record_keepers', on_delete=models.CASCADE)
+    sub_division = models.ForeignKey("location.SubDivision", related_name='court_record_keepers', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user.username}'
