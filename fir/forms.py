@@ -60,7 +60,7 @@ class ChooseLocationForm(forms.Form):
 
     sub_division_name_list = [u['name'] for u in loc_models.SubDivision.objects.all().values('name')]
     sub_division_pk_list = [u['pk'] for u in loc_models.SubDivision.objects.all().values('pk')]
-    SUB_DIVISION_CHOICES = [('','---Select---')]
+    SUB_DIVISION_CHOICES = [('','---Select---'), ('all','All')]
     i=0
 
     for i in range(len(sub_division_name_list)):
@@ -75,17 +75,20 @@ class ChooseLocationForm(forms.Form):
         
         if 'sub_division' in self.data:
             try:
-                sub_division_pk = int(self.data.get('sub_division'))
+                if(self.data.get('sub_division') == 'all'):
+                    self.fields['police_station'] = forms.ChoiceField(choices=[('all','All')])
+                else:
+                    sub_division_pk = int(self.data.get('sub_division'))
 
-                police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('name')]
-                police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('pk')]
-                POLICE_STATION_CHOICES = []
-                i=0
+                    police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('name')]
+                    police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('pk')]
+                    POLICE_STATION_CHOICES = [('all','All')]
+                    i=0
 
-                for i in range(len(police_station_name_list)):
-                    POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
+                    for i in range(len(police_station_name_list)):
+                        POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
 
-                self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
+                    self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
                 

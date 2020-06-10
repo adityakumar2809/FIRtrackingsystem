@@ -45,6 +45,6 @@ class FIR(models.Model):
 
     class Meta():
         unique_together = ['sub_division', 'police_station', 'fir_no', 'phase']
-        ordering = ['-fir_no','phase']
+        ordering = ['sub_division', 'police_station', '-fir_no', 'phase']
         verbose_name = 'FIR'
         verbose_name_plural = 'FIRs'   

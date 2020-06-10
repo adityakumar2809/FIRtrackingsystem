@@ -164,7 +164,12 @@ def list_firs_ssp_view(request):
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 sub_division = form.cleaned_data['sub_division']
-                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
                 return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
             else:
@@ -189,7 +194,12 @@ def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 sub_division = form.cleaned_data['sub_division']
-                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
                 return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
             else:
@@ -200,6 +210,7 @@ def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
             return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
 
 @login_required
 def list_firs_court_view(request):
@@ -213,7 +224,13 @@ def list_firs_court_view(request):
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 sub_division = form.cleaned_data['sub_division']
-                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
                 return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
             else:
@@ -238,7 +255,12 @@ def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk)
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 sub_division = form.cleaned_data['sub_division']
-                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
                 return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list, 'form':form})
             else:
@@ -253,5 +275,8 @@ def list_firs_court_with_param_view(request, sub_division_pk, police_station_pk)
 
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
-    police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
+    if sub_division_pk == 'all':
+        police_station_list = []
+    else:
+        police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
     return render(request, 'fir/load_police_stations.html', {'police_station_list': police_station_list})

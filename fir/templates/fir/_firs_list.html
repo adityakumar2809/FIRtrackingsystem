@@ -5,6 +5,8 @@
         <thead class="indigo lighten-2">
             <tr>
                 <th>Fir No.</th>
+                <th>Sub Division</th>
+                <th>Police Station</th>
                 <th>Date Registered</th>
                 <th>Investigating Officer</th>
                 <th>Accused Name</th>
@@ -24,6 +26,9 @@
                 <th>Date of Receiving in Police Station</th>
                 <th>New Appointed Investigating Officer</th>
                 <th></th>
+                {% if user.pk in police_station_record_keepers %}
+                    <th></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -31,6 +36,10 @@
                 <tr>
 
                     <td>{{fir.fir_no}}</td>
+
+                    <td>{{fir.sub_division}}</td>
+                    
+                    <td>{{fir.police_station}}</td>
 
                     <td>{{fir.date_created|date:'d-m-y'}}</td>
 
@@ -151,16 +160,47 @@
                         <td><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
-                    <td>
-                        <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
-                            <i class="material-icons">edit</i>
-                        </a>   
-                    </td>
+                    
+                    {% if user.pk in police_station_record_keepers %}
+                        <td>
+                            <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        </td>
+                        {% if fir.pk|is_next_phase_possible %}
+                            <td>
+                                <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                    <i class="material-icons">add</i>
+                                </a>   
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if user.pk in ssp_record_keepers %}
+                        <td>
+                            <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        </td>
+                    {% endif %}
+
+                    {% if user.pk in court_record_keepers %}
+                        <td>
+                            <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        </td>
+                    {% endif %}
                 </tr>
 
                 {% if fir.pk|is_last_phase %}
                     <tr class="indigo lighten-4">
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        {% if user.pk in police_station_record_keepers %}
+                            <td></td>
+                        {% endif %}
                     </tr>
                 {% endif %}
             {% endfor %}
