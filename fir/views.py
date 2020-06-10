@@ -65,6 +65,29 @@ def update_fir_police_station_view(request, pk):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
+
+@login_required
+def update_fir_vrk_view(request, pk, sub_division_pk, police_station_pk):
+
+    vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in vrk_record_keepers:
+        if request.method == 'POST':
+            form = forms.UpdateFIRVRKForm(request.POST)
+            if form.is_valid():
+                fir = models.FIR.objects.get(pk__exact=pk)
+                fir.ssp_approved = form.cleaned_data['ssp_approved']
+                fir.save()
+                return redirect('fir:list_firs_vrk_with_param', sub_division_pk = sub_division_pk, police_station_pk = police_station_pk)
+            else:
+                return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
+        else:
+            form = forms.UpdateFIRVRKForm(instance=models.FIR.objects.get(pk__exact=pk))
+            return render(request, 'fir/update_fir_vrk.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
 @login_required
 def update_fir_ssp_view(request, pk, sub_division_pk, police_station_pk):
 
@@ -242,6 +265,137 @@ def list_firs_dsp_view(request):
                     return render(request, 'fir/list_firs_dsp.html', {'fir_list':firs, 'form':form})
 
             return render(request, 'fir/list_firs_dsp.html', {'fir_list':fir_list, 'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def list_firs_vrk_view(request):
+
+    vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in vrk_record_keepers:
+
+        if request.method == 'POST':
+            form = forms.ChooseLocationForm(request.POST)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                sub_division = form.cleaned_data['sub_division']
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                form = forms.ChooseLocationForm()
+
+                request.session['vrk_ps_choice'] = police_station
+                request.session['vrk_sd_choice'] = sub_division
+
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fir_list, 60)
+                try:
+                    firs = paginator.page(page)
+                except PageNotAnInteger:
+                    firs = paginator.page(1)
+                except EmptyPage:
+                    firs = paginator.page(paginator.num_pages)
+
+                return render(request, 'fir/list_firs_vrk.html', {'fir_list':firs, 'form':form})
+            else:
+                return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
+        else:
+            form = forms.ChooseLocationForm()
+            fir_list = []
+
+            if request.GET.get('page', None):
+                police_station = request.session.get('vrk_ps_choice', None)
+                sub_division = request.session.get('vrk_sd_choice', None)
+                if police_station and sub_division:
+                    if sub_division == 'all':
+                        fir_list = models.FIR.objects.all()
+                    elif sub_division != 'all' and police_station == 'all':
+                        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                    else:
+                        fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(fir_list, 60)
+                    try:
+                        firs = paginator.page(page)
+                    except PageNotAnInteger:
+                        firs = paginator.page(1)
+                    except EmptyPage:
+                        firs = paginator.page(paginator.num_pages)
+
+                    return render(request, 'fir/list_firs_vrk.html', {'fir_list':firs, 'form':form})
+
+            return render(request, 'fir/list_firs_vrk.html', {'fir_list':fir_list, 'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def list_firs_vrk_with_param_view(request, sub_division_pk, police_station_pk):
+
+    vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in vrk_record_keepers:
+
+        if request.method == 'POST':
+            form = forms.ChooseLocationForm(request.POST)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                sub_division = form.cleaned_data['sub_division']
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all()
+                elif sub_division != 'all' and police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                form = forms.ChooseLocationForm()
+
+                request.session['vrk_ps_choice'] = police_station
+                request.session['vrk_sd_choice'] = sub_division 
+
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fir_list, 60)
+                try:
+                    firs = paginator.page(page)
+                except PageNotAnInteger:
+                    firs = paginator.page(1)
+                except EmptyPage:
+                    firs = paginator.page(paginator.num_pages)                
+
+                return render(request, 'fir/list_firs_vrk.html', {'fir_list':firs, 'form':form})
+            else:
+                return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
+        else:
+            form = forms.ChooseLocationForm()
+
+            if request.GET.get('page', None):
+                police_station = request.session.get('vrk_ps_choice', None)
+                sub_division = request.session.get('vrk_sd_choice', None)
+                if police_station and sub_division:
+                    if sub_division == 'all':
+                        fir_list = models.FIR.objects.all()
+                    elif sub_division != 'all' and police_station == 'all':
+                        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                    else:
+                        fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+            else:
+                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station_pk, sub_division__pk__exact=sub_division_pk)
+            
+            page = request.GET.get('page', 1)
+            paginator = Paginator(fir_list, 60)
+            try:
+                firs = paginator.page(page)
+            except PageNotAnInteger:
+                firs = paginator.page(1)
+            except EmptyPage:
+                firs = paginator.page(paginator.num_pages)
+            
+            return render(request, 'fir/list_firs_vrk.html', {'fir_list':firs, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 

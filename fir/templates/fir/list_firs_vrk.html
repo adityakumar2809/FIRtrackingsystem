@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load templatetag %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/list_css.css' %}">
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% include 'fir/_location_form.html' %}
+    <br><br>
+    {% include 'fir/_firs_list.html' %}
+
+{% endblock content %}

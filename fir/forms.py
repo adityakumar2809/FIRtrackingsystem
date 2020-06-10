@@ -38,6 +38,14 @@ class UpdateFIRPoliceStationForm(forms.ModelForm):
                   ]
 
 
+class UpdateFIRVRKForm(forms.ModelForm):
+
+    class Meta():
+        model = models.FIR
+        fields = ['ssp_approved',
+                  ]
+
+
 class UpdateFIRSSPForm(forms.ModelForm):
 
     class Meta():

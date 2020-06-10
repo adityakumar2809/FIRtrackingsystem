@@ -5,4 +5,5 @@ from . import models
 admin.site.register(models.PoliceStationRecordKeeper)
 admin.site.register(models.CourtRecordKeeper)
 admin.site.register(models.DSPRecordKeeper)
+admin.site.register(models.VRKRecordKeeper)
 admin.site.register(models.SSPRecordKeeper)

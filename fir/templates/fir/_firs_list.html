@@ -178,6 +178,14 @@
                         {% endif %}
                     {% endif %}
 
+                    {% if user.pk in vrk_record_keepers %}
+                        <td>
+                            <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        </td>
+                    {% endif %}
+
                     {% if user.pk in ssp_record_keepers %}
                         <td>
                             <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">

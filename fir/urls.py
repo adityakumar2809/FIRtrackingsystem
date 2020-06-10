@@ -21,8 +21,17 @@ urlpatterns = [
     path('list_firs_court/', views.list_firs_court_view, name='list_firs_court'),
     # path('list_firs_court/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_court_with_param_view, name='list_firs_court_with_param'),
 
+
     # DSP
     path('list_firs_dsp/', views.list_firs_dsp_view, name='list_firs_dsp'),
+
+
+    # VRK
+    path('update_fir_vrk/<int:pk>/<int:sub_division_pk>/<int:police_station_pk>', views.update_fir_vrk_view, name='update_fir_vrk'),
+    path('list_firs_vrk/', views.list_firs_vrk_view, name='list_firs_vrk'),
+    path('ajax/load_ps/', views.load_police_stations_view, name='load_police_stations'),
+    path('list_firs_vrk/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_vrk_with_param_view, name='list_firs_vrk_with_param'),
+
 
     # SSP
     path('update_fir_ssp/<int:pk>/<int:sub_division_pk>/<int:police_station_pk>', views.update_fir_ssp_view, name='update_fir_ssp'),

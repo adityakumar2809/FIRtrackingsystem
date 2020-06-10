@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <br>
+    <form method='POST' class="center">
+        {% csrf_token %}
+        <div class="row">
+            <div class="input-field col s3 offset-s5"> 
+                <label for="id_ssp_approved">
+                    {{form.ssp_approved}}
+                    <span>Approved at SSP Office</span>
+                </label>
+            </div>
+        </div>
+        <br><br>
+         <button class="btn waves-effect waves-light" type="submit">
+         Submit <i class="material-icons right">send</i>
+        </button>
+    </form>
+    <br><br><br><br>
+{% endblock content %}

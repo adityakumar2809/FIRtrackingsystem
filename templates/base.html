@@ -49,6 +49,9 @@
                         {% if user.pk in dsp_record_keepers %}
                             <li><a href="{% url 'fir:list_firs_dsp' %}">View FIRs</a></li>
                         {% endif %}
+                        {% if user.pk in vrk_record_keepers %}
+                            <li><a href="{% url 'fir:list_firs_vrk' %}">View FIRs</a></li>
+                        {% endif %}
                         {% if user.pk in ssp_record_keepers %}
                             <li><a href="{% url 'fir:list_firs_ssp' %}">View FIRs</a></li>
                         {% endif %}

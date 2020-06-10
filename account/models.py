@@ -57,6 +57,20 @@ class DSPRecordKeeper(models.Model):
 
 
 
+class VRKRecordKeeper(models.Model):
+
+    user = models.ForeignKey(auth.models.User, related_name='vrk_record_keepers', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+    
+    class Meta():
+        verbose_name = 'VRK Record Keeper'
+        verbose_name_plural = 'VRK Record Keepers'
+
+
+
 class SSPRecordKeeper(models.Model):
 
     user = models.ForeignKey(auth.models.User, related_name='ssp_record_keepers', on_delete=models.CASCADE)
