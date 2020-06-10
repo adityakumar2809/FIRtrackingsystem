@@ -20,6 +20,8 @@ urlpatterns = [
     path('list_firs_court/', views.list_firs_court_view, name='list_firs_court'),
     path('list_firs_court/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_court_with_param_view, name='list_firs_court_with_param'),
 
+    # DSP
+    path('list_firs_dsp/', views.list_firs_dsp_view, name='list_firs_dsp'),
 
     # SSP
     path('update_fir_ssp/<int:pk>/<int:sub_division_pk>/<int:police_station_pk>', views.update_fir_ssp_view, name='update_fir_ssp'),

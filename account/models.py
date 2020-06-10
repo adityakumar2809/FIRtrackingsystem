@@ -39,6 +39,22 @@ class CourtRecordKeeper(models.Model):
         verbose_name_plural = 'Court Record Keepers'
 
 
+
+class DSPRecordKeeper(models.Model):
+
+    user = models.ForeignKey(auth.models.User, related_name='dsp_record_keepers', on_delete=models.CASCADE)
+    sub_division = models.ForeignKey('location.SubDivision', related_name='dsp_record_keepers', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+    
+    class Meta():
+        verbose_name = 'DSP Record Keeper'
+        verbose_name_plural = 'DSP Record Keepers'
+
+
+
 class SSPRecordKeeper(models.Model):
 
     user = models.ForeignKey(auth.models.User, related_name='ssp_record_keepers', on_delete=models.CASCADE)

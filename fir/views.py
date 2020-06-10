@@ -153,6 +153,33 @@ def list_firs_police_station_view(request):
 
 
 @login_required
+def list_firs_dsp_view(request):
+
+    dsp_record_keepers = [u['user'] for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in dsp_record_keepers:
+
+        if request.method == 'POST':
+            form = forms.ChoosePoliceStationForm(data = request.POST, user = request.user)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                if police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                else:
+                    fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                form = forms.ChoosePoliceStationForm(user = request.user)
+                return render(request, 'fir/list_firs_dsp.html', {'fir_list':fir_list, 'form':form})
+            else:
+                return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
+        else:
+            form = forms.ChoosePoliceStationForm(user = request.user)
+            fir_list = []
+            return render(request, 'fir/list_firs_dsp.html', {'fir_list':fir_list, 'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
 def list_firs_ssp_view(request):
 
     ssp_record_keepers = [u['user'] for u in acc_models.SSPRecordKeeper.objects.all().values('user')]

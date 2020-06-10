@@ -1,5 +1,6 @@
 from django import forms
 from location import models as loc_models
+from account import models as acc_models
 from . import models
 
 
@@ -92,4 +93,18 @@ class ChooseLocationForm(forms.Form):
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
                 
+
+class ChoosePoliceStationForm(forms.Form):
+
+    def __init__(self, user, *args, **kwargs):
+        super(ChoosePoliceStationForm, self).__init__(*args, **kwargs)
+        sub_division_pk = acc_models.DSPRecordKeeper.objects.get(user__pk__exact=user.pk).sub_division.pk
+        police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('name')]
+        police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('pk')]
+
+        POLICE_STATION_CHOICES = [('','---Select---'),('all','All')]
+        for i in range(len(police_station_name_list)):
+            POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
+
+        self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
 
