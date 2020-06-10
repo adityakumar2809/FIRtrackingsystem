@@ -209,4 +209,27 @@
             {% endfor %}
         </tbody>
     </table>
-<div>
+</div>
+
+<!-- Pagination -->
+{% if fir_list.has_other_pages %}
+    <ul class="pagination center">
+        {% if fir_list.has_previous %}
+            <li class="waves-effect"><a href="?page={{ fir_list.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+        {% else %}
+            <li class="disabled"><span><i class="material-icons">chevron_left</i></span></li>
+        {% endif %}
+        {% for i in fir_list.paginator.page_range %}
+            {% if fir_list.number == i %}
+                <li class="active"><a href="#" class="indigo">{{ i }}</a></li>
+            {% else %}
+                <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if fir_list.has_next %}
+            <li class="waves-effect"><a href="?page={{ fir_list.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+        {% else %}
+            <li class="disabled"><span><i class="material-icons">chevron_right</i></span></li>
+        {% endif %}
+    </ul>
+{% endif %}

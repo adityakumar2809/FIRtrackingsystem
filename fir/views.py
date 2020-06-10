@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from location import models as loc_models
 from account import models as acc_models
@@ -170,7 +171,17 @@ def list_firs_police_station_view(request):
 
     if request.user.pk in police_station_record_keepers:
         fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
-        return render(request, 'fir/list_firs_police_station.html', {'fir_list':fir_list})
+        
+        page = request.GET.get('page', 1)
+        paginator = Paginator(fir_list, 60)
+        try:
+            firs = paginator.page(page)
+        except PageNotAnInteger:
+            firs = paginator.page(1)
+        except EmptyPage:
+            firs = paginator.page(paginator.num_pages)
+        
+        return render(request, 'fir/list_firs_police_station.html', {'fir_list':firs})
 
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -192,12 +203,44 @@ def list_firs_dsp_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
                 form = forms.ChoosePoliceStationForm(user = request.user)
-                return render(request, 'fir/list_firs_dsp.html', {'fir_list':fir_list, 'form':form})
+
+                request.session['dsp_ps_choice'] = police_station
+
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fir_list, 60)
+                try:
+                    firs = paginator.page(page)
+                except PageNotAnInteger:
+                    firs = paginator.page(1)
+                except EmptyPage:
+                    firs = paginator.page(paginator.num_pages)
+
+                return render(request, 'fir/list_firs_dsp.html', {'fir_list':firs, 'form':form})
             else:
                 return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
         else:
             form = forms.ChoosePoliceStationForm(user = request.user)
             fir_list = []
+
+            if request.GET.get('page', None):
+                police_station = request.session.get('dsp_ps_choice', None)
+                if police_station:
+                    if police_station == 'all':
+                        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                    else:
+                        fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(fir_list, 60)
+                    try:
+                        firs = paginator.page(page)
+                    except PageNotAnInteger:
+                        firs = paginator.page(1)
+                    except EmptyPage:
+                        firs = paginator.page(paginator.num_pages)
+
+                    return render(request, 'fir/list_firs_dsp.html', {'fir_list':firs, 'form':form})
+
             return render(request, 'fir/list_firs_dsp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -222,12 +265,48 @@ def list_firs_ssp_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
-                return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
+
+                request.session['ssp_ps_choice'] = police_station
+                request.session['ssp_sd_choice'] = sub_division
+
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fir_list, 60)
+                try:
+                    firs = paginator.page(page)
+                except PageNotAnInteger:
+                    firs = paginator.page(1)
+                except EmptyPage:
+                    firs = paginator.page(paginator.num_pages)
+
+                return render(request, 'fir/list_firs_ssp.html', {'fir_list':firs, 'form':form})
             else:
                 return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
         else:
             form = forms.ChooseLocationForm()
             fir_list = []
+
+            if request.GET.get('page', None):
+                police_station = request.session.get('ssp_ps_choice', None)
+                sub_division = request.session.get('ssp_sd_choice', None)
+                if police_station and sub_division:
+                    if sub_division == 'all':
+                        fir_list = models.FIR.objects.all()
+                    elif sub_division != 'all' and police_station == 'all':
+                        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                    else:
+                        fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+                
+                    page = request.GET.get('page', 1)
+                    paginator = Paginator(fir_list, 60)
+                    try:
+                        firs = paginator.page(page)
+                    except PageNotAnInteger:
+                        firs = paginator.page(1)
+                    except EmptyPage:
+                        firs = paginator.page(paginator.num_pages)
+
+                    return render(request, 'fir/list_firs_ssp.html', {'fir_list':firs, 'form':form})
+
             return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -252,13 +331,48 @@ def list_firs_ssp_with_param_view(request, sub_division_pk, police_station_pk):
                 else:
                     fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
                 form = forms.ChooseLocationForm()
-                return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
+
+                request.session['ssp_ps_choice'] = police_station
+                request.session['ssp_sd_choice'] = sub_division 
+
+                page = request.GET.get('page', 1)
+                paginator = Paginator(fir_list, 60)
+                try:
+                    firs = paginator.page(page)
+                except PageNotAnInteger:
+                    firs = paginator.page(1)
+                except EmptyPage:
+                    firs = paginator.page(paginator.num_pages)                
+
+                return render(request, 'fir/list_firs_ssp.html', {'fir_list':firs, 'form':form})
             else:
                 return redirect('fault', fault='Input parameters of Choose Area Form are not valid')
         else:
             form = forms.ChooseLocationForm()
-            fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station_pk, sub_division__pk__exact=sub_division_pk)
-            return render(request, 'fir/list_firs_ssp.html', {'fir_list':fir_list, 'form':form})
+
+            if request.GET.get('page', None):
+                police_station = request.session.get('ssp_ps_choice', None)
+                sub_division = request.session.get('ssp_sd_choice', None)
+                if police_station and sub_division:
+                    if sub_division == 'all':
+                        fir_list = models.FIR.objects.all()
+                    elif sub_division != 'all' and police_station == 'all':
+                        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=sub_division)
+                    else:
+                        fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station, sub_division__pk__exact=sub_division)
+            else:
+                fir_list = models.FIR.objects.all().filter(police_station__pk__exact=police_station_pk, sub_division__pk__exact=sub_division_pk)
+            
+            page = request.GET.get('page', 1)
+            paginator = Paginator(fir_list, 60)
+            try:
+                firs = paginator.page(page)
+            except PageNotAnInteger:
+                firs = paginator.page(1)
+            except EmptyPage:
+                firs = paginator.page(paginator.num_pages)
+            
+            return render(request, 'fir/list_firs_ssp.html', {'fir_list':firs, 'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -270,7 +384,17 @@ def list_firs_court_view(request):
 
     if request.user.pk in court_record_keepers:
         fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
-        return render(request, 'fir/list_firs_court.html', {'fir_list':fir_list})
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(fir_list, 60)
+        try:
+            firs = paginator.page(page)
+        except PageNotAnInteger:
+            firs = paginator.page(1)
+        except EmptyPage:
+            firs = paginator.page(paginator.num_pages)
+
+        return render(request, 'fir/list_firs_court.html', {'fir_list':firs})
 
     else:
         return redirect('fault', fault='ACCESS DENIED!')
