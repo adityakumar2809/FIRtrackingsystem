@@ -37,7 +37,7 @@
   <div id="filter_form" class="modal modal-fixed-footer" data-filter-reset-url="{% url 'fir:filter_fir_data' %}" >
     <div class="modal-content">
       <form method="get">
-        {% if not user.pk in police_station_record_keepers %}
+        {% if not user.pk in police_station_record_keepers and not user.pk in court_record_keepers %}
           {% if not user.pk in dsp_record_keepers %}
             <div class="row">
               <div class="input-field col s8 offset-s2">

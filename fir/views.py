@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect
 
 from location import models as loc_models
 from account import models as acc_models
@@ -37,6 +38,15 @@ def update_fir_police_station_view(request, pk):
 
     police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
 
+    prev_path = request.META.get('HTTP_REFERER', '/')
+    current_path = request.path
+    if prev_path == '/':
+        response = '/'
+        request.session['response_to_redirect'] = response
+    elif not current_path in prev_path:
+        response = prev_path
+        request.session['response_to_redirect'] = response
+
     if (request.user.pk in police_station_record_keepers) and (acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station) :
         if request.method == 'POST':
             form = forms.UpdateFIRPoliceStationForm(request.POST)
@@ -55,7 +65,11 @@ def update_fir_police_station_view(request, pk):
                 fir.received_from_court_date = form.cleaned_data['received_from_court_date']
                 fir.appointed_io = form.cleaned_data['appointed_io']
                 fir.save()
-                return redirect('fir:list_firs_police_station')
+                response = request.session.get('response_to_redirect', None)
+                if response and response != '/':
+                    return HttpResponseRedirect(response)
+                else:
+                    return redirect('fir:list_firs_police_station')
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -70,6 +84,15 @@ def update_fir_vrk_view(request, pk, sub_division_pk, police_station_pk):
 
     vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
 
+    prev_path = request.META.get('HTTP_REFERER', '/')
+    current_path = request.path
+    if prev_path == '/':
+        response = '/'
+        request.session['response_to_redirect'] = response
+    elif not current_path in prev_path:
+        response = prev_path
+        request.session['response_to_redirect'] = response
+
     if request.user.pk in vrk_record_keepers:
         if request.method == 'POST':
             form = forms.UpdateFIRVRKForm(request.POST)
@@ -77,7 +100,11 @@ def update_fir_vrk_view(request, pk, sub_division_pk, police_station_pk):
                 fir = models.FIR.objects.get(pk__exact=pk)
                 fir.ssp_approved = form.cleaned_data['ssp_approved']
                 fir.save()
-                return redirect('fir:list_firs_vrk_with_param', sub_division_pk = sub_division_pk, police_station_pk = police_station_pk)
+                response = request.session.get('response_to_redirect', None)
+                if response and response != '/':
+                    return HttpResponseRedirect(response)
+                else:
+                    return redirect('fir:list_firs_vrk_with_param', sub_division_pk = sub_division_pk, police_station_pk = police_station_pk)
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -92,6 +119,15 @@ def update_fir_ssp_view(request, pk, sub_division_pk, police_station_pk):
 
     ssp_record_keepers = [u['user'] for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
 
+    prev_path = request.META.get('HTTP_REFERER', '/')
+    current_path = request.path
+    if prev_path == '/':
+        response = '/'
+        request.session['response_to_redirect'] = response
+    elif not current_path in prev_path:
+        response = prev_path
+        request.session['response_to_redirect'] = response
+
     if request.user.pk in ssp_record_keepers:
         if request.method == 'POST':
             form = forms.UpdateFIRSSPForm(request.POST)
@@ -99,7 +135,11 @@ def update_fir_ssp_view(request, pk, sub_division_pk, police_station_pk):
                 fir = models.FIR.objects.get(pk__exact=pk)
                 fir.ssp_approved = form.cleaned_data['ssp_approved']
                 fir.save()
-                return redirect('fir:list_firs_ssp_with_param', sub_division_pk = sub_division_pk, police_station_pk = police_station_pk)
+                response = request.session.get('response_to_redirect', None)
+                if response and response != '/':
+                    return HttpResponseRedirect(response)
+                else:
+                    return redirect('fir:list_firs_ssp_with_param', sub_division_pk = sub_division_pk, police_station_pk = police_station_pk)
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -114,6 +154,15 @@ def update_fir_court_view(request, pk):
 
     court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
 
+    prev_path = request.META.get('HTTP_REFERER', '/')
+    current_path = request.path
+    if prev_path == '/':
+        response = '/'
+        request.session['response_to_redirect'] = response
+    elif not current_path in prev_path:
+        response = prev_path
+        request.session['response_to_redirect'] = response
+
     if (request.user.pk in court_record_keepers) and (acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station) :
         if request.method == 'POST':
             form = forms.UpdateFIRCourtForm(request.POST)
@@ -124,7 +173,11 @@ def update_fir_court_view(request, pk):
                 fir.court_status = form.cleaned_data['court_status']
                 fir.reverted_by_court_date = form.cleaned_data['reverted_by_court_date']
                 fir.save()
-                return redirect('fir:list_firs_court')
+                response = request.session.get('response_to_redirect', None)
+                if response and response != '/':
+                    return HttpResponseRedirect(response)
+                else:
+                    return redirect('fir:list_firs_court')
             else:
                 return redirect('fault', fault='Input parameters of Update FIR Form are not valid')
         else:
@@ -629,13 +682,17 @@ def load_police_stations_view(request):
 def filter_data_view(request):
     dsp_record_keepers = [u['user'] for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+    court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
 
     if request.user.pk in dsp_record_keepers:
         fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
         fir_filtered_data = filters.FirFilterSubDivision(request.GET, queryset = fir_list)
     elif request.user.pk in police_station_record_keepers:
         fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
-        fir_filtered_data = filters.FirFilterPoliceStation(request.GET, queryset = fir_list)
+        fir_filtered_data = filters.FirFilterPoliceStationCourt(request.GET, queryset = fir_list)
+    elif request.user.pk in court_record_keepers:
+        fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        fir_filtered_data = filters.FirFilterPoliceStationCourt(request.GET, queryset = fir_list)
     else:
         fir_list = models.FIR.objects.all()
         fir_filtered_data = filters.FirFilterAll(request.GET, queryset = fir_list)

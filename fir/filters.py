@@ -56,7 +56,7 @@ class FirFilterSubDivision(django_filters.FilterSet):
             'appointed_io': ['contains']
         }
 
-class FirFilterPoliceStation(django_filters.FilterSet):
+class FirFilterPoliceStationCourt(django_filters.FilterSet):
     class Meta:
         model = models.FIR
         fields = {
