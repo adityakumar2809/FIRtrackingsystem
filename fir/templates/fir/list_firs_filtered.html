@@ -37,18 +37,22 @@
   <div id="filter_form" class="modal modal-fixed-footer" data-filter-reset-url="{% url 'fir:filter_fir_data' %}" >
     <div class="modal-content">
       <form method="get">
-        <div class="row">
-          <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.sub_division}}
-              <label for="Sub Division">Sub Division</label>
+        {% if not user.pk in police_station_record_keepers %}
+          {% if not user.pk in dsp_record_keepers %}
+            <div class="row">
+              <div class="input-field col s8 offset-s2">
+                  {{fir_filtered_data.form.sub_division}}
+                  <label for="Sub Division">Sub Division</label>
+              </div>
+            </div>
+          {% endif %}
+          <div class="row">
+            <div class="input-field col s8 offset-s2">
+                {{fir_filtered_data.form.police_station}}
+                <label for="Police Station">Police Station</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.police_station}}
-              <label for="Police Station">Police Station</label>
-          </div>
-        </div>
+        {% endif %}
         <div class="row">
           <div class="input-field col s8 offset-s2">
               {{fir_filtered_data.form.fir_no}}

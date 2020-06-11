@@ -625,7 +625,19 @@ def load_police_stations_view(request):
     return render(request, 'fir/load_police_stations.html', {'police_station_list': police_station_list})
 
 
+@login_required
 def filter_data_view(request):
-    fir_list = models.FIR.objects.all()
-    fir_filtered_data = filters.FirFilter(request.GET, queryset = fir_list)
+    dsp_record_keepers = [u['user'] for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+
+    if request.user.pk in dsp_record_keepers:
+        fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+        fir_filtered_data = filters.FirFilterSubDivision(request.GET, queryset = fir_list)
+    elif request.user.pk in police_station_record_keepers:
+        fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        fir_filtered_data = filters.FirFilterPoliceStation(request.GET, queryset = fir_list)
+    else:
+        fir_list = models.FIR.objects.all()
+        fir_filtered_data = filters.FirFilterAll(request.GET, queryset = fir_list)
+
     return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data})
