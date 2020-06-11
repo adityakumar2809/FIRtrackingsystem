@@ -1,185 +1,185 @@
 {% load templatetag %}
 
 <div class="table_wrapper" data-fl-scrolls>
-    <table class="centered responsive-table table_div highlight">
+    <table class="centered responsive-table table_div list-table highlight">
         <thead class="indigo lighten-2">
-            <tr>
-                <th>Fir No.</th>
-                <th>Sub Division</th>
-                <th>Police Station</th>
-                <th>Date Registered</th>
-                <th>Investigating Officer</th>
-                <th>Accused Name</th>
-                <th>Under Section</th>
-                <th>Accused Status</th>
-                <th>Limitation Period</th>
-                <th>Current Status</th>
-                <th>Submitted to SSP</th>
-                <th>Date of Submission to SSP</th>
-                <th>SSP Approved</th>
-                <th>Submitted in Court</th>
-                <th>Date of Submission in Court</th>
-                <th>Received in Court</th>
-                <th>Date of Receiving by Court</th>
-                <th>Status in Court</th>
-                <th>Date of Reverting by Court</th>
-                <th>Date of Receiving in Police Station</th>
-                <th>New Appointed Investigating Officer</th>
-                <th></th>
+            <tr class="list-tr">
+                <th class="list-th">Fir No.</th>
+                <th class="list-th">Sub Division</th>
+                <th class="list-th">Police Station</th>
+                <th class="list-th">Date Registered</th>
+                <th class="list-th">Investigating Officer</th>
+                <th class="list-th">Accused Name</th>
+                <th class="list-th">Under Section</th>
+                <th class="list-th">Accused Status</th>
+                <th class="list-th">Limitation Period</th>
+                <th class="list-th">Current Status</th>
+                <th class="list-th">Submitted to SSP</th>
+                <th class="list-th">Date of Submission to SSP</th>
+                <th class="list-th">SSP Approved</th>
+                <th class="list-th">Submitted in Court</th>
+                <th class="list-th">Date of Submission in Court</th>
+                <th class="list-th">Received in Court</th>
+                <th class="list-th">Date of Receiving by Court</th>
+                <th class="list-th">Status in Court</th>
+                <th class="list-th">Date of Reverting by Court</th>
+                <th class="list-th">Date of Receiving in Police Station</th>
+                <th class="list-th">New Appointed Investigating Officer</th>
+                <th class="list-th"></th>
                 {% if user.pk in police_station_record_keepers %}
-                    <th></th>
+                    <th class="list-th"></th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for fir in fir_list %}
-                <tr>
+                <tr class="list-tr">
 
-                    <td>{{fir.fir_no}}</td>
+                    <td class="list-td">{{fir.fir_no}}</td>
 
-                    <td>{{fir.sub_division}}</td>
+                    <td class="list-td">{{fir.sub_division}}</td>
                     
-                    <td>{{fir.police_station}}</td>
+                    <td class="list-td">{{fir.police_station}}</td>
 
-                    <td>{{fir.date_created|date:'d-m-y'}}</td>
+                    <td class="list-td">{{fir.date_created|date:'d-m-y'}}</td>
 
                     {% if fir.io_name %}
-                        <td>{{fir.io_name}}</td>
+                        <td class="list-td">{{fir.io_name}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.accused_name %}
-                        <td>{{fir.accused_name}}</td>
+                        <td class="list-td">{{fir.accused_name}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.under_section %}
-                        <td>{{fir.under_section}}</td>
+                        <td class="list-td">{{fir.under_section}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.accused_status == "arrested" %}
-                        <td>Arrested</td>
+                        <td class="list-td">Arrested</td>
                     {% elif fir.accused_status == "not_arrested" %}
-                        <td>Not-Arrested</td>
+                        <td class="list-td">Not-Arrested</td>
                     {% elif fir.accused_status == "po" %}
-                        <td>P.O.</td>
+                        <td class="list-td">P.O.</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     
                     {% if fir.limitation_period %}
-                        <td>{{fir.limitation_period}}</td>
+                        <td class="list-td">{{fir.limitation_period}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.current_status == "challan_filed" %}
-                        <td>Challan Filed</td>
+                        <td class="list-td">Challan Filed</td>
                     {% elif fir.current_status == "untraced" %}
-                        <td>Untraced</td>
+                        <td class="list-td">Untraced</td>
                     {% elif fir.current_status == "under_investigation" %}
-                        <td>Under Investigation</td>
+                        <td class="list-td">Under Investigation</td>
                     {% elif fir.current_status == "cancelled" %}
-                        <td>Cancelled</td>
+                        <td class="list-td">Cancelled</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.put_in_ssp_office %}
-                        <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        <td class="list-td"><i class="material-icons green-text text-darken-4">check</i></td>
                     {% else %}
-                        <td><i class="material-icons red-text">close</i></td>
+                        <td class="list-td"><i class="material-icons red-text">close</i></td>
                     {% endif %}
 
                     {% if fir.put_in_ssp_office_date %}
-                        <td>{{fir.put_in_ssp_office_date|date:'d-m-y'}}</td>
+                        <td class="list-td">{{fir.put_in_ssp_office_date|date:'d-m-y'}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.ssp_approved %}
-                        <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        <td class="list-td"><i class="material-icons green-text text-darken-4">check</i></td>
                     {% else %}
-                        <td><i class="material-icons red-text">close</i></td>
+                        <td class="list-td"><i class="material-icons red-text">close</i></td>
                     {% endif %}
 
                     {% if fir.put_in_court %}
-                        <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        <td class="list-td"><i class="material-icons green-text text-darken-4">check</i></td>
                     {% else %}
-                        <td><i class="material-icons red-text">close</i></td>
+                        <td class="list-td"><i class="material-icons red-text">close</i></td>
                     {% endif %}
 
                     {% if fir.put_in_court_date %}
-                        <td>{{fir.put_in_court_date|date:'d-m-y'}}</td>
+                        <td class="list-td">{{fir.put_in_court_date|date:'d-m-y'}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.received_in_court %}
-                        <td><i class="material-icons green-text text-darken-4">check</i></td>
+                        <td class="list-td"><i class="material-icons green-text text-darken-4">check</i></td>
                     {% else %}
-                        <td><i class="material-icons red-text">close</i></td>
+                        <td class="list-td"><i class="material-icons red-text">close</i></td>
                     {% endif %}
 
                     {% if fir.received_in_court_date %}
-                        <td>{{fir.received_in_court_date|date:'d-m-y'}}</td>
+                        <td class="list-td">{{fir.received_in_court_date|date:'d-m-y'}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.court_status == "pending" %}
-                        <td>Pending</td>
+                        <td class="list-td">Pending</td>
                     {% elif fir.court_status == "accepted" %}
-                        <td>Accepted</td>
+                        <td class="list-td">Accepted</td>
                     {% elif fir.court_status == "reinvestigation" %}
-                        <td>Re-investigation</td>
+                        <td class="list-td">Re-investigation</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.reverted_by_court_date %}
-                        <td>{{fir.reverted_by_court_date|date:'d-m-y'}}</td>
+                        <td class="list-td">{{fir.reverted_by_court_date|date:'d-m-y'}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.received_from_court_date %}
-                        <td>{{fir.received_from_court_date|date:'d-m-y'}}</td>
+                        <td class="list-td">{{fir.received_from_court_date|date:'d-m-y'}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     {% if fir.appointed_io %}
-                        <td>{{fir.appointed_io}}</td>
+                        <td class="list-td">{{fir.appointed_io}}</td>
                     {% else %}
-                        <td><i class="material-icons black-text">remove</i></td>
+                        <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}
 
                     
                     {% if user.pk in police_station_record_keepers %}
-                        <td>
+                        <td class="list-td">
                             <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                 <i class="material-icons">edit</i>
                             </a>   
                         </td>
                         {% if fir.pk|is_next_phase_possible %}
-                            <td>
+                            <td class="list-td">
                                 <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                     <i class="material-icons">add</i>
                                 </a>   
                             </td>
                         {% else %}
-                            <td></td>
+                            <td class="list-td"></td>
                         {% endif %}
                     {% endif %}
 
                     {% if user.pk in vrk_record_keepers %}
-                        <td>
+                        <td class="list-td">
                             <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                 <i class="material-icons">edit</i>
                             </a>   
@@ -187,7 +187,7 @@
                     {% endif %}
 
                     {% if user.pk in ssp_record_keepers %}
-                        <td>
+                        <td class="list-td">
                             <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                                 <i class="material-icons">edit</i>
                             </a>   
@@ -195,7 +195,7 @@
                     {% endif %}
 
                     {% if user.pk in court_record_keepers %}
-                        <td>
+                        <td class="list-td">
                             {% comment %} 
                                 <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light indigo">
                             {% endcomment %}
@@ -208,9 +208,9 @@
 
                 {% if fir.pk|is_last_phase %}
                     <tr class="indigo lighten-4">
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td>
                         {% if user.pk in police_station_record_keepers %}
-                            <td></td>
+                            <td class="list-td"></td>
                         {% endif %}
                     </tr>
                 {% endif %}

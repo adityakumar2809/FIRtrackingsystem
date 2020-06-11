@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load templatetag %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/list_css.css' %}">
+
+    <style>
+      #filter_form .modal{
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Re-integrating styling of the DatePicker */
+      .datepicker-day-button{
+        background-color: rgba(239, 239, 239, 1);
+      }
+      td.is-selected button{
+        background-color: rgb(38, 166, 154) !important;
+      }
+      td.is-empty{
+        background-color: rgba(0, 0, 0, 0) !important;
+      }
+      .datepicker-table th{
+        background-color: rgba(0, 0, 0, 0) !important;
+      }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+  <!-- Form Modal Trigger -->
+  <a class="waves-effect waves-light btn modal-trigger" href="#filter_form" style="margin: 2%;">Apply/ Remove Filters</a>
+
+  <!-- Form Modal Structure -->
+  <div id="filter_form" class="modal modal-fixed-footer" data-filter-reset-url="{% url 'fir:filter_fir_data' %}" >
+    <div class="modal-content">
+      <form method="get">
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.sub_division}}
+              <label for="Sub Division">Sub Division</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.police_station}}
+              <label for="Police Station">Police Station</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.fir_no}}
+              <label for="FIR No">FIR No.</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.date_created__gte|add_class:'datepicker'}}
+              <label for="Date Created Lower">Date Registered (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.date_created__lte|add_class:'datepicker'}}
+              <label for="Date Created Upper">Date Registered (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s8 offset-s2">
+                {{fir_filtered_data.form.io_name__contains}}
+                <label for="Investigating Officer">Investigating Officer</label>
+            </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.accused_name__contains}}
+              <label for="Accused Name">Accused Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.under_section__contains}}
+              <label for="Under Section">Under Section</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.accused_status}}
+              <label for="Accused Status">Accused Status</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.limitation_period__gte}}
+              <label for="Limitation Period Lower">Limitation Period (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.limitation_period__lte}}
+              <label for="Limitation Period Upper">Limitation Period (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.current_status}}
+              <label for="Current Status">Current Status</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_ssp_office}}
+              <label for="Submitted in SSP Office">Submitted in SSP Office</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_ssp_office_date__gte|add_class:'datepicker'}}
+              <label for="Date of Submission to SSP Office Lower">Date of Submission to SSP Office (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_ssp_office_date__lte|add_class:'datepicker'}}
+              <label for="Date of Submission to SSP Office Upper">Date of Submission to SSP Office (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.ssp_approved}}
+              <label for="SSP Approved">SSP Approved</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_court}}
+              <label for="Submitted in Court">Submitted in Court</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_court_date__gte}}
+              <label for="Date of Submission to Court Lower">Date of Submission to Court (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.put_in_court_date__lte}}
+              <label for="Date of Submission to Court Upper">Date of Submission to Court (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.received_in_court}}
+              <label for="Received by Court">Received by Court</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.received_in_court_date__gte}}
+              <label for="Date of Receiving from Court Lower">Date of Receiving from Court (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.received_in_court_date__lte}}
+              <label for="Date of Receiving from Court Upper">Date of Receiving from Court (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.court_status}}
+              <label for="Court Status">Court Status</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.reverted_by_court_date__gte}}
+              <label for="Date of Reverting from Court Lower">Date of Reverting from Court (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.reverted_by_court_date__lte}}
+              <label for="Date of Reverting from Court Upper">Date of Reverting from Court (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.received_from_court_date__gte}}
+              <label for="Date of Receiving in Police Station Lower">Date of Receiving in Police Station (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.received_from_court_date__lte}}
+              <label for="Date of Receiving in Police Station Upper">Date of Receiving in Police Station (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              {{fir_filtered_data.form.appointed_io__contains}}
+              <label for="Appointed IO">Appointed IO</label>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn waves-effect waves-light" type="submit">
+          Submit <i class="material-icons right">send</i>
+         </button>
+        </form>
+        <button class="btn waves-effect waves-light modal-close">
+        Cancel <i class="material-icons right">close</i>
+        </button>
+        <button class="btn waves-effect waves-light reset-button">
+        Reset <i class="material-icons right">delete</i>
+        </button>
+    </div>
+  </div>
+
+  {% with fir_list=fir_filtered_data.qs %}
+    {% include 'fir/_firs_list.html' %}
+  {% endwith %}
+
+{% endblock %}
+
+{% block tail %}
+  <script>
+    $(document).ready(function(){
+      $('.modal').modal();
+    });
+  </script>
+
+  <script>
+    $('.reset-button').click(function(){
+      var reset_url = $('#filter_form').attr('data-filter-reset-url');
+      window.location.href = reset_url;
+    });
+  </script>
+{% endblock %}

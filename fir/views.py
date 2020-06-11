@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from location import models as loc_models
 from account import models as acc_models
-from . import models, forms
+from . import models, forms, filters
 # Create your views here.
 
 @login_required
@@ -63,7 +63,6 @@ def update_fir_police_station_view(request, pk):
             return render(request, 'fir/update_fir_police_station.html', {'form':form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
-
 
 
 @login_required
@@ -624,3 +623,9 @@ def load_police_stations_view(request):
     else:
         police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
     return render(request, 'fir/load_police_stations.html', {'police_station_list': police_station_list})
+
+
+def filter_data_view(request):
+    fir_list = models.FIR.objects.all()
+    fir_filtered_data = filters.FirFilter(request.GET, queryset = fir_list)
+    return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data})

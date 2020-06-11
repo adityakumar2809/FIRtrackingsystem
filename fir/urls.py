@@ -38,4 +38,7 @@ urlpatterns = [
     path('list_firs_ssp/', views.list_firs_ssp_view, name='list_firs_ssp'),
     path('ajax/load_ps/', views.load_police_stations_view, name='load_police_stations'),
     path('list_firs_ssp/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_ssp_with_param_view, name='list_firs_ssp_with_param'),
+
+    # Monitoring
+    path('filter/', views.filter_data_view, name='filter_fir_data')
 ]
