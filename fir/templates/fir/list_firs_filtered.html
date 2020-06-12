@@ -109,6 +109,18 @@
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
+              <input type="number" name="days_to_expire__gte" id="id_days_to_expire__gte" value="{{ days_to_expire_lower_limit_value }}">
+              <label for="Days to Expire Lower">Days to Expire (Lower Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
+              <input type="number" name="days_to_expire__lte" id="id_days_to_expire__lte" value="{{ days_to_expire_upper_limit_value }}">
+              <label for="Days to Expire Upper">Days to Expire (Upper Limit)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8 offset-s2">
               {{fir_filtered_data.form.current_status}}
               <label for="Current Status">Current Status</label>
           </div>
