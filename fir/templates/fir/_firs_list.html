@@ -73,7 +73,17 @@
 
                     
                     {% if fir.limitation_period %}
-                        <td class="list-td">{{fir.limitation_period}}</td>
+                        <td class="list-td">
+                            {% if fir.pk|will_expire_at == 0 %}
+                                <span class="new badge red" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 1 %}
+                                <span class="new badge orange darken-2" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 2 %}
+                                <span class="new badge yellow black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 3 %}
+                                {{fir.limitation_period}}
+                            {% endif %}
+                        </td>     
                     {% else %}
                         <td class="list-td"><i class="material-icons black-text">remove</i></td>
                     {% endif %}

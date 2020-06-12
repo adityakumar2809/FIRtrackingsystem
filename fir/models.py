@@ -15,7 +15,7 @@ class FIR(models.Model):
 
     fir_no = models.CharField(max_length=50)
     phase = models.PositiveIntegerField(choices=PHASE_CHOICES)
-    date_created = models.DateField(auto_now=True)
+    date_created = models.DateField(auto_now_add=True)
 
     io_name = models.CharField(max_length=50, blank=True, null=True)
     accused_name = models.TextField(blank=True, null=True)

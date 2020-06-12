@@ -1,4 +1,6 @@
 from django import template
+import datetime
+
 from fir import models
 
 register=template.Library()
@@ -28,3 +30,17 @@ def is_next_phase_possible(pk):
         return True
     else:
         return False
+
+
+@register.filter
+def will_expire_at(pk):
+    fir_object = models.FIR.objects.get(pk__exact=pk)
+    time_diff = (datetime.date.today() - fir_object.date_created).days
+    if time_diff > fir_object.limitation_period:
+        return 0
+    elif fir_object.limitation_period - time_diff <= 10:
+        return 1
+    elif fir_object.limitation_period - time_diff <= 20:
+        return 2
+    else:
+        return 3
