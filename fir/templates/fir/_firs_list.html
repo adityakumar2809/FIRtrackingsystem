@@ -1,10 +1,10 @@
 {% load templatetag %}
 
 <div class="table_wrapper" data-fl-scrolls>
-    <table class="centered responsive-table table_div list-table highlight">
-        <thead class="indigo lighten-2">
+    <table class="centered responsive-table table_div list-table highlight teal lighten-5">
+        <thead class="indigo lighten-2 white-text">
             <tr class="list-tr">
-                <th class="list-th">Fir No.</th>
+                <th class="list-th">FIR No.</th>
                 <th class="list-th">Sub Division</th>
                 <th class="list-th">Police Station</th>
                 <th class="list-th">Date Registered</th>
@@ -32,10 +32,28 @@
             </tr>
         </thead>
         <tbody>
+
+            <tr class="green lighten-5" style="position: sticky !important; top: 0;">
+                <td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td>
+                {% if user.pk in police_station_record_keepers %}
+                    <td class="list-td"></td>
+                {% endif %}
+            </tr>
+
             {% for fir in fir_list %}
                 <tr class="list-tr">
 
-                    <td class="list-td">{{fir.fir_no}}</td>
+                    {% if fir.pk|is_last_phase %}
+                        {% if fir.pk|is_first_phase %}
+                            <td class="list-td" style="border-bottom-left-radius: 10px; border-top-left-radius: 10px;">{{fir.fir_no}}</td>
+                        {% else %}
+                            <td class="list-td" style="border-bottom-left-radius: 10px;">{{fir.fir_no}}</td>
+                        {% endif %}
+                    {% elif fir.pk|is_first_phase %}
+                        <td class="list-td" style="border-top-left-radius: 10px;">{{fir.fir_no}}</td>
+                    {% else %}
+                        <td class="list-td">{{fir.fir_no}}</td>
+                    {% endif %}
 
                     <td class="list-td">{{fir.sub_division}}</td>
                     
@@ -75,11 +93,11 @@
                     {% if fir.limitation_period %}
                         <td class="list-td">
                             {% if fir.pk|will_expire_at == 0 %}
-                                <span class="new badge red" data-badge-caption="">{{fir.limitation_period}}</span>
+                                <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
                             {% elif fir.pk|will_expire_at == 1 %}
-                                <span class="new badge orange darken-2" data-badge-caption="">{{fir.limitation_period}}</span>
+                                <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
                             {% elif fir.pk|will_expire_at == 2 %}
-                                <span class="new badge yellow black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                                <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
                             {% elif fir.pk|will_expire_at == 3 %}
                                 {{fir.limitation_period}}
                             {% endif %}
@@ -173,13 +191,13 @@
                     
                     {% if user.pk in police_station_record_keepers %}
                         <td class="list-td">
-                            <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                            <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
                                 <i class="material-icons">edit</i>
                             </a>   
                         </td>
                         {% if fir.pk|is_next_phase_possible %}
                             <td class="list-td">
-                                <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light indigo">
+                                <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
                                     <i class="material-icons">add</i>
                                 </a>   
                             </td>
@@ -217,7 +235,7 @@
                 </tr>
 
                 {% if fir.pk|is_last_phase %}
-                    <tr class="indigo lighten-4">
+                    <tr class="green lighten-5">
                         <td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td><td class="list-td"></td>
                         {% if user.pk in police_station_record_keepers %}
                             <td class="list-td"></td>

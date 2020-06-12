@@ -19,6 +19,17 @@ def is_last_phase(pk):
 
 
 @register.filter
+def is_first_phase(pk):
+    fir_object = models.FIR.objects.get(pk__exact=pk)
+    fir_phase = fir_object.phase
+    
+    if fir_phase==1:
+        return True
+    else:
+        return False
+
+
+@register.filter
 def is_next_phase_possible(pk):
     fir_object = models.FIR.objects.get(pk__exact=pk)
     fir_phase = fir_object.phase
