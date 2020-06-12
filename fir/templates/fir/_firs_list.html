@@ -43,8 +43,8 @@
             {% for fir in fir_list %}
                 <tr class="list-tr">
 
-                    {% if fir.pk|is_last_phase %}
-                        {% if fir.pk|is_first_phase %}
+                    {% if fir.pk|is_last_phase or filtered_view %}
+                        {% if fir.pk|is_first_phase or filtered_view %}
                             <td class="list-td" style="border-bottom-left-radius: 10px; border-top-left-radius: 10px;">{{fir.fir_no}}</td>
                         {% else %}
                             <td class="list-td" style="border-bottom-left-radius: 10px;">{{fir.fir_no}}</td>

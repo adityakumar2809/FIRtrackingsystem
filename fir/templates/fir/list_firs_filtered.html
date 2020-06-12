@@ -34,7 +34,7 @@
   <a class="waves-effect waves-light btn modal-trigger" href="#filter_form" style="margin: 2%;">Apply/ Remove Filters</a>
 
   <!-- Form Modal Structure -->
-  <div id="filter_form" class="modal modal-fixed-footer" data-filter-reset-url="{% url 'fir:filter_fir_data' %}" >
+  <div id="filter_form" class="modal modal-fixed-footer green lighten-5" data-filter-reset-url="{% url 'fir:filter_fir_data' %}" >
     <div class="modal-content">
       <form method="get">
         {% if not user.pk in police_station_record_keepers and not user.pk in court_record_keepers %}
@@ -222,7 +222,7 @@
           </div>
         </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer green lighten-5">
         <button class="btn waves-effect waves-light" type="submit">
           Submit <i class="material-icons right">send</i>
          </button>
@@ -236,7 +236,7 @@
     </div>
   </div>
 
-  {% with fir_list=fir_filtered_data.qs %}
+  {% with fir_list=fir_filtered_data.qs filtered_view=1 %}
     {% include 'fir/_firs_list.html' %}
   {% endwith %}
 

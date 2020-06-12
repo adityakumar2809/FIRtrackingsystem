@@ -705,6 +705,12 @@ def filter_data_view(request):
                 if fir.date_created <= upper_limit - datetime.timedelta(fir.limitation_period or 0):
                     fir_id_list.append(fir.pk)
             fir_list = fir_list.filter(pk__in = fir_id_list)
+        fir_id_list = []
+        for i in range(len(fir_list)-1):
+            if(fir_list[i].fir_no != fir_list[i+1].fir_no):
+                fir_id_list.append(fir_list[i].pk)
+        fir_id_list.append(fir_list[len(fir_list)-1].pk)
+        fir_list = fir_list.filter(pk__in = fir_id_list)
         fir_filtered_data = filters.FirFilterSubDivision(request.GET, queryset = fir_list)
     elif request.user.pk in police_station_record_keepers:
         fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
@@ -722,6 +728,12 @@ def filter_data_view(request):
                 if fir.date_created <= upper_limit - datetime.timedelta(fir.limitation_period or 0):
                     fir_id_list.append(fir.pk)
             fir_list = fir_list.filter(pk__in = fir_id_list)
+        fir_id_list = []
+        for i in range(len(fir_list)-1):
+            if(fir_list[i].fir_no != fir_list[i+1].fir_no):
+                fir_id_list.append(fir_list[i].pk)
+        fir_id_list.append(fir_list[len(fir_list)-1].pk)
+        fir_list = fir_list.filter(pk__in = fir_id_list)
         fir_filtered_data = filters.FirFilterPoliceStationCourt(request.GET, queryset = fir_list)
     elif request.user.pk in court_record_keepers:
         fir_list = models.FIR.objects.all().filter(police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
@@ -739,6 +751,12 @@ def filter_data_view(request):
                 if fir.date_created <= upper_limit - datetime.timedelta(fir.limitation_period or 0):
                     fir_id_list.append(fir.pk)
             fir_list = fir_list.filter(pk__in = fir_id_list)
+        fir_id_list = []
+        for i in range(len(fir_list)-1):
+            if(fir_list[i].fir_no != fir_list[i+1].fir_no):
+                fir_id_list.append(fir_list[i].pk)
+        fir_id_list.append(fir_list[len(fir_list)-1].pk)
+        fir_list = fir_list.filter(pk__in = fir_id_list)
         fir_filtered_data = filters.FirFilterPoliceStationCourt(request.GET, queryset = fir_list)
     else:
         fir_list = models.FIR.objects.all()
@@ -756,6 +774,12 @@ def filter_data_view(request):
                 if fir.date_created <= upper_limit - datetime.timedelta(fir.limitation_period or 0):
                     fir_id_list.append(fir.pk)
             fir_list = fir_list.filter(pk__in = fir_id_list)
+        fir_id_list = []
+        for i in range(len(fir_list)-1):
+            if(fir_list[i].fir_no != fir_list[i+1].fir_no):
+                fir_id_list.append(fir_list[i].pk)
+        fir_id_list.append(fir_list[len(fir_list)-1].pk)
+        fir_list = fir_list.filter(pk__in = fir_id_list)
         fir_filtered_data = filters.FirFilterAll(request.GET, queryset = fir_list)
 
     return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data, 'days_to_expire_lower_limit_value': days_to_expire_lower_limit, 'days_to_expire_upper_limit_value': days_to_expire_upper_limit})
