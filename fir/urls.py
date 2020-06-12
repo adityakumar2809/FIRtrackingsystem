@@ -40,5 +40,6 @@ urlpatterns = [
     path('list_firs_ssp/<int:sub_division_pk>/<int:police_station_pk>', views.list_firs_ssp_with_param_view, name='list_firs_ssp_with_param'),
 
     # Monitoring
-    path('filter/', views.filter_data_view, name='filter_fir_data')
+    path('filter/', views.filter_data_view, name='filter_fir_data'),
+    path('detail/<int:pk>', views.detail_fir_view, name='detail_fir'),
 ]

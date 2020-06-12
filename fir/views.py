@@ -783,3 +783,27 @@ def filter_data_view(request):
         fir_filtered_data = filters.FirFilterAll(request.GET, queryset = fir_list)
 
     return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data, 'days_to_expire_lower_limit_value': days_to_expire_lower_limit, 'days_to_expire_upper_limit_value': days_to_expire_upper_limit})
+
+
+@login_required
+def detail_fir_view(request, pk):
+    dsp_record_keepers = [u['user'] for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+    court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+
+    try:
+        fir_object = models.FIR.objects.get(pk__exact=pk)
+    except:
+        return redirect('fault', fault='The required FIR does not exists!')
+
+    if (request.user.pk in dsp_record_keepers) and not (acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division == models.FIR.objects.get(pk__exact=pk).sub_division):
+        return redirect('fault', fault='ACCESS DENIED!')
+    elif (request.user.pk in court_record_keepers) and not (acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station):
+        return redirect('fault', fault='ACCESS DENIED!')
+    elif (request.user.pk in police_station_record_keepers) and not (acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station == models.FIR.objects.get(pk__exact=pk).police_station):
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    fir_phase_list = models.FIR.objects.all().filter(fir_no__exact=fir_object.fir_no, police_station__exact=fir_object.police_station, sub_division__exact=fir_object.sub_division)
+
+    return render(request, 'fir/detail_fir.html', {'fir_phase_list':fir_phase_list})
+        

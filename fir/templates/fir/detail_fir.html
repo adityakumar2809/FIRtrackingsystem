@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+{% load templatetag %}
+
+
+{% block head %}
+    <style>
+        li.data-point{
+            display: flex; 
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<br><br>
+
+<div class="container">
+    <div class="center green lighten-5">
+        <h5 class="cyan-text text-darken-4">
+            <strong>
+                <span>Sub Division : </span><span>{{fir_phase_list.0.sub_division}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Police Station : </span><span>{{fir_phase_list.0.police_station}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>FIR No : </span><span>{{fir_phase_list.0.fir_no}}</span>
+            </strong>
+        </h5>
+    </div>
+    <br>
+    {% for fir in fir_phase_list %}
+        <div class="card horizontal green lighten-4" style="line-height: 2;">
+            <div class="card-content" style="display: flex; justify-content: center; align-items: center;">
+                <b><p>Phase: {{fir.phase}}</p></b>
+            </div>
+            <!-- <div class="card-content"></div> -->
+            <div class="card-content">
+                <ul>
+                    <li class="data-point">
+                        <em>Date Registered: </em>&nbsp;&nbsp;&nbsp;&nbsp; 
+                        {{fir.date_created}}
+                    </li>
+                    <li class="data-point">
+                        <em>Investigating Officer: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.io_name %}
+                            {{fir.io_name}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Accused Name: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.accused_name %}
+                            {{fir.accused_name}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Under Section: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.under_section %}
+                            {{fir.under_section}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Accused Status: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.accused_status == "arrested" %}
+                            Arrested
+                        {% elif fir.accused_status == "not_arrested" %}
+                            Not-Arrested
+                        {% elif fir.accused_status == "po" %}
+                            P.O.
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Limitation Period: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.limitation_period %}
+                        
+                            {% if fir.pk|will_expire_at == 0 %}
+                                <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 1 %}
+                                <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 2 %}
+                                <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                            {% elif fir.pk|will_expire_at == 3 %}
+                                {{fir.limitation_period}}
+                            {% endif %}
+                    {% else %}
+                        <i class="material-icons black-text">remove</i>
+                    {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Current Status: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.current_status == "challan_filed" %}
+                            Challan Filed
+                        {% elif fir.current_status == "untraced" %}
+                            Untraced
+                        {% elif fir.current_status == "under_investigation" %}
+                            Under Investigation
+                        {% elif fir.current_status == "cancelled" %}
+                            Cancelled
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Submitted to SSP Office: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.put_in_ssp_office %}
+                            <i class="material-icons green-text text-darken-4">check</i>
+                        {% else %}
+                            <i class="material-icons red-text">close</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Date of submission into SSP Office: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.put_in_ssp_office_date %}
+                            {{fir.put_in_ssp_office_date|date:'d-m-y'}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="card-content"></div>
+            <div class="card-content">
+                <ul>
+                    <li class="data-point">
+                        <em>Approved by SSP: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.ssp_approved %}
+                            <i class="material-icons green-text text-darken-4">check</i>
+                        {% else %}
+                            <i class="material-icons red-text">close</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Submitted in Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.put_in_court %}
+                            <i class="material-icons green-text text-darken-4">check</i>
+                        {% else %}
+                            <i class="material-icons red-text">close</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Date of Submission in Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.put_in_court_date %}
+                            {{fir.put_in_court_date|date:'d-m-y'}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Received in Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.received_in_court %}
+                            <i class="material-icons green-text text-darken-4">check</i>
+                        {% else %}
+                            <i class="material-icons red-text">close</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Date of receiving in Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.received_in_court_date %}
+                            {{fir.received_in_court_date|date:'d-m-y'}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Status at Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.court_status == "pending" %}
+                            Pending
+                        {% elif fir.court_status == "accepted" %}
+                            Accepted
+                        {% elif fir.court_status == "reinvestigation" %}
+                            Re-investigation
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Date of Reverting from Court: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.reverted_by_court_date %}
+                            {{fir.reverted_by_court_date|date:'d-m-y'}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Date of receiving in Police Station: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.received_from_court_date %}
+                            {{fir.received_from_court_date|date:'d-m-y'}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                    <li class="data-point">
+                        <em>Appointed IO: </em>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {% if fir.appointed_io %}
+                            {{fir.appointed_io}}
+                        {% else %}
+                            <i class="material-icons black-text">remove</i>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    {% if user.pk in police_station_record_keepers %}
+                            <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                        {% if fir.pk|is_next_phase_possible %}
+                                <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                    <i class="material-icons">add</i>
+                                </a>  
+                        {% endif %} 
+                    {% endif %}
+
+                    {% if user.pk in vrk_record_keepers %}
+                            <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                    {% endif %}
+
+                    {% if user.pk in ssp_record_keepers %}
+                            <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                    {% endif %}
+
+                    {% if user.pk in court_record_keepers %}
+                            {% comment %} 
+                                <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                            {% endcomment %}
+                            <a href="{% url 'fir:update_fir_court' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                <i class="material-icons">edit</i>
+                            </a>   
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
+
+{% comment %}
+<div class="card-content">
+    <ul>
+        <li class="data-point">
+            {{fir.date_created}}
+        </li>
+        {% if fir.io_name %}
+            <li class="data-point">{{fir.io_name}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.accused_name %}
+            <li class="data-point">{{fir.accused_name}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.under_section %}
+            <li class="data-point">{{fir.under_section}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.accused_status == "arrested" %}
+            <li class="data-point">Arrested</li>
+        {% elif fir.accused_status == "not_arrested" %}
+            <li class="data-point">Not-Arrested</li>
+        {% elif fir.accused_status == "po" %}
+            <li class="data-point">P.O.</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        
+        {% if fir.limitation_period %}
+            <li class="data-point">
+                {% if fir.pk|will_expire_at == 0 %}
+                    <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                {% elif fir.pk|will_expire_at == 1 %}
+                    <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                {% elif fir.pk|will_expire_at == 2 %}
+                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                {% elif fir.pk|will_expire_at == 3 %}
+                    {{fir.limitation_period}}
+                {% endif %}
+            </li>     
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.current_status == "challan_filed" %}
+            <li class="data-point">Challan Filed</li>
+        {% elif fir.current_status == "untraced" %}
+            <li class="data-point">Untraced</li>
+        {% elif fir.current_status == "under_investigation" %}
+            <li class="data-point">Under Investigation</li>
+        {% elif fir.current_status == "cancelled" %}
+            <li class="data-point">Cancelled</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.put_in_ssp_office %}
+            <li class="data-point"><i class="material-icons green-text text-darken-4">check</i></li>
+        {% else %}
+            <li class="data-point"><i class="material-icons red-text">close</i></li>
+        {% endif %}
+
+        {% if fir.put_in_ssp_office_date %}
+            <li class="data-point">{{fir.put_in_ssp_office_date|date:'d-m-y'}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+    </ul>
+</div>
+{% endcomment %}
+{% comment %}
+<div class="card-content">
+    <ul>
+        {% if fir.ssp_approved %}
+            <li class="data-point"><i class="material-icons green-text text-darken-4">check</i></li>
+        {% else %}
+            <li class="data-point"><i class="material-icons red-text">close</i></li>
+        {% endif %}
+
+        {% if fir.put_in_court %}
+            <li class="data-point"><i class="material-icons green-text text-darken-4">check</i></li>
+        {% else %}
+            <li class="data-point"><i class="material-icons red-text">close</i></li>
+        {% endif %}
+
+        {% if fir.put_in_court_date %}
+            <li class="data-point">{{fir.put_in_court_date|date:'d-m-y'}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.received_in_court %}
+            <li class="data-point"><i class="material-icons green-text text-darken-4">check</i></li>
+        {% else %}
+            <li class="data-point"><i class="material-icons red-text">close</i></li>
+        {% endif %}
+
+        {% if fir.received_in_court_date %}
+            <li class="data-point">{{fir.received_in_court_date|date:'d-m-y'}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.court_status == "pending" %}
+            <li class="data-point">Pending</li>
+        {% elif fir.court_status == "accepted" %}
+            <li class="data-point">Accepted</li>
+        {% elif fir.court_status == "reinvestigation" %}
+            <li class="data-point">Re-investigation</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.reverted_by_court_date %}
+            <li class="data-point">{{fir.reverted_by_court_date|date:'d-m-y'}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.received_from_court_date %}
+            <li class="data-point">{{fir.received_from_court_date|date:'d-m-y'}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+        {% if fir.appointed_io %}
+            <li class="data-point">{{fir.appointed_io}}</li>
+        {% else %}
+            <li class="data-point"><i class="material-icons black-text">remove</i></li>
+        {% endif %}
+
+    </ul>
+</div>
+{% endcomment %}
