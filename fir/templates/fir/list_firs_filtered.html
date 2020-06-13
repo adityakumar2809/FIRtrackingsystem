@@ -236,6 +236,10 @@
     </div>
   </div>
 
+  <div class="chip cyan darken-3 white-text" style="margin-left: 1%;">
+    <b>Search Results</b> - {{ fir_filtered_data.qs|length }}
+  </div>
+
   <br>
   {% for key, value in applied_filters.items %}
     <div class="chip" style="margin-left: 2%;">
