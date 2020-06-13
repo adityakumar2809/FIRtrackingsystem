@@ -10,6 +10,37 @@ from account import models as acc_models
 from . import models, forms, filters
 # Create your views here.
 
+get_request_dict = {
+    'fir_no': 'FIR No',
+    'date_created__gte': 'Date Registered (Lower Limit)',
+    'date_created__lte': 'Date Registered (Upper Limit)',
+    'io_name__contains': 'IO Name',
+    'accused_name__contains': 'Accused Name',
+    'under_section__contains': 'Under Section',
+    'accused_status': 'Accused Status',
+    'limitation_period__gte': 'Limitation Period (Lower Limit)',
+    'limitation_period__lte': 'Limitation Period (Upper Limit)',
+    'days_to_expire__gte': 'Days to Expire (Lower Limit)',
+    'days_to_expire__lte': 'Days to Expire (Upper Limit)',
+    'current_status': 'Current Status',
+    'put_in_ssp_office': 'Submitted to SSP Office',
+    'put_in_ssp_office_date__gte': 'Date of Submission in SSP Office (Lower Limit)',
+    'put_in_ssp_office_date__lte': 'Date of Submission in SSP Office (Upper Limit)',
+    'ssp_approved': 'SSP Approved',
+    'put_in_court': 'Submitted in Court',
+    'put_in_court_date__gte': 'Date of Submission in Court (Lower Limit)',
+    'put_in_court_date__lte': 'Date of Submission in Court (Upper Limit)',
+    'received_in_court': 'Received in Court',
+    'received_in_court_date__gte': 'Date of Receiving in Court (Lower Limit)' ,
+    'received_in_court_date__lte': 'Date of Receiving in Court (Upper Limit)' ,
+    'court_status': 'Court Status' ,
+    'reverted_by_court_date__gte': 'Date of reverting from Court (Lower Limit)' ,
+    'reverted_by_court_date__lte': 'Date of reverting from Court (Upper Limit)' ,
+    'received_from_court_date__gte': 'Date of receiving in Police Station (Lower Limit)' ,
+    'received_from_court_date__lte': 'Date of receiving in Police Station (Upper Limit)' ,
+    'appointed_io__contains': 'Appointed IO Name'
+}
+
 @login_required
 def create_fir_view(request):
 
@@ -689,6 +720,15 @@ def filter_data_view(request):
     days_to_expire_lower_limit = request.GET.get('days_to_expire__gte', None)
     days_to_expire_upper_limit = request.GET.get('days_to_expire__lte', None)
 
+    applied_filters = {}
+    for key,value in request.GET.items():
+        if( value and value != 'unknown'):
+            v = value.replace('_',' ').title()
+            v = v.replace('True', 'Yes')
+            v = v.replace('False', 'No')
+            v = v.replace('Po', 'PO')
+            applied_filters[get_request_dict[key]] = v
+
     if request.user.pk in dsp_record_keepers:
         fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
         if(days_to_expire_lower_limit):
@@ -782,7 +822,7 @@ def filter_data_view(request):
         fir_list = fir_list.filter(pk__in = fir_id_list)
         fir_filtered_data = filters.FirFilterAll(request.GET, queryset = fir_list)
 
-    return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data, 'days_to_expire_lower_limit_value': days_to_expire_lower_limit, 'days_to_expire_upper_limit_value': days_to_expire_upper_limit})
+    return render(request, 'fir/list_firs_filtered.html', {'fir_filtered_data': fir_filtered_data, 'days_to_expire_lower_limit_value': days_to_expire_lower_limit, 'days_to_expire_upper_limit_value': days_to_expire_upper_limit, 'applied_filters': applied_filters})
 
 
 @login_required
@@ -807,3 +847,4 @@ def detail_fir_view(request, pk):
 
     return render(request, 'fir/detail_fir.html', {'fir_phase_list':fir_phase_list})
         
+

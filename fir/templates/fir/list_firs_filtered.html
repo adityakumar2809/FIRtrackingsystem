@@ -157,13 +157,13 @@
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.put_in_court_date__gte}}
+              {{fir_filtered_data.form.put_in_court_date__gte|add_class:'datepicker'}}
               <label for="Date of Submission to Court Lower">Date of Submission to Court (Lower Limit)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.put_in_court_date__lte}}
+              {{fir_filtered_data.form.put_in_court_date__lte|add_class:'datepicker'}}
               <label for="Date of Submission to Court Upper">Date of Submission to Court (Upper Limit)</label>
           </div>
         </div>
@@ -175,13 +175,13 @@
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.received_in_court_date__gte}}
+              {{fir_filtered_data.form.received_in_court_date__gte|add_class:'datepicker'}}
               <label for="Date of Receiving from Court Lower">Date of Receiving from Court (Lower Limit)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.received_in_court_date__lte}}
+              {{fir_filtered_data.form.received_in_court_date__lte|add_class:'datepicker'}}
               <label for="Date of Receiving from Court Upper">Date of Receiving from Court (Upper Limit)</label>
           </div>
         </div>
@@ -193,25 +193,25 @@
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.reverted_by_court_date__gte}}
+              {{fir_filtered_data.form.reverted_by_court_date__gte|add_class:'datepicker'}}
               <label for="Date of Reverting from Court Lower">Date of Reverting from Court (Lower Limit)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.reverted_by_court_date__lte}}
+              {{fir_filtered_data.form.reverted_by_court_date__lte|add_class:'datepicker'}}
               <label for="Date of Reverting from Court Upper">Date of Reverting from Court (Upper Limit)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.received_from_court_date__gte}}
+              {{fir_filtered_data.form.received_from_court_date__gte|add_class:'datepicker'}}
               <label for="Date of Receiving in Police Station Lower">Date of Receiving in Police Station (Lower Limit)</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s8 offset-s2">
-              {{fir_filtered_data.form.received_from_court_date__lte}}
+              {{fir_filtered_data.form.received_from_court_date__lte|add_class:'datepicker'}}
               <label for="Date of Receiving in Police Station Upper">Date of Receiving in Police Station (Upper Limit)</label>
           </div>
         </div>
@@ -235,6 +235,13 @@
         </button>
     </div>
   </div>
+
+  <br>
+  {% for key, value in applied_filters.items %}
+    <div class="chip" style="margin-left: 2%;">
+      <b>{{key}}</b> - {{value}}
+    </div>
+  {% endfor %}
 
   {% with fir_list=fir_filtered_data.qs filtered_view=1 %}
     {% include 'fir/_firs_list.html' %}
