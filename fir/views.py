@@ -97,7 +97,17 @@ def update_fir_police_station_view(request, pk):
                 fir.put_in_court_date = form.cleaned_data['put_in_court_date']
                 fir.received_from_court_date = form.cleaned_data['received_from_court_date']
                 fir.appointed_io = form.cleaned_data['appointed_io']
+                fir.is_closed = form.cleaned_data['is_closed']
+                fir.closed_date = form.cleaned_data['closed_date']
                 fir.save()
+
+                if(fir.is_closed):
+                    fir_list = models.FIR.objects.all().filter(fir_no__exact=fir.fir_no, police_station__exact=fir.police_station, sub_division__exact=fir.sub_division)
+                    for f in fir_list:
+                        f.is_closed = True
+                        f.closed_date = fir.closed_date
+                        f.save()
+
                 response = request.session.get('response_to_redirect', None)
                 if response and response != '/':
                     return HttpResponseRedirect(response)
@@ -847,4 +857,3 @@ def detail_fir_view(request, pk):
 
     return render(request, 'fir/detail_fir.html', {'fir_phase_list':fir_phase_list})
         
-

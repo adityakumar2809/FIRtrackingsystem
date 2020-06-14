@@ -10,6 +10,7 @@ class CreateFIRForm(forms.ModelForm):
     class Meta():
         model = models.FIR
         fields = ['fir_no',
+                  'date_created',
                   'io_name',
                   'accused_name',
                   'under_section',
@@ -35,6 +36,8 @@ class UpdateFIRPoliceStationForm(forms.ModelForm):
                   'put_in_court_date',
                   'received_from_court_date', 
                   'appointed_io',
+                  'is_closed',
+                  'closed_date'
                   ]
 
 

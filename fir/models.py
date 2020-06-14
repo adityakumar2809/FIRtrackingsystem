@@ -15,7 +15,8 @@ class FIR(models.Model):
 
     fir_no = models.CharField(max_length=50)
     phase = models.PositiveIntegerField(choices=PHASE_CHOICES)
-    date_created = models.DateField(auto_now_add=True)
+    date_created = models.DateField()
+    date_created_on_system = models.DateField(auto_now_add=True)
 
     io_name = models.CharField(max_length=50, blank=True, null=True)
     accused_name = models.TextField(blank=True, null=True)
@@ -38,6 +39,9 @@ class FIR(models.Model):
 
     received_from_court_date = models.DateField(blank=True,  null=True)
     appointed_io = models.CharField(max_length=50, blank=True,  null=True)
+
+    is_closed = models.BooleanField(default=False)
+    closed_date = models.DateField(blank=True, null=True)
 
 
     def __str__(self):

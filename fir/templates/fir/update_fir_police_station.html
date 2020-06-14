@@ -84,7 +84,22 @@
                 <label for="Appointed Investigating Officer">Appointed Investigating Officer for Re-investigation</label>
             </div>
         </div>
-
+        <div class="row">
+            <div class="input-field col s6 offset-s3"> 
+                <label for="id_is_closed">
+                    {{form.is_closed}}
+                    <span>FIR Closed</span>
+                </label>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="input-field col s6 offset-s3">
+                {{form.closed_date|add_class:'datepicker'}}
+                <label for="Date of Closing of the FIR">Date of Closing of the FIR</label>
+            </div>
+        </div>
+        <br><br>
 
         <button class="btn waves-effect waves-light" type="submit">
          Submit <i class="material-icons right">send</i>

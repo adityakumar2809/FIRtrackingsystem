@@ -92,14 +92,18 @@
                         
                         {% if fir.limitation_period %}
                             <td class="list-td">
-                                {% if fir.pk|will_expire_at == 0 %}
-                                    <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 1 %}
-                                    <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 2 %}
-                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 3 %}
-                                    {{fir.limitation_period}}
+                                {% if not fir.is_closed %}
+                                    {% if fir.pk|will_expire_at == 0 %}
+                                        <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 1 %}
+                                        <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 2 %}
+                                        <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 3 %}
+                                        {{fir.limitation_period}}
+                                    {% endif %}
+                                {% else %}
+                                    {{ fir.limitation_period }}
                                 {% endif %}
                             </td>     
                         {% else %}
@@ -188,51 +192,68 @@
                             <td class="list-td"><i class="material-icons black-text">remove</i></td>
                         {% endif %}
 
-                        
-                        {% if user.pk in police_station_record_keepers %}
-                            <td class="list-td">
-                                <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                    <i class="material-icons">edit</i>
-                                </a>   
-                            </td>
-                            {% if fir.pk|is_next_phase_possible %}
+
+                        {% if not fir.is_closed %}
+                            {% if user.pk in police_station_record_keepers %}
                                 <td class="list-td">
-                                    <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                        <i class="material-icons">add</i>
+                                    <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
                                     </a>   
                                 </td>
-                            {% else %}
+                                {% if fir.pk|is_next_phase_possible %}
+                                    <td class="list-td">
+                                        <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                            <i class="material-icons">add</i>
+                                        </a>   
+                                    </td>
+                                {% else %}
+                                    <td class="list-td"></td>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if user.pk in vrk_record_keepers %}
+                                <td class="list-td">
+                                    <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+
+                            {% if user.pk in ssp_record_keepers %}
+                                <td class="list-td">
+                                    <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+
+                            {% if user.pk in dsp_record_keepers %}
+                                <td class="list-td"></td>
+                            {% endif %}
+
+                            {% if user.pk in court_record_keepers %}
+                                <td class="list-td">
+                                    {% comment %} 
+                                        <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                    {% endcomment %}
+                                    <a href="{% url 'fir:update_fir_court' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+                        {% else %}
+                            <td class="list-td">
+                                <a href="#!" class="btn-floating btn waves-effect waves-light red darken-3">
+                                    <i class="material-icons">close</i>
+                                </a>   
+                            </td>
+                            {% if user.pk in police_station_record_keepers %}
                                 <td class="list-td"></td>
                             {% endif %}
                         {% endif %}
-
-                        {% if user.pk in vrk_record_keepers %}
-                            <td class="list-td">
-                                <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                    <i class="material-icons">edit</i>
-                                </a>   
-                            </td>
-                        {% endif %}
-
-                        {% if user.pk in ssp_record_keepers %}
-                            <td class="list-td">
-                                <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                    <i class="material-icons">edit</i>
-                                </a>   
-                            </td>
-                        {% endif %}
-
-                        {% if user.pk in court_record_keepers %}
-                            <td class="list-td">
-                                {% comment %} 
-                                    <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                {% endcomment %}
-                                <a href="{% url 'fir:update_fir_court' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
-                                    <i class="material-icons">edit</i>
-                                </a>   
-                            </td>
-                        {% endif %}
                     </tr>
+                        
+                        
 
                 {% if fir.pk|is_last_phase %}
                     <tr class="green lighten-5">
