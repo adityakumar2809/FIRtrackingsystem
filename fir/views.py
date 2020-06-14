@@ -38,7 +38,8 @@ get_request_dict = {
     'reverted_by_court_date__lte': 'Date of reverting from Court (Upper Limit)' ,
     'received_from_court_date__gte': 'Date of receiving in Police Station (Lower Limit)' ,
     'received_from_court_date__lte': 'Date of receiving in Police Station (Upper Limit)' ,
-    'appointed_io__contains': 'Appointed IO Name'
+    'appointed_io__contains': 'Appointed IO Name',
+    'is_closed': 'Closed FIR'
 }
 
 @login_required

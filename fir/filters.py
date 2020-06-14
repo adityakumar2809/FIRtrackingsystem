@@ -27,7 +27,8 @@ class FirFilterAll(django_filters.FilterSet):
             'court_status': ['exact'],
             'reverted_by_court_date': ['lte', 'gte'],
             'received_from_court_date': ['lte', 'gte'],
-            'appointed_io': ['contains']
+            'appointed_io': ['contains'],
+            'is_closed' : ['exact'],
         }
 
 class FirFilterSubDivision(django_filters.FilterSet):
@@ -53,7 +54,8 @@ class FirFilterSubDivision(django_filters.FilterSet):
             'court_status': ['exact'],
             'reverted_by_court_date': ['lte', 'gte'],
             'received_from_court_date': ['lte', 'gte'],
-            'appointed_io': ['contains']
+            'appointed_io': ['contains'],
+            'is_closed' : ['exact'],
         }
 
 class FirFilterPoliceStationCourt(django_filters.FilterSet):
@@ -78,6 +80,7 @@ class FirFilterPoliceStationCourt(django_filters.FilterSet):
             'court_status': ['exact'],
             'reverted_by_court_date': ['lte', 'gte'],
             'received_from_court_date': ['lte', 'gte'],
-            'appointed_io': ['contains']
+            'appointed_io': ['contains'],
+            'is_closed' : ['exact'],
         }
         
