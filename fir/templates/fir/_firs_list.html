@@ -1,7 +1,7 @@
 {% load templatetag %}
 
 <div class="table_wrapper" data-fl-scrolls>
-    <table class="centered responsive-table table_div list-table highlight teal lighten-5">
+    <table class="centered responsive-table table_div  teal lighten-5 list-table highlight">
         <thead class="indigo lighten-2 white-text">
             <tr class=" list-tr">
                 <th class="list-th">FIR No.</th>
@@ -41,6 +41,7 @@
             </tr>
 
             {% for fir in fir_list %}
+                {% if not fir.is_closed %}
                     <tr class="list-tr list-tr-data" data-detail-url="{% url 'fir:detail_fir' pk=fir.pk %}">
 
                         {% if fir.pk|is_last_phase or filtered_view %}
@@ -252,7 +253,219 @@
                             {% endif %}
                         {% endif %}
                     </tr>
+                {% else %}
+                    <tr class="list-close-tr list-tr-data" data-detail-url="{% url 'fir:detail_fir' pk=fir.pk %}">
+
+                        {% if fir.pk|is_last_phase or filtered_view %}
+                            {% if fir.pk|is_first_phase or filtered_view %}
+                                <td class="list-close-td" style="border-bottom-left-radius: 10px; border-top-left-radius: 10px;">{{fir.fir_no}}</td>
+                            {% else %}
+                                <td class="list-close-td" style="border-bottom-left-radius: 10px;">{{fir.fir_no}}</td>
+                            {% endif %}
+                        {% elif fir.pk|is_first_phase %}
+                            <td class="list-close-td" style="border-top-left-radius: 10px;">{{fir.fir_no}}</td>
+                        {% else %}
+                            <td class="list-close-td">{{fir.fir_no}}</td>
+                        {% endif %}
+
+                        <td class="list-close-td">{{fir.sub_division}}</td>
                         
+                        <td class="list-close-td">{{fir.police_station}}</td>
+
+                        <td class="list-close-td">{{fir.date_created|date:'d-m-y'}}</td>
+
+                        {% if fir.io_name %}
+                            <td class="list-close-td">{{fir.io_name}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.accused_name %}
+                            <td class="list-close-td">{{fir.accused_name}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.under_section %}
+                            <td class="list-close-td">{{fir.under_section}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.accused_status == "arrested" %}
+                            <td class="list-close-td">Arrested</td>
+                        {% elif fir.accused_status == "not_arrested" %}
+                            <td class="list-close-td">Not-Arrested</td>
+                        {% elif fir.accused_status == "po" %}
+                            <td class="list-close-td">P.O.</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        
+                        {% if fir.limitation_period %}
+                            <td class="list-close-td">
+                                {% if not fir.is_closed %}
+                                    {% if fir.pk|will_expire_at == 0 %}
+                                        <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 1 %}
+                                        <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 2 %}
+                                        <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 3 %}
+                                        {{fir.limitation_period}}
+                                    {% endif %}
+                                {% else %}
+                                    {{ fir.limitation_period }}
+                                {% endif %}
+                            </td>     
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.current_status == "challan_filed" %}
+                            <td class="list-close-td">Challan Filed</td>
+                        {% elif fir.current_status == "untraced" %}
+                            <td class="list-close-td">Untraced</td>
+                        {% elif fir.current_status == "under_investigation" %}
+                            <td class="list-close-td">Under Investigation</td>
+                        {% elif fir.current_status == "cancelled" %}
+                            <td class="list-close-td">Cancelled</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_ssp_office %}
+                            <td class="list-close-td"><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_ssp_office_date %}
+                            <td class="list-close-td">{{fir.put_in_ssp_office_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.ssp_approved %}
+                            <td class="list-close-td"><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_court %}
+                            <td class="list-close-td"><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.put_in_court_date %}
+                            <td class="list-close-td">{{fir.put_in_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.received_in_court %}
+                            <td class="list-close-td"><i class="material-icons green-text text-darken-4">check</i></td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons red-text">close</i></td>
+                        {% endif %}
+
+                        {% if fir.received_in_court_date %}
+                            <td class="list-close-td">{{fir.received_in_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.court_status == "pending" %}
+                            <td class="list-close-td">Pending</td>
+                        {% elif fir.court_status == "accepted" %}
+                            <td class="list-close-td">Accepted</td>
+                        {% elif fir.court_status == "reinvestigation" %}
+                            <td class="list-close-td">Re-investigation</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.reverted_by_court_date %}
+                            <td class="list-close-td">{{fir.reverted_by_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.received_from_court_date %}
+                            <td class="list-close-td">{{fir.received_from_court_date|date:'d-m-y'}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+                        {% if fir.appointed_io %}
+                            <td class="list-close-td">{{fir.appointed_io}}</td>
+                        {% else %}
+                            <td class="list-close-td"><i class="material-icons black-text">remove</i></td>
+                        {% endif %}
+
+
+                        {% if not fir.is_closed %}
+                            {% if user.pk in police_station_record_keepers %}
+                                <td class="list-close-td">
+                                    <a href="{% url 'fir:update_fir_police_station' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                                {% if fir.pk|is_next_phase_possible %}
+                                    <td class="list-close-td">
+                                        <a href="{% url 'fir:add_new_phase' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                            <i class="material-icons">add</i>
+                                        </a>   
+                                    </td>
+                                {% else %}
+                                    <td class="list-close-td"></td>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if user.pk in vrk_record_keepers %}
+                                <td class="list-close-td">
+                                    <a href="{% url 'fir:update_fir_vrk' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+
+                            {% if user.pk in ssp_record_keepers %}
+                                <td class="list-close-td">
+                                    <a href="{% url 'fir:update_fir_ssp' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+
+                            {% if user.pk in dsp_record_keepers %}
+                                <td class="list-close-td"></td>
+                            {% endif %}
+
+                            {% if user.pk in court_record_keepers %}
+                                <td class="list-close-td">
+                                    {% comment %} 
+                                        <a href="{% url 'fir:update_fir_court' pk=fir.pk sub_division_pk=fir.sub_division.pk police_station_pk=fir.police_station.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                    {% endcomment %}
+                                    <a href="{% url 'fir:update_fir_court' pk=fir.pk %}" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                        <i class="material-icons">edit</i>
+                                    </a>   
+                                </td>
+                            {% endif %}
+                        {% else %}
+                            <td class="list-close-td">
+                                <a href="#!" class="btn-floating btn waves-effect waves-light red darken-3">
+                                    <i class="material-icons">close</i>
+                                </a>   
+                            </td>
+                            {% if user.pk in police_station_record_keepers %}
+                                <td class="list-close-td"></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endif %}
                         
 
                 {% if fir.pk|is_last_phase %}
