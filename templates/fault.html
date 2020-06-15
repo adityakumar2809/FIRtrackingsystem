@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1>Error Occurred - {{fault}}</h1>
+    <div class="container">
+        <br><br><br>
+        <div class="row">
+            <div class="col s3 m3 l3"></div>
+            <div class="col s6 m6 l6">
+                <div class="card blue-grey lighten-4 center">
+                    <div class="card-content">
+                        <span class="card-title"><b>Error Encountered</b></span>
+                        <p>{{fault}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s3 m3 l3"></div>
+        </div>
+    </div>
 {% endblock content %}
