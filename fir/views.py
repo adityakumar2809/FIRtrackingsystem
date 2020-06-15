@@ -273,6 +273,7 @@ def add_new_phase_view(request, pk):
                                                    police_station=fir_object.police_station,
                                                    fir_no=fir_object.fir_no,
                                                    phase=len(fir_phase_list)+1,
+                                                   date_created=fir_object.date_created,
                                                    io_name=fir_object.appointed_io,
                                                    accused_name=fir_object.accused_name,
                                                    under_section=fir_object.under_section,
