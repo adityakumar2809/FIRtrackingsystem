@@ -93,7 +93,7 @@
                         
                         {% if fir.limitation_period %}
                             <td class="list-td">
-                                {% if not fir.is_closed %}
+                                {% if fir.pk|is_last_phase%}
                                     {% if fir.pk|will_expire_at == 0 %}
                                         <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
                                     {% elif fir.pk|will_expire_at == 1 %}

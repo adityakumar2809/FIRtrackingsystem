@@ -78,19 +78,22 @@
                         <li class="data-point">
                             <em>Limitation Period: </em>&nbsp;&nbsp;&nbsp;&nbsp;
                             {% if fir.limitation_period %}
-                            
-                                {% if fir.pk|will_expire_at == 0 %}
-                                    <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 1 %}
-                                    <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 2 %}
-                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 3 %}
+                                {% if fir.pk|is_last_phase %}
+                                    {% if fir.pk|will_expire_at == 0 %}
+                                        <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 1 %}
+                                        <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 2 %}
+                                        <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
+                                    {% elif fir.pk|will_expire_at == 3 %}
+                                        {{fir.limitation_period}}
+                                    {% endif %}
+                                {% else %}
                                     {{fir.limitation_period}}
                                 {% endif %}
-                        {% else %}
-                            <i class="material-icons black-text">remove</i>
-                        {% endif %}
+                            {% else %}
+                                <i class="material-icons black-text">remove</i>
+                            {% endif %}
                         </li>
                         <li class="data-point">
                             <em>Current Status: </em>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -298,19 +301,10 @@
                         <li class="data-point">
                             <em>Limitation Period: </em>&nbsp;&nbsp;&nbsp;&nbsp;
                             {% if fir.limitation_period %}
-                            
-                                {% if fir.pk|will_expire_at == 0 %}
-                                    <span class="new badge red darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 1 %}
-                                    <span class="new badge orange darken-3" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 2 %}
-                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{fir.limitation_period}}</span>
-                                {% elif fir.pk|will_expire_at == 3 %}
-                                    {{fir.limitation_period}}
-                                {% endif %}
-                        {% else %}
-                            <i class="material-icons black-text">remove</i>
-                        {% endif %}
+                                {{fir.limitation_period}}
+                            {% else %}
+                                <i class="material-icons black-text">remove</i>
+                            {% endif %}
                         </li>
                         <li class="data-point">
                             <em>Current Status: </em>&nbsp;&nbsp;&nbsp;&nbsp;
