@@ -56,7 +56,10 @@ def create_fir_view(request):
                 ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk)
                 fir.sub_division = ps_record_keeper.sub_division 
                 fir.police_station = ps_record_keeper.police_station
-                fir.save()
+                try:
+                    fir.save()
+                except:
+                    return redirect('fault', fault='Invalid Input parameters!\nPossible repetition of FIR Number, kindly verify')
                 return redirect('fir:list_firs_police_station')
             else:
                 return redirect('fault', fault='Input parameters of Create FIR Form are not valid')
