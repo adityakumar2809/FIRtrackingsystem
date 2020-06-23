@@ -21,6 +21,7 @@ from . import views
 urlpatterns = [
     # path('', views.home, name='home'),
     path('', include('fir.urls')),
+    path('firBeta/', include('firBeta.urls')),
     path('fault/<str:fault>/', views.fault, name='fault'),
     path('success/<str:msg>/', views.success, name='success'),
     # path('populate/', views.populate, name='populate'),
