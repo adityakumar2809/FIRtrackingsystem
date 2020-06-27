@@ -6,4 +6,6 @@ from . import views
 
 app_name = 'firBeta'
 
-urlpatterns = []
+urlpatterns = [
+    path('create/', views.create_fir, name='create')
+]

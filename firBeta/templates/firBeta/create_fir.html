@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head %}
+<style>
+    .container {
+        margin: 0 auto;
+        max-width: 1280px;
+        width: 90%;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        overflow-y: auto;
+        height: 500px;
+    }
+
+    table.data-table {
+        border-collapse: separate;
+    }
+
+    table.data-table th {
+        border: 2px black solid;
+        border-left: 0px;
+        border-radius: 0;
+        z-index: 3;
+    }
+
+    tr.header-row-1 th.header-element-1:nth-child(1) {
+        border-left: 2px black solid;
+        border-bottom-left-radius: 15px;
+        border-top-left-radius: 15px;
+    }
+
+    tr.header-row-1 th.header-element-1:last-child {
+        border-top-right-radius: 15px;
+    }
+
+    tr.header-row-2 th.header-element-2:last-child {
+        border-bottom-right-radius: 15px;
+    }
+
+    table.data-table td {
+        border: 1px gray solid;
+        border-radius: 0;
+    }
+
+    tr.data-row td:nth-child(1) {
+        border-bottom-left-radius: 15px;
+        border-top-left-radius: 15px;
+    }
+
+    tr.data-row td:last-child {
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    table.data-table thead tr.header-row-1 th {
+        position: sticky !important;
+        top: 0;
+    }
+
+    table.data-table thead tr.header-row-2 th {
+        position: sticky !important;
+        top: 55px;
+    }
+
+
+    tr.header-row-1 th.header-element-1:nth-child(even),
+    tr.header-row-2 th.header-element-2.sub-head-even {
+        background-color: #0097a7 !important;
+    }
+
+    tr.header-row-1 th.header-element-1:nth-child(odd),
+    tr.header-row-2 th.header-element-2.sub-head-odd {
+        background-color: #00838f !important;
+    }
+
+    tr.blank-row td {
+        border: 0px;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+
+<div class="container">
+    <div class="section"></div>
+    <div class="section">
+        <div class="table-wrapper" data-fl-scrolls>
+            <table class="centered responsive-table data-table">
+
+                <colgroup>
+                    <col span="2" style="width: 80px;">
+                    <col span="1" style="width: 100px;">
+                    <col span="1" style="width: 80px;">
+                    <col span="1" style="width: 100px;">
+                    <col span="2">
+                    <col span="1" style="width: 80px;">
+                    <col span="1">
+                    <col span="1" style="width: 100px;">
+                </colgroup>
+
+                <thead>
+                    <tr class="header-row-1">
+                        <th class="header-element-1" rowspan="2">Sub Division<br>(PS)</th>
+                        <th class="header-element-1" rowspan="2">FIR No.</th>
+                        <th class="header-element-1" rowspan="2">Date</th>
+                        <th class="header-element-1" rowspan="2">U/S</th>
+                        <th class="header-element-1" rowspan="2">I/O Name</th>
+                        <th class="header-element-1" rowspan="2">Accused Name</th>
+                        <th class="header-element-1" rowspan="2">Accused Status</th>
+                        <th class="header-element-1" rowspan="2">Limitation<br>Period</th>
+                        <th class="header-element-1" colspan="2">Current Status</th>
+                    </tr>
+                    <tr class="header-row-2">
+                        <th class="header-element-2 sub-head-odd">Status</th>
+                        <th class="header-element-2 sub-head-odd">Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr class="blank-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr class="data-row cyan lighten-4">
+                        <td>NSR<br>(City NSR)</td>
+                        <td>
+                            <div class="input-field">
+                                <textarea id="fir_no" class="validate materialize-textarea"></textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <input id="date" type="text" class="validate datepicker">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <textarea id="under_section" class="validate materialize-textarea"></textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <textarea id="io_name" class="validate materialize-textarea"></textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <textarea id="accused_name" class="validate materialize-textarea"></textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <textarea id="accused_status" class="validate materialize-textarea"></textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <input type="number" id="limitation_period" class="validate">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <select class="validate" id="current_status">
+                                    <option value="" disabled selected>-----------------</option>
+                                    <option value="Under Investigation">Under Investigation</option>
+                                    <option value="Challan Filed">Challan Filed</option>
+                                    <option value="Untraced">Untraced</option>
+                                    <option value="Cancellation">Cancellation</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-field">
+                                <input id="status_date" type="text" class="validate datepicker">
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <a class="waves-effect waves-light btn save-btn-group save-btn disabled">Save</a>
+        <a class="waves-effect waves-light btn save-btn-group save-add-btn disabled">Save and add another</a>
+        <a class="waves-effect waves-light btn save-btn-group save-edit-btn disabled">Save and continue editing</a>
+        <a class="waves-effect waves-light btn red darken-3 modal-trigger save-close-btn disabled"
+            href="#close-confirmation">Save and Close FIR</a>
+    </div>
+
+    <div class="section">
+
+        <!-- Modal Structure -->
+        <div id="close-confirmation" class="modal">
+            <div class="modal-content">
+                <h4>Close FIR?</h4>
+                <p>Are you sure you want to close this FIR? It cannot be opened again.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block tail %}
+<script>
+    // Detecting Changes in any form field
+    $('.validate').change(function () {
+
+        // Detect if the change is in current_status and enable/disable date field accordingly
+        if ($(this).attr('id') === 'current_status') {
+            if ($('#current_status').val() === 'Under Investigation') {
+                $('#status_date').val("XXXXXXX");
+                $('#status_date').attr("disabled", "disabled");
+            } else {
+                $('#status_date').removeAttr("disabled", "disabled");
+                $('#status_date').val("");
+            }
+        }
+
+        // Check if all fields are filled
+        var isValid = true;
+        $('.validate').each(function () {
+            if ($(this).val() === '' || $(this).val() === null) {
+                isValid = false;
+            }
+        });
+
+
+        // Toggle status of save buttons
+        if (isValid === true) {
+            $('.save-btn-group').each(function () {
+                $(this).removeClass('disabled');
+            })
+            if ($('#current_status').val() === 'Challan Filed') {
+                $('.save-close-btn').removeClass('disabled');
+            }
+        } else {
+            $('.save-btn-group').each(function () {
+                $(this).addClass('disabled');
+            })
+            $('.save-close-btn').addClass('disabled');
+        }
+
+
+    })
+</script>
+{% endblock tail %}
