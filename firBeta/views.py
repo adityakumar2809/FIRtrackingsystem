@@ -11,11 +11,14 @@ from . import models
 
 @login_required
 def create_fir(request):
-    if request.method == 'POST':
-        fir_no = request.POST['fir_no']
-        date = request.POST['date']
-        print("Here is the data", fir_no, date)
-    return render(request, 'firBeta/create_fir.html', {})
+    police_station_record_keepers = [
+        u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+    if request.user.pk in police_station_record_keepers:
+        ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
+            user__pk__exact=request.user.pk)
+        return render(request, 'firBeta/create_fir.html', {'current_sub_division': ps_record_keeper.sub_division.name, 'current_police_station': ps_record_keeper.police_station.name})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
 
 
 @login_required
@@ -31,7 +34,8 @@ def create_fir_save_ajax_view(request):
                 io_name = request.POST.get('io_name', 'N/A')
                 accused_name = request.POST.get('accused_name', 'N/A')
                 accused_status = request.POST.get('accused_status', 'N/A')
-                limitation_period = request.POST.get('limitation_period', 'N/A')
+                limitation_period = request.POST.get(
+                    'limitation_period', 'N/A')
                 current_status = request.POST.get('current_status', 'N/A')
                 current_status_date = request.POST.get(
                     'current_status_date', 'N/A')
@@ -40,12 +44,12 @@ def create_fir_save_ajax_view(request):
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
-                                                        police_station=ps_record_keeper.police_station,
-                                                        fir_no=fir_no)
+                                                           police_station=ps_record_keeper.police_station,
+                                                           fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                            accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -62,7 +66,7 @@ def create_fir_save_ajax_view(request):
         # Integrity Error
 
 
-@login_required 
+@login_required
 def create_fir_save_add_ajax_view(request):
     try:
         if request.method == 'POST':
@@ -75,7 +79,8 @@ def create_fir_save_add_ajax_view(request):
                 io_name = request.POST.get('io_name', 'N/A')
                 accused_name = request.POST.get('accused_name', 'N/A')
                 accused_status = request.POST.get('accused_status', 'N/A')
-                limitation_period = request.POST.get('limitation_period', 'N/A')
+                limitation_period = request.POST.get(
+                    'limitation_period', 'N/A')
                 current_status = request.POST.get('current_status', 'N/A')
                 current_status_date = request.POST.get(
                     'current_status_date', 'N/A')
@@ -84,12 +89,12 @@ def create_fir_save_add_ajax_view(request):
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
-                                                        police_station=ps_record_keeper.police_station,
-                                                        fir_no=fir_no)
+                                                           police_station=ps_record_keeper.police_station,
+                                                           fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                            accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -119,7 +124,8 @@ def create_fir_save_edit_ajax_view(request):
                 io_name = request.POST.get('io_name', 'N/A')
                 accused_name = request.POST.get('accused_name', 'N/A')
                 accused_status = request.POST.get('accused_status', 'N/A')
-                limitation_period = request.POST.get('limitation_period', 'N/A')
+                limitation_period = request.POST.get(
+                    'limitation_period', 'N/A')
                 current_status = request.POST.get('current_status', 'N/A')
                 current_status_date = request.POST.get(
                     'current_status_date', 'N/A')
@@ -128,12 +134,12 @@ def create_fir_save_edit_ajax_view(request):
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
-                                                        police_station=ps_record_keeper.police_station,
-                                                        fir_no=fir_no)
+                                                           police_station=ps_record_keeper.police_station,
+                                                           fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                            accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -163,7 +169,8 @@ def create_fir_save_close_ajax_view(request):
                 io_name = request.POST.get('io_name', 'N/A')
                 accused_name = request.POST.get('accused_name', 'N/A')
                 accused_status = request.POST.get('accused_status', 'N/A')
-                limitation_period = request.POST.get('limitation_period', 'N/A')
+                limitation_period = request.POST.get(
+                    'limitation_period', 'N/A')
                 current_status = request.POST.get('current_status', 'N/A')
                 current_status_date = request.POST.get(
                     'current_status_date', 'N/A')
@@ -172,13 +179,13 @@ def create_fir_save_close_ajax_view(request):
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
-                                                        police_station=ps_record_keeper.police_station,
-                                                        fir_no=fir_no,
-                                                        is_closed=True)
+                                                           police_station=ps_record_keeper.police_station,
+                                                           fir_no=fir_no,
+                                                           is_closed=True)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                            accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
