@@ -67,6 +67,6 @@ class FIRPhase(models.Model):
 
     class Meta():
         unique_together = ['fir', 'phase_index']
-        ordering = ['-fir', 'phase_index']
+        ordering = ['-fir__pk', 'phase_index']
         verbose_name = 'FIR Phase'
         verbose_name_plural = 'FIR Phases'
