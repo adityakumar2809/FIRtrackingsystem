@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from account import models as acc_models
 from location import models as loc_models
-from . import models
+from . import models, forms
 
 # Create your views here.
 
@@ -206,13 +206,33 @@ def create_fir_save_close_ajax_view(request):
 def list_edit_fir_vrk_view(request):
     vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
-        fir_combined_list = []
-        fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
-        for fir in fir_list:
-            fir_phase_list = fir.phases.all()
-            if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
-                continue
-            fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list})
+        if request.method == 'POST':
+            form = forms.ChooseLocationForm(request.POST)
+            if form.is_valid():
+                sub_division = form.cleaned_data['sub_division']
+                police_station = form.cleaned_data['police_station']
+                fir_combined_list = []
+                fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division, police_station__exact=police_station)
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
+                        continue
+                    fir_combined_list.append([fir, fir_phase_list])
+                form = forms.ChooseLocationForm()
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form})
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.ChooseLocationForm()
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': [], 'form': form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
+
+def load_police_stations_view(request):
+    sub_division_pk = request.GET.get('sub_division')
+    if sub_division_pk == 'all':
+        police_station_list = []
+    else:
+        police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
+    return render(request, 'firBeta/load_police_stations.html', {'police_station_list': police_station_list})

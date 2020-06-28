@@ -329,6 +329,11 @@
 {% endcomment %}
 
 {% block content %}
+
+<br>
+{% include 'firBeta/_location_form.html' %}
+<br><br>
+
 <div class="container">
     <div class="section"></div>
     <div class="section">
@@ -336,14 +341,8 @@
             <table class="centered responsive-table data-table">
 
                 <!-- <colgroup>
-                    <col span="1" style="background-color: antiquewhite; width: 80px;">
-                    <col span="1" style="background-color: antiquewhite; width: 110px;">
-                    <col span="2" style="background-color: antiquewhite; width: 100px;">
-                    <col span="2" style="background-color: antiquewhite; width: 120px;">
-                    <col span="1" style="background-color: antiquewhite; width: 100px;">
-                    <col span="3" style="background-color: antiquewhite; width: 110px;">
-                    <col span="1" style="background-color: antiquewhite; width: 100px;">
-                    <col span="5" style="background-color: antiquewhite; width: 200px;">
+                    <col span="9">
+                    <col span="1" style="width: 200px !important;">
                 </colgroup> -->
 
                 <thead>
@@ -381,7 +380,6 @@
                 </thead>
 
                 <tbody>
-
                     <tr class="blank-row">
                         <td></td>
                         <td></td>
@@ -444,35 +442,43 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <!-- {% if fir_phase.vrk_receival_date %}
-                                                <td>{{ fir_phase.vrk_receival_date|date:'d/m/y' }}</td>
-                                            {% else %}
-                                                <i class="material-icons">remove</i>
-                                            {% endif %} -->
                                             <div class="input-field">
-                                                <input id="date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_receival_date|date:'y-m-d' }}" placeholder="DD/MM/YY">
+                                                <input id="vrk_receival_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
                                             </div>
                                         </td>
                                         <td>
-                                            {% if fir_phase.vrk_status %}
-                                                {{ fir_phase.vrk_status }}
-                                            {% else %}
-                                                <i class="material-icons">remove</i>
-                                            {% endif %}
+                                            <div class="input-field">
+                                                <select class="validate" id="vrk_status">
+                                                    {% if fir_phase.vrk_status %}
+                                                        {% if fir_phase.vrk_status == "Pending" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending" selected>Pending</option>
+                                                            <option value="Approved">Approved</option>
+                                                        {% elif fir_phase.vrk_status == "Approved" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Approved" selected>Approved</option>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <option class="vrk-status-default-option" value="" disabled selected>-----------------
+                                                        </option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Approved">Approved</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
                                         </td>
                                         <td>
-                                            {% if fir_phase.vrk_status_date %}
-                                                {{ fir_phase.vrk_status_date|date:'d/m/y' }}
-                                            {% else %}
-                                                <i class="material-icons">remove</i>
-                                            {% endif %}
+                                            <div class="input-field">
+                                                <input id="vrk_status_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
                                         </td>
                                         <td>
-                                            {% if fir_phase.vrk_sent_back_date %}
-                                                {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
-                                            {% else %}
-                                                <i class="material-icons">remove</i>
-                                            {% endif %}
+                                            <div class="input-field">
+                                                <input id="vrk_sent_back_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
                                         </td>
                                         <td>
                                             {% if fir_phase.received_from_vrk_date %}

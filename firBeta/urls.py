@@ -14,4 +14,5 @@ urlpatterns = [
     path('ajax/create_fir_save_close/', views.create_fir_save_close_ajax_view, name='create_fir_save_close_ajax'),
     
     path('vrk/', views.list_edit_fir_vrk_view, name='list_edit_fir_vrk'),
+    path('ajax/load_ps/', views.load_police_stations_view, name='load_police_stations'),
 ]
