@@ -123,7 +123,7 @@ USE_L10N = False
 
 USE_TZ = True
 
-DATE_INPUT_FORMATS = ['%m/%d/%y']
+DATE_INPUT_FORMATS = ['%d/%m/%y']
 
 LOGIN_URL = '/account/login'
 LOGIN_REDIRECT_URL = '/'
