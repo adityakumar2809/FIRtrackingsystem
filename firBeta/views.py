@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+from datetime import datetime
+
 from account import models as acc_models
 from location import models as loc_models
 from . import models, forms
@@ -48,8 +50,8 @@ def create_fir_save_ajax_view(request):
                                                            fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
-                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -93,8 +95,8 @@ def create_fir_save_add_ajax_view(request):
                                                            fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
-                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -138,8 +140,8 @@ def create_fir_save_edit_ajax_view(request):
                                                            fir_no=fir_no)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
-                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -184,8 +186,8 @@ def create_fir_save_close_ajax_view(request):
                                                            is_closed=True)
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
-                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=date, under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
+                    models.FIRPhase.objects.create(fir=fir_object, phase_index=1, date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
+                                                   accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
