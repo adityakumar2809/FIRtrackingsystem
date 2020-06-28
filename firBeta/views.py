@@ -231,6 +231,47 @@ def list_edit_fir_vrk_view(request):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
+@login_required
+def edit_fir_save_vrk_ajax_view(request):
+    try:
+        if request.method == 'POST':
+            vrk_record_keepers = [
+                u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+            if request.user.pk in vrk_record_keepers:
+                phase_pk = request.POST.get('phase_pk', None)
+                vrk_receival_date = request.POST.get('vrk_receival_date', None)
+                vrk_status = request.POST.get('vrk_status', None)
+                vrk_status_date = request.POST.get('vrk_status_date', None)
+                vrk_sent_back_date = request.POST.get('vrk_sent_back_date', None)
+
+                if phase_pk:
+                    fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if vrk_receival_date:
+                        fir_phase.vrk_receival_date = datetime.strptime(vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if vrk_status:
+                        fir_phase.vrk_status = vrk_status
+                    if vrk_status_date:    
+                        fir_phase.vrk_status_date = datetime.strptime(vrk_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if vrk_sent_back_date:
+                        fir_phase.vrk_sent_back_date = datetime.strptime(vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save()
+
+                    return HttpResponse(0)
+                    # return redirect('success', msg='FIR edited successfully')
+                else:
+                    return HttpResponse(1)
+                    # return redirect('fault', fault='Missing parameters for regstration. Kindly recheck')
+            else:
+                return HttpResponse(2)
+                # return redirect('fault', fault='ACCESS DENIED!')
+        else:
+            return HttpResponse(3)
+            # return redirect('fault', fault='Invalid Operation Requested')
+    except:
+        return HttpResponse(4)
+        # Server Error , Error in save()
+
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':
