@@ -210,6 +210,8 @@ def list_edit_fir_vrk_view(request):
         fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
+            if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
+                continue
             fir_combined_list.append([fir, fir_phase_list])
         return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list})
     else:
