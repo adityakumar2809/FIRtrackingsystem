@@ -444,11 +444,14 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            {% if fir_phase.vrk_receival_date %}
+                                            <!-- {% if fir_phase.vrk_receival_date %}
                                                 <td>{{ fir_phase.vrk_receival_date|date:'d/m/y' }}</td>
                                             {% else %}
                                                 <i class="material-icons">remove</i>
-                                            {% endif %}
+                                            {% endif %} -->
+                                            <div class="input-field">
+                                                <input id="date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_receival_date|date:'y-m-d' }}" placeholder="DD/MM/YY">
+                                            </div>
                                         </td>
                                         <td>
                                             {% if fir_phase.vrk_status %}
