@@ -200,3 +200,17 @@ def create_fir_save_close_ajax_view(request):
     except:
         return HttpResponse(4)
         # Integrity Error
+
+
+@login_required
+def list_edit_fir_vrk_view(request):
+    vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+    if request.user.pk in vrk_record_keepers:
+        fir_combined_list = []
+        fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+        for fir in fir_list:
+            fir_phase_list = fir.phases.all()
+            fir_combined_list.append([fir, fir_phase_list])
+        return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')

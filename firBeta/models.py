@@ -19,7 +19,7 @@ class FIR(models.Model):
 
     class Meta():
         unique_together = ['sub_division', 'police_station', 'fir_no']
-        ordering = ['sub_division', 'police_station', '-fir_no']
+        ordering = ['sub_division', 'police_station', '-pk']
         verbose_name = 'FIR'
         verbose_name_plural = 'FIRs'
 
@@ -50,6 +50,7 @@ class FIRPhase(models.Model):
     vrk_receival_date = models.DateField(blank=True, null=True)
     vrk_status = models.CharField(max_length=50, choices=VRK_STATUS_CHOICES, blank=True, null=True)
     vrk_status_date = models.DateField(blank=True, null=True)
+    vrk_sent_back_date = models.DateField(blank=True, null=True)
 
     received_from_vrk_date = models.DateField(blank=True, null=True)
     put_in_court_date = models.DateField(blank=True, null=True)

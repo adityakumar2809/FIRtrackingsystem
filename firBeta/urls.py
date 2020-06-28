@@ -12,4 +12,6 @@ urlpatterns = [
     path('ajax/create_fir_save_add/', views.create_fir_save_add_ajax_view, name='create_fir_save_add_ajax'),
     path('ajax/create_fir_save_edit/', views.create_fir_save_edit_ajax_view, name='create_fir_save_edit_ajax'),
     path('ajax/create_fir_save_close/', views.create_fir_save_close_ajax_view, name='create_fir_save_close_ajax'),
+    
+    path('vrk/', views.list_edit_fir_vrk_view, name='list_edit_fir_vrk'),
 ]
