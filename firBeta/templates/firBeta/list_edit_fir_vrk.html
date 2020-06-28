@@ -361,7 +361,7 @@
                         <th class="header-element-1" colspan="3">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
-                        <th class="header-element-1" rowspan="2">Add</th>
+                        <th class="header-element-1" rowspan="2">Save</th>
                     </tr>
                     <tr class="header-row-2">
                         <th class="header-element-2 sub-head-even">Status</th>
@@ -381,7 +381,6 @@
 
                 <tbody>
                     <tr class="blank-row">
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -443,12 +442,12 @@
                                         </td>
                                         <td>
                                             <div class="input-field">
-                                                <input id="vrk_receival_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_receival_date validate datepicker" disabled value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-field">
-                                                <select class="validate" id="vrk_status">
+                                                <select class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status validate" disabled>
                                                     {% if fir_phase.vrk_status %}
                                                         {% if fir_phase.vrk_status == "Pending" %}
                                                             <option class="vrk-status-default-option" value="" disabled>-----------------
@@ -472,12 +471,12 @@
                                         </td>
                                         <td>
                                             <div class="input-field">
-                                                <input id="vrk_status_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-field">
-                                                <input id="vrk_sent_back_date" type="text" class="validate datepicker" value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_sent_back_date validate datepicker" disabled value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
                                             </div>
                                         </td>
                                         <td>
@@ -537,20 +536,20 @@
                                             {% endif %}
                                         </td>                             
                                 <td>
-                                    <a href="#!" class="btn-floating btn waves-effect waves-light cyan darken-4">
+                                    <a href="#!" class="vrk-edit-btn btn-floating btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
                                         <i class="material-icons">edit</i>
                                     </a>
                                 </td>
+
                                 <td>
-                                    <a href="#!" class="btn-floating btn waves-effect waves-light grey">
-                                        <i class="material-icons">add</i>
+                                    <a href="#!" class="vrk-save-btn btn-floating btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                        <i class="material-icons">check</i>
                                     </a>
                                 </td>
                             </tr>
 
                             {% if fir_phase.pk|is_last_phase %}
                                 <tr class="blank-row">
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -583,4 +582,19 @@
 {% endblock content %}
 
 {% block tail %}
+<script>
+    // Activating corresponding fields on clicking edit button
+    $('.vrk-edit-btn').click(function() {
+        var fir_phase_pk = $(this).attr('id').substring(5); // removing the word 'edit'
+        $(`.vrk-editable-fields.${fir_phase_pk}`).each(function() {
+            $(this).removeAttr("disabled", "disabled");
+        })
+        $('select').formSelect();
+    })
+
+    $('.vrk-editable-fields').change(function() {
+        var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
+        $(`#save_${fir_phase_pk}`).removeClass('disabled');
+    })
+</script>
 {% endblock tail %}
