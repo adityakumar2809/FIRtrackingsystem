@@ -214,7 +214,12 @@ def list_edit_fir_vrk_view(request):
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
                 fir_combined_list = []
-                fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division, police_station__exact=police_station)
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division)
+                else:        
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division, police_station__exact=police_station)
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
