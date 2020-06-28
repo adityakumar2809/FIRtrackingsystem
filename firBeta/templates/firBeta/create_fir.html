@@ -326,14 +326,13 @@
             success: function (data) {
                 if (data == 0) {
                     $('.validate').each(function () {
-                        if ($(this).attr('id') !== 'current_status' && $(this).val() !== 'XXXXXXX') { // Cannot change the list item due to materialize rendering a ul, so must not change it's value
-                            $(this).val('');
-                        }
+                        $(this).val('');
                     });
                     $('.save-btn-group').each(function () {
                         $(this).addClass('disabled');
                     })
                     $('.save-close-btn').addClass('disabled');
+                    $('select').formSelect();
                     alert('FIR registered successfully!');
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
@@ -405,14 +404,13 @@
             success: function (data) {
                 if (data == 0) {
                     $('.validate').each(function () {
-                        if ($(this).attr('id') !== 'current_status' && $(this).val() !== 'XXXXXXX') { // Cannot change the list item due to materialize rendering a ul, so must not change it's value
                             $(this).val('');
-                        }
                     });
                     $('.save-btn-group').each(function () {
                         $(this).addClass('disabled');
                     })
                     $('.save-close-btn').addClass('disabled');
+                    $('select').formSelect();
                     alert('FIR Registered and Closed successfully!');
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
