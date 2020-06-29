@@ -631,7 +631,13 @@
                 } else if (data == 3) {
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck.' )
+                    alert('ERROR\nInvalid parameters passed, kindly recheck.' )
+                } else if (data == 5) {
+                    alert('ERROR\nCannot process FIR Status untill Receival Date is entered' )
+                } else if (data == 6) {
+                    alert('ERROR\nEnter Date along with status' )
+                } else if (data == 7) {
+                    alert('ERROR\nFIR cannot be returned before Approving it' )
                 }
             }
         });

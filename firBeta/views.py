@@ -255,6 +255,16 @@ def edit_fir_save_vrk_ajax_view(request):
 
                 if phase_pk:
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if (not vrk_receival_date) and (vrk_status or vrk_status_date or vrk_sent_back_date):
+                        return HttpResponse(5)
+                        # return redirect('fault', fault='Cannot process FIR Status untill Receival Date is entered')
+                    if vrk_status and (not vrk_status_date):
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Enter Date along with status')
+                    if (not vrk_status == 'Approved') and vrk_sent_back_date:
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='FIR cannot be returned before Approving it')
+                    
                     if vrk_receival_date:
                         fir_phase.vrk_receival_date = datetime.strptime(
                             vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
