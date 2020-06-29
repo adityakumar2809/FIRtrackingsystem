@@ -206,7 +206,8 @@ def create_fir_save_close_ajax_view(request):
 
 @login_required
 def list_edit_fir_vrk_view(request):
-    vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+    vrk_record_keepers = [u['user']
+                          for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
         if request.method == 'POST':
             form = forms.ChooseLocationForm(request.POST)
@@ -217,9 +218,11 @@ def list_edit_fir_vrk_view(request):
                 if sub_division == 'all':
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
                 elif police_station == 'all':
-                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division)
-                else:        
-                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=sub_division, police_station__exact=police_station)
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
@@ -247,18 +250,22 @@ def edit_fir_save_vrk_ajax_view(request):
                 vrk_receival_date = request.POST.get('vrk_receival_date', None)
                 vrk_status = request.POST.get('vrk_status', None)
                 vrk_status_date = request.POST.get('vrk_status_date', None)
-                vrk_sent_back_date = request.POST.get('vrk_sent_back_date', None)
+                vrk_sent_back_date = request.POST.get(
+                    'vrk_sent_back_date', None)
 
                 if phase_pk:
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
                     if vrk_receival_date:
-                        fir_phase.vrk_receival_date = datetime.strptime(vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                        fir_phase.vrk_receival_date = datetime.strptime(
+                            vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     if vrk_status:
                         fir_phase.vrk_status = vrk_status
-                    if vrk_status_date:    
-                        fir_phase.vrk_status_date = datetime.strptime(vrk_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if vrk_status_date:
+                        fir_phase.vrk_status_date = datetime.strptime(
+                            vrk_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     if vrk_sent_back_date:
-                        fir_phase.vrk_sent_back_date = datetime.strptime(vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                        fir_phase.vrk_sent_back_date = datetime.strptime(
+                            vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
 
                     return HttpResponse(0)
@@ -277,10 +284,80 @@ def edit_fir_save_vrk_ajax_view(request):
         # Server Error , Error in save()
 
 
+@login_required
+def list_edit_fir_ps_view(request):
+    police_station_record_keepers = [
+        u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+    if request.user.pk in police_station_record_keepers:
+        fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.PoliceStationRecordKeeper.objects.get(
+            user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        fir_combined_list = []
+        for fir in fir_list:
+            fir_phase_list = fir.phases.all()
+            fir_combined_list.append([fir, fir_phase_list])
+        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def edit_fir_save_ps_ajax_view(request):
+    try:
+        if request.method == 'POST':
+            police_station_record_keepers = [
+                u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+            if request.user.pk in police_station_record_keepers:
+                phase_pk = request.POST.get('phase_pk', None)
+                io_name = request.POST.get('io_name', None)
+                accused_name = request.POST.get('accused_name', None)
+                accused_status = request.POST.get('accused_status', None)
+                current_status = request.POST.get('current_status', None)
+                current_status_date = request.POST.get('current_status_date', None)
+                received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
+                put_in_court_date = request.POST.get('put_in_court_date', None)
+                received_from_nc_date = request.POST.get('received_from_nc_date', None)
+                appointed_io = request.POST.get('appointed_io', None)
+                appointed_io_date = request.POST.get('appointed_io_date', None)
+
+                print(phase_pk, io_name, accused_name, accused_status, current_status, current_status_date, received_from_vrk_date, put_in_court_date, received_from_nc_date, appointed_io, appointed_io_date)
+                
+
+                if phase_pk:
+                    # Add logic to save the fir and also ensure that request is only catered if user is from same ps
+                    """ fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if vrk_receival_date:
+                        fir_phase.vrk_receival_date = datetime.strptime(
+                            vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if vrk_status:
+                        fir_phase.vrk_status = vrk_status
+                    if vrk_status_date:
+                        fir_phase.vrk_status_date = datetime.strptime(
+                            vrk_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if vrk_sent_back_date:
+                        fir_phase.vrk_sent_back_date = datetime.strptime(
+                            vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save() """
+
+                    return HttpResponse(0)
+                    # return redirect('success', msg='FIR edited successfully')
+                else:
+                    return HttpResponse(1)
+                    # return redirect('fault', fault='Missing parameters for regstration. Kindly recheck')
+            else:
+                return HttpResponse(2)
+                # return redirect('fault', fault='ACCESS DENIED!')
+        else:
+            return HttpResponse(3)
+            # return redirect('fault', fault='Invalid Operation Requested')
+    except:
+        return HttpResponse(4)
+        # Server Error , Error in save()
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':
         police_station_list = []
     else:
-        police_station_list = loc_models.PoliceStation.objects.filter(sub_division__pk=sub_division_pk).order_by('name')
+        police_station_list = loc_models.PoliceStation.objects.filter(
+            sub_division__pk=sub_division_pk).order_by('name')
     return render(request, 'firBeta/load_police_stations.html', {'police_station_list': police_station_list})

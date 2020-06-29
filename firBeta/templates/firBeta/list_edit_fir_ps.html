@@ -61,7 +61,7 @@
 
     table.data-table thead tr.header-row-2 th {
         position: sticky !important;
-        top: 55px;
+        top: 77px;;
     }
 
 
@@ -330,9 +330,6 @@
 
 {% block content %}
 
-<br>
-{% include 'firBeta/_location_form.html' %}
-<br><br>
 
 <div class="container">
     <div class="section"></div>
@@ -408,143 +405,170 @@
                         {% for fir_set in fir_list %}
                             {% for fir_phase in fir_set.1 %}
                                 <tr class="cyan lighten-4 data-row">
-                                            <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
-                                            <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                            <td>{{ fir_phase.under_section }}</td>
-                                            <td>{{ fir_phase.io_name }}</td>
-                                            <td>{{ fir_phase.accused_name }}</td>
-                                            <td>{{ fir_phase.accused_status }}</td>
+                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                    <td>{{ fir_phase.under_section }}</td>
+                                    
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} io_name validate" disabled value="{{ fir_phase.io_name}}" placeholder="Enter name">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_name validate materialize-textarea" disabled>{{ fir_phase.accused_name }}</textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_status validate materialize-textarea" disabled>{{ fir_phase.accused_status }}</textarea>
+                                        </div>
+                                    </td>
 
-                                            <td>
-                                                {% if fir_phase.pk|is_last_phase %}
-                                                    {% if fir_phase.pk|will_expire_at == 0 %}
-                                                        <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                                    {% elif fir_phase.pk|will_expire_at == 1 %}
-                                                        <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                                    {% elif fir_phase.pk|will_expire_at == 2 %}
-                                                        <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                                    {% elif fir_phase.pk|will_expire_at == 3 %}
-                                                        {{ fir_phase.limitation_period }} days
+                                    <td>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|will_expire_at == 0 %}
+                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                        {% else %}
+                                            {{ fir_phase.limitation_period }} days
+                                        {% endif %}
+                                        <br>
+                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                    </td>
+                                    
+                                    <td>
+                                        <div class="input-field">
+                                            <select class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status validate" disabled>
+                                                {% if fir_phase.current_status %}
+                                                    {% if fir_phase.current_status == "Under Investigation" %}
+                                                        <option class="current-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Under Investigation" selected>Under Investigation</option>
+                                                        <option value="Challan Filed">Challan Filed</option>
+                                                        <option value="Untraced">Untraced</option>
+                                                        <option value="Cancellation">Cancellation</option>
+                                                    {% elif fir_phase.current_status == "Challan Filed" %}
+                                                        <option class="current-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Under Investigation">Under Investigation</option>
+                                                        <option value="Challan Filed" selected>Challan Filed</option>
+                                                        <option value="Untraced">Untraced</option>
+                                                        <option value="Cancellation">Cancellation</option>
+                                                    {% elif fir_phase.current_status == "Untraced" %}
+                                                        <option class="current-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Under Investigation">Under Investigation</option>
+                                                        <option value="Challan Filed">Challan Filed</option>
+                                                        <option value="Untraced" selected>Untraced</option>
+                                                        <option value="Cancellation">Cancellation</option>
+                                                    {% elif fir_phase.current_status == "Cancelled" %}
+                                                        <option class="current-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Under Investigation">Under Investigation</option>
+                                                        <option value="Challan Filed">Challan Filed</option>
+                                                        <option value="Untraced">Untraced</option>
+                                                        <option value="Cancellation" selected>Cancellation</option>
                                                     {% endif %}
                                                 {% else %}
-                                                    {{ fir_phase.limitation_period }} days
+                                                    <option class="current-status-default-option" value="" disabled selected>-----------------</option>
+                                                    <option value="Under Investigation">Under Investigation</option>
+                                                    <option value="Challan Filed">Challan Filed</option>
+                                                    <option value="Untraced">Untraced</option>
+                                                    <option value="Cancellation">Cancellation</option>
                                                 {% endif %}
-                                                <br>
-                                                {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
-                                            </td>
-                                            
-                                            <td>{{ fir_phase.current_status }}</td>
-
-                                            <td>
-                                                {% if fir_phase.current_status_date %}
-                                                    {{ fir_phase.current_status_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_receival_date validate datepicker" disabled value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <select class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status validate" disabled>
-                                                        {% if fir_phase.vrk_status %}
-                                                            {% if fir_phase.vrk_status == "Pending" %}
-                                                                <option class="vrk-status-default-option" value="" disabled>-----------------
-                                                                </option>
-                                                                <option value="Pending" selected>Pending</option>
-                                                                <option value="Approved">Approved</option>
-                                                            {% elif fir_phase.vrk_status == "Approved" %}
-                                                                <option class="vrk-status-default-option" value="" disabled>-----------------
-                                                                </option>
-                                                                <option value="Pending">Pending</option>
-                                                                <option value="Approved" selected>Approved</option>
-                                                            {% endif %}
-                                                        {% else %}
-                                                            <option class="vrk-status-default-option" value="" disabled selected>-----------------
-                                                            </option>
-                                                            <option value="Pending">Pending</option>
-                                                            <option value="Approved">Approved</option>
-                                                        {% endif %}
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-field">
-                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_sent_back_date validate datepicker" disabled value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {% if fir_phase.received_from_vrk_date %}
-                                                    {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>   
-                                            <td>
-                                                {% if fir_phase.put_in_court_date %}
-                                                    {{ fir_phase.put_in_court_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if fir_phase.nc_receival_date %}
-                                                    {{ fir_phase.nc_receival_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>    
-                                            <td>
-                                                {% if fir_phase.nc_status %}
-                                                    {{ fir_phase.nc_status }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if fir_phase.nc_status_date %}
-                                                    {{ fir_phase.nc_status_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if fir_phase.received_from_nc_date %}
-                                                    {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>  
-                                            <td>
-                                                {% if fir_phase.appointed_io %}
-                                                    {{ fir_phase.appointed_io }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td> 
-                                            <td>
-                                                {% if fir_phase.appointed_io_date %}
-                                                    {{ fir_phase.appointed_io_date|date:'d/m/y' }}
-                                                {% else %}
-                                                    <i class="material-icons">remove</i>
-                                                {% endif %}
-                                            </td>                             
+                                            </select>
+                                        </div>
+                                    </td>
                                     <td>
-                                        <a href="#!" class="vrk-edit-btn btn-floating btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date validate datepicker" disabled value="{{ fir_phase.current_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_receival_date %}
+                                            {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status %}
+                                            {{ fir_phase.vrk_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status_date %}
+                                            {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_sent_back_date %}
+                                            {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} received_from_vrk_date validate datepicker" disabled value="{{ fir_phase.received_from_vrk_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} put_in_court_date validate datepicker" disabled value="{{ fir_phase.put_in_court_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_receival_date %}
+                                            {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>    
+                                    <td>
+                                        {% if fir_phase.nc_status %}
+                                            {{ fir_phase.nc_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_status_date %}
+                                            {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} received_from_nc_date validate datepicker" disabled value="{{ fir_phase.received_from_nc_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td> 
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io validate" disabled value="{{ fir_phase.appointed_io}}" placeholder="Enter name">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io_date validate datepicker" disabled value="{{ fir_phase.appointed_io_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>                                                                         
+                                    <td>
+                                        <a href="#!" class="ps-edit-btn btn-floating btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
                                             <i class="material-icons">edit</i>
                                         </a>
                                     </td>
 
                                     <td>
-                                        <a href="#!" class="vrk-save-btn btn-floating btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                        <a href="#!" class="ps-save-btn btn-floating btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
                                             <i class="material-icons">check</i>
                                         </a>
                                     </td>
@@ -587,41 +611,47 @@
 {% block tail %}
 <script>
     // Activating corresponding fields on clicking edit button
-    $('.vrk-edit-btn').click(function() {
+    $('.ps-edit-btn').click(function() {
         var fir_phase_pk = $(this).attr('id').substring(5); // removing the word 'edit'
         $(this).addClass("disabled");
-        $(`.vrk-editable-fields.${fir_phase_pk}`).each(function() {
+        $(`.ps-editable-fields.${fir_phase_pk}`).each(function() {
             $(this).removeAttr("disabled", "disabled");
         })
         $('select').formSelect();
     })
 
-    $('.vrk-editable-fields').change(function() {
+    $('.ps-editable-fields').change(function() {
         var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
         $(`#save_${fir_phase_pk}`).removeClass('disabled');
     })
 
-    $('.vrk-save-btn').click(function () {
+    $('.ps-save-btn').click(function () {
         var fir_phase_id = $(this).attr('id').substring(5);
         var fir_phase_pk = $(this).attr('id').substring(15);
         $.ajax({
             type: 'POST',
-            url: '/firBeta/ajax/edit_fir_save_vrk/',
+            url: '/firBeta/ajax/edit_fir_save_ps/',
             headers: {
                 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
             },
             data: {
                 phase_pk: fir_phase_pk,
-                vrk_receival_date: $(`.vrk_receival_date.${fir_phase_id}`).val(),
-                vrk_status: $(`.vrk_status.${fir_phase_id}`).val(),
-                vrk_status_date: $(`.vrk_status_date.${fir_phase_id}`).val(),
-                vrk_sent_back_date: $(`.vrk_sent_back_date.${fir_phase_id}`).val(),                
+                io_name: $(`.io_name.${fir_phase_id}`).val(),
+                accused_name: $(`.accused_name.${fir_phase_id}`).val(),
+                accused_status: $(`.accused_status.${fir_phase_id}`).val(),
+                current_status: $(`.current_status.${fir_phase_id}`).val(),
+                current_status_date: $(`.current_status_date.${fir_phase_id}`).val(),
+                received_from_vrk_date: $(`.received_from_vrk_date.${fir_phase_id}`).val(),
+                put_in_court_date: $(`.put_in_court_date.${fir_phase_id}`).val(),
+                received_from_nc_date: $(`.received_from_nc_date.${fir_phase_id}`).val(),
+                appointed_io: $(`.appointed_io.${fir_phase_id}`).val(),
+                appointed_io_date: $(`.appointed_io_date.${fir_phase_id}`).val(),              
             },
             success: function (data) {
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
-                    $(`.vrk-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $(`.ps-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
                     $('select').formSelect();
                     alert('FIR saved successfully!');
                 } else if (data == 1) {
