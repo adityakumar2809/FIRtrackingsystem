@@ -552,9 +552,15 @@
                                         </div>
                                     </td> 
                                     <td>
-                                        <div class="input-field">
-                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io validate" disabled value="{{ fir_phase.appointed_io}}" placeholder="Enter name">
-                                        </div>
+                                        {% if fir_phase.appointed_io %}
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io validate" disabled value="{{ fir_phase.appointed_io }}" placeholder="Enter name">
+                                            </div>
+                                        {% else %}
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io validate" disabled placeholder="Enter name">
+                                            </div>
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <div class="input-field">
@@ -661,7 +667,21 @@
                 } else if (data == 3) {
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck.' )
+                    alert('ERROR\nInvalid parameters passed, kindly recheck.' )
+                } else if (data == 5) {
+                    alert('ERROR\nMissing essential parameters' )
+                } else if (data == 6) {
+                    alert('ERROR\nMissing essential parameters' )
+                } else if (data == 7) {
+                    alert('ERROR\nFile cannot be received until it is returned from SSP Office' )
+                } else if (data == 8) {
+                    alert('ERROR\nFile cannot be submitted in Court before it is received back from SSP Office' )
+                } else if (data == 9) {
+                    alert('ERROR\nFile cannot be received until it is returned from Naib Court' )
+                } else if (data == 10) {
+                    alert('ERROR\nFile cannot be marked to new IO before receiving from Naib Court' )
+                } else if (data == 11) {
+                    alert('ERROR\nPlease fill Marked IO name along with the date' )
                 }
             }
         });

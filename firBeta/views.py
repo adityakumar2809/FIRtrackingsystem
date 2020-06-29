@@ -319,24 +319,57 @@ def edit_fir_save_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
-                print(phase_pk, io_name, accused_name, accused_status, current_status, current_status_date, received_from_vrk_date, put_in_court_date, received_from_nc_date, appointed_io, appointed_io_date)
-                
-
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
-                    """ fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
-                    if vrk_receival_date:
-                        fir_phase.vrk_receival_date = datetime.strptime(
-                            vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
-                    if vrk_status:
-                        fir_phase.vrk_status = vrk_status
-                    if vrk_status_date:
-                        fir_phase.vrk_status_date = datetime.strptime(
-                            vrk_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
-                    if vrk_sent_back_date:
-                        fir_phase.vrk_sent_back_date = datetime.strptime(
-                            vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
-                    fir_phase.save() """
+                    fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
+                        return HttpResponse(2)
+                        # return redirect('fault', fault='ACCESS DENIED!')
+
+                    if not (io_name and accused_name and accused_status and current_status):
+                        return HttpResponse(5)
+                        # return redirect('fault', fault='Missing essential parameters')
+                    if current_status != 'Under Investigation' and not current_status_date:
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Missing essential parameters')
+                    if (not fir_phase.vrk_sent_back_date) and (received_from_vrk_date):
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='File cannot be received until it is returned from SSP Office')
+                    if (put_in_court_date) and (not received_from_vrk_date):
+                        return HttpResponse(8)
+                        # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
+                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                        return HttpResponse(9)
+                        # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
+                    if (not received_from_nc_date) and (appointed_io):
+                        return HttpResponse(10)
+                        # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
+                    if (not appointed_io) and appointed_io_date:
+                        return HttpResponse(11)
+                        # return redirect('fault', fault='Please fill Marked IO name along with the date') 
+
+                    fir_phase.io_name = io_name
+                    fir_phase.accused_name = accused_name
+                    fir_phase.accused_status = accused_status
+                    fir_phase.current_status = current_status
+                    if current_status_date:
+                        fir_phase.current_status_date = datetime.strptime(
+                                current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if received_from_vrk_date:
+                        fir_phase.received_from_vrk_date = datetime.strptime(
+                                received_from_vrk_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if put_in_court_date:
+                        fir_phase.put_in_court_date = datetime.strptime(
+                                put_in_court_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if received_from_nc_date:
+                        fir_phase.received_from_nc_date = datetime.strptime(
+                                received_from_nc_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.appointed_io = appointed_io
+                    if appointed_io_date:
+                        fir_phase.appointed_io_date = datetime.strptime(
+                                appointed_io_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save()
+                    
 
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR edited successfully')
@@ -352,6 +385,7 @@ def edit_fir_save_ps_ajax_view(request):
     except:
         return HttpResponse(4)
         # Server Error , Error in save()
+
 
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
