@@ -21,4 +21,8 @@ urlpatterns = [
     path('ps/', views.list_edit_fir_ps_view, name='list_edit_fir_ps'),
     path('ajax/edit_fir_save_ps/', views.edit_fir_save_ps_ajax_view, name='edit_fir_save_ps_ajax'),
     path('ajax/edit_fir_save_close_ps/', views.edit_fir_save_close_ps_ajax_view, name='edit_fir_save_close_ps_ajax'),
+
+    path('nc/', views.list_edit_fir_nc_view, name='list_edit_fir_nc'),
+    path('ajax/edit_fir_save_nc/', views.edit_fir_save_nc_ajax_view, name='edit_fir_save_nc_ajax'),
+    path('ajax/edit_fir_save_close_nc/', views.edit_fir_save_close_nc_ajax_view, name='edit_fir_save_close_nc_ajax'),
 ]

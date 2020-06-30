@@ -492,6 +492,134 @@ def edit_fir_save_close_ps_ajax_view(request):
         # Server Error , Error in save()
 
 
+@login_required
+def list_edit_fir_nc_view(request):
+    nc_record_keepers = [
+        u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+    if request.user.pk in nc_record_keepers:
+        fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.CourtRecordKeeper.objects.get(
+            user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+        fir_combined_list = []
+        for fir in fir_list:
+            fir_phase_list = fir.phases.all()
+            if not fir_phase_list[len(fir_phase_list)-1].put_in_court_date:
+                continue
+            fir_combined_list.append([fir, fir_phase_list])
+        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def edit_fir_save_nc_ajax_view(request):
+    try:
+        if request.method == 'POST':
+            nc_record_keepers = [
+                u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+            if request.user.pk in nc_record_keepers:
+                phase_pk = request.POST.get('phase_pk', None)
+                nc_receival_date = request.POST.get('nc_receival_date', None)
+                nc_status = request.POST.get('nc_status', None)
+                nc_status_date = request.POST.get('nc_status_date', None)
+
+                if phase_pk:
+                    # Add logic to save the fir and also ensure that request is only catered if user is from same ps
+                    fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if fir_phase.fir.police_station != acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
+                        return HttpResponse(2)
+                        # return redirect('fault', fault='ACCESS DENIED!')
+
+                    if (not fir_phase.put_in_court_date) and (nc_receival_date):
+                        return HttpResponse(5)
+                        # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
+                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Fill both Status and Date')
+
+                    if nc_receival_date:
+                        fir_phase.nc_receival_date = datetime.strptime(
+                                nc_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.nc_status = nc_status
+                    if nc_status_date:
+                        fir_phase.nc_status_date = datetime.strptime(
+                                nc_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save()
+                    
+
+                    return HttpResponse(0)
+                    # return redirect('success', msg='FIR edited successfully')
+                else:
+                    return HttpResponse(1)
+                    # return redirect('fault', fault='Missing parameters for regstration. Kindly recheck')
+            else:
+                return HttpResponse(2)
+                # return redirect('fault', fault='ACCESS DENIED!')
+        else:
+            return HttpResponse(3)
+            # return redirect('fault', fault='Invalid Operation Requested')
+    except:
+        return HttpResponse(4)
+        # Server Error , Error in save()
+
+
+@login_required
+def edit_fir_save_close_nc_ajax_view(request):
+    try:
+        if request.method == 'POST':
+            nc_record_keepers = [
+                u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+            if request.user.pk in nc_record_keepers:
+                phase_pk = request.POST.get('phase_pk', None)
+                nc_receival_date = request.POST.get('nc_receival_date', None)
+                nc_status = request.POST.get('nc_status', None)
+                nc_status_date = request.POST.get('nc_status_date', None)
+
+                if phase_pk:
+                    # Add logic to save the fir and also ensure that request is only catered if user is from same ps
+                    fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if fir_phase.fir.police_station != acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
+                        return HttpResponse(2)
+                        # return redirect('fault', fault='ACCESS DENIED!')
+
+                    if (not fir_phase.put_in_court_date) and (nc_receival_date):
+                        return HttpResponse(5)
+                        # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
+                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Fill both Status and Date')
+                    if nc_status != 'Approved':
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='The status must be Approved to Close the FIR')
+                    if nc_receival_date:
+                        fir_phase.nc_receival_date = datetime.strptime(
+                                nc_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.nc_status = nc_status
+                    if nc_status_date:
+                        fir_phase.nc_status_date = datetime.strptime(
+                                nc_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save()
+
+                    fir = models.FIR.objects.get(pk__exact = fir_phase.fir.pk)
+                    fir.is_closed = True
+                    fir.save()
+                    
+
+                    return HttpResponse(0)
+                    # return redirect('success', msg='FIR edited and closed successfully')
+                else:
+                    return HttpResponse(1)
+                    # return redirect('fault', fault='Missing parameters for regstration. Kindly recheck')
+            else:
+                return HttpResponse(2)
+                # return redirect('fault', fault='ACCESS DENIED!')
+        else:
+            return HttpResponse(3)
+            # return redirect('fault', fault='Invalid Operation Requested')
+    except:
+        return HttpResponse(4)
+        # Server Error , Error in save()
+
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':
