@@ -849,6 +849,7 @@ def filter_fir_ssp_view(request):
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
+                under_section = form.cleaned_data['under_section']
                 expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
                 expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
                 is_closed = form.cleaned_data['is_closed']
@@ -867,6 +868,9 @@ def filter_fir_ssp_view(request):
                             continue
                     if fir_no:
                         if not (fir_no == fir_last_phase.fir.fir_no):
+                            continue
+                    if under_section:
+                        if fir_last_phase.under_section.find(under_section) == -1:
                             continue
                     if expiry_date_lower_limit:
                         if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
@@ -907,6 +911,7 @@ def filter_fir_dsp_view(request):
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
+                under_section = form.cleaned_data['under_section']
                 expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
                 expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
                 is_closed = form.cleaned_data['is_closed']
@@ -922,6 +927,9 @@ def filter_fir_dsp_view(request):
                             continue
                     if fir_no:
                         if not (fir_no == fir_last_phase.fir.fir_no):
+                            continue
+                    if under_section:
+                        if fir_last_phase.under_section.find(under_section) == -1:
                             continue
                     if expiry_date_lower_limit:
                         if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
