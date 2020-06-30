@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from location import models as loc_models
 from account import models as acc_models
 from fir import models as fir_models
+from firBeta import models as fir_beta_models
 
 
 def home(request):
@@ -37,7 +38,7 @@ def success(request, msg):
 
 
 def populate(request):
-    police_station_list =  loc_models.PoliceStation.objects.all()
+    """ police_station_list =  loc_models.PoliceStation.objects.all() """
 
     ''' For making Naib Court Users '''
     '''
@@ -46,4 +47,9 @@ def populate(request):
         user = acc_models.User.objects.create_user(f'nc-{x}', '', 'testpassword')
         acc_models.CourtRecordKeeper.objects.create(user=user, police_station=loc_models.PoliceStation.objects.get(pk__exact=ps.pk), sub_division=ps.sub_division)
     '''
+
+    """ fir_list = fir_beta_models.FIR.objects.all()
+    for f in fir_list:
+        f.delete()
+ """
     return redirect('success', msg='Population Successful')
