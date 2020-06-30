@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.core.mail import send_mail
 
 from datetime import datetime
 
@@ -18,6 +19,7 @@ def create_fir(request):
     if request.user.pk in police_station_record_keepers:
         ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
             user__pk__exact=request.user.pk)
+
         return render(request, 'firBeta/create_fir.html', {'current_sub_division': ps_record_keeper.sub_division.name, 'current_police_station': ps_record_keeper.police_station.name})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -272,6 +274,7 @@ def edit_fir_save_vrk_ajax_view(request):
 
                 if phase_pk:
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    initial_vrk_sent_back_date = fir_phase.vrk_sent_back_date
                     if (not vrk_receival_date) and (vrk_status or vrk_status_date or vrk_sent_back_date):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Cannot process FIR Status untill Receival Date is entered')
@@ -294,6 +297,11 @@ def edit_fir_save_vrk_ajax_view(request):
                         fir_phase.vrk_sent_back_date = datetime.strptime(
                             vrk_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
+                    final_vrk_sent_back_date = fir_phase.vrk_sent_back_date
+
+                    if (not initial_vrk_sent_back_date) and final_vrk_sent_back_date:
+                        email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
+                        send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been approved and reverted from the SSP Office. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
 
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR edited successfully')
@@ -542,6 +550,7 @@ def edit_fir_save_nc_ajax_view(request):
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    nc_status_initial = fir_phase.nc_status
                     if fir_phase.fir.police_station != acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -561,6 +570,11 @@ def edit_fir_save_nc_ajax_view(request):
                         fir_phase.nc_status_date = datetime.strptime(
                                 nc_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
+                    nc_status_final = fir_phase.nc_status
+
+                    if nc_status_initial != 'Reinvestigation' and nc_status_final == 'Reinvestigation':
+                        email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
+                        send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been approved and reverted from the Naib Court. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
                     
 
                     return HttpResponse(0)

@@ -539,18 +539,19 @@
                                     </td>       
                                     {% if fir_phase.pk|is_last_phase %}                      
                                         <td>
-                                            <a href="#!" class="vrk-edit-btn btn-floating btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                            <a href="#!" class="vrk-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
                                                 EDIT
                                             </a>
                                         </td>
 
                                         <td>
-                                            <a href="#!" class="vrk-save-btn btn-floating btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                            <a href="#!" class="vrk-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
                                                 SAVE
                                             </a>
                                         </td>
                                     {% else %}
-                                        <td><i class="material-icons">rmeove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
                                     {% endif %}
                                 </tr>
 

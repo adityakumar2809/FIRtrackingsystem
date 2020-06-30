@@ -123,7 +123,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-# DATE_INPUT_FORMATS = ['%d/%m/%y']
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'firtrackingsystem.sbsnagar@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_PASSWORD = 'cook!es@123'
+
 
 LOGIN_URL = '/account/login'
 LOGIN_REDIRECT_URL = '/'
