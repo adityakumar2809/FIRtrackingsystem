@@ -578,9 +578,15 @@
                                             Save
                                         </a>
                                         <br><br>
-                                        <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
-                                            Save&Close
-                                        </a>
+                                        {% if fir_phase.current_status == 'Challan Filed' %}
+                                            <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                Save&Close
+                                            </a>
+                                        {% else %}
+                                            <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                Save&Close
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
 
