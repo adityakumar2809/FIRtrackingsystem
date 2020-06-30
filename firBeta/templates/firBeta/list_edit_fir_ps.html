@@ -359,6 +359,7 @@
                         <th class="header-element-1" colspan="3">Re-investigation Details</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
                         <th class="header-element-1" rowspan="2">Save</th>
+                        <th class="header-element-1" rowspan="2">Add</th>
                     </tr>
                     <tr class="header-row-2">
                         <th class="header-element-2 sub-head-even">Status</th>
@@ -588,6 +589,17 @@
                                             </a>
                                         {% endif %}
                                     </td>
+                                    <td>
+                                        {% if fir_phase.pk|all_fields_filled %}
+                                            <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4" id="add_fir_phase_{{fir_phase.pk}}">
+                                                ADD
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4 disabled" id="add_fir_phase_{{fir_phase.pk}}">
+                                                ADD
+                                            </a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
 
                                 {% if fir_phase.pk|is_last_phase %}
@@ -677,6 +689,33 @@
         } else {
             $(`#save_close_${fir_phase_pk}`).addClass("disabled");
         }
+
+        $.ajax({
+            type: 'GET',
+            url: '/firBeta/ajax/all_fields_filled/',
+            data: {
+                phase_pk: fir_phase_pk.substring(10)
+            },
+            success: function (data) {
+                if (data == 0) {
+                    var isFilled = true;
+                    $(`.ps-editable-fields.${fir_phase_pk}`).each(function() {
+                        if ($(this).val() === '') {
+                            isFilled = false;
+                        }
+                    })
+                    if (isFilled) {
+                        $(`#add_${fir_phase_pk}`).removeClass('disabled')
+                    } else {
+                        $(`#add_${fir_phase_pk}`).addClass('disabled')
+                    }
+
+                } else if (data == 1) {
+                    $(`#add_${fir_phase_pk}`).addClass('disabled')
+                }
+            }
+        })
+
     })
 
     $('.ps-save-btn').click(function () {
@@ -794,7 +833,5 @@
             }
         });
     });
-
-
 </script>
 {% endblock tail %}

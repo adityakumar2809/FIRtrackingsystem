@@ -85,7 +85,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container" data-fir-pk='{{ fir_phase.fir.pk }}'>
     <div class="section"></div>
     <form method="POST" id="create-fir-form">
         {% csrf_token %}
@@ -138,12 +138,12 @@
                         </tr>
 
                         <tr class="data-row cyan lighten-4">
-                            <td>{{current_sub_division}}<br>({{current_police_station}})</td>
+                            <td>{{fir_phase.fir.sub_division}}<br>({{fir_phase.fir.police_station}})</td>
                             <td>
                                 <div class="input-field">
-                                    <textarea id="fir_no" class="validate materialize-textarea"></textarea>
+                                    <textarea id="fir_no" class="validate materialize-textarea" disabled>{{ fir_phase.fir.fir_no }}</textarea>
                                 </div>
-                            </td>cod    \
+                            </td>
                             <td>
                                 <div class="input-field">
                                     <input id="date" type="text" class="validate datepicker" placeholder="DD/MM/YY">
@@ -151,22 +151,22 @@
                             </td>
                             <td>
                                 <div class="input-field">
-                                    <textarea id="under_section" class="validate materialize-textarea"></textarea>
+                                    <textarea id="under_section" class="validate materialize-textarea">{{ fir_phase.under_section }}</textarea>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field">
-                                    <textarea id="io_name" class="validate materialize-textarea"></textarea>
+                                    <textarea id="io_name" class="validate materialize-textarea">{{ fir_phase.io_name }}</textarea>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field">
-                                    <textarea id="accused_name" class="validate materialize-textarea"></textarea>
+                                    <textarea id="accused_name" class="validate materialize-textarea">{{ fir_phase.accused_name }}</textarea>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-field">
-                                    <textarea id="accused_status" class="validate materialize-textarea"></textarea>
+                                    <textarea id="accused_status" class="validate materialize-textarea">{{ fir_phase.accused_status }}</textarea>
                                 </div>
                             </td>
                             <td>
@@ -201,8 +201,6 @@
 
         <div class="section">
             <a class="waves-effect waves-light btn save-btn-group save-btn disabled">Save</a>
-            <a class="waves-effect waves-light btn save-btn-group save-add-btn disabled">Save and add another</a>
-            <a class="waves-effect waves-light btn save-btn-group save-edit-btn disabled">Save and continue editing</a>
             <a class="waves-effect waves-light btn red darken-3 modal-trigger save-close-btn disabled"
                 href="#close-confirmation">Save and Close FIR</a>
         </div>
@@ -273,12 +271,12 @@
     $('.save-btn').click(function () {
         $.ajax({
             type: 'POST',
-            url: '/firBeta/ajax/create_fir_save/',
+            url: '/firBeta/ajax/add_new_phase_fir_save/',
             headers: {
                 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
             },
             data: {
-                fir_no: $('#fir_no').val(),
+                fir_pk: $('.container').attr('data-fir-pk'),
                 date: $('#date').val(),
                 under_section: $('#under_section').val(),
                 io_name: $('#io_name').val(),
@@ -290,7 +288,7 @@
             },
             success: function (data) {
                 if (data == 0) {
-                    window.location.href = '/success/FIR%20registered%20Successfully';
+                    window.location.href = '/firBeta/ps';
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
                 } else if (data == 2) {
@@ -298,85 +296,9 @@
                 } else if (data == 3) {
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
-                }
-            }
-        });
-    });
-
-
-    $('.save-add-btn').click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '/firBeta/ajax/create_fir_save_add/',
-            headers: {
-                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
-            },
-            data: {
-                fir_no: $('#fir_no').val(),
-                date: $('#date').val(),
-                under_section: $('#under_section').val(),
-                io_name: $('#io_name').val(),
-                accused_name: $('#accused_name').val(),
-                accused_status: $('#accused_status').val(),
-                limitation_period: $('#limitation_period').val(),
-                current_status: $('#current_status').val(),
-                current_status_date: $('#status_date').val(),
-            },
-            success: function (data) {
-                if (data == 0) {
-                    $('.validate').each(function () {
-                        $(this).val('');
-                    });
-                    $('.save-btn-group').each(function () {
-                        $(this).addClass('disabled');
-                    })
-                    $('.save-close-btn').addClass('disabled');
-                    $('select').formSelect();
-                    alert('FIR registered successfully!');
-                } else if (data == 1) {
-                    window.location.href = '/fault/Missing%20parameters%20for%registration';
-                } else if (data == 2) {
-                    window.location.href = '/fault/ACCESS%20DENIED!';
-                } else if (data == 3) {
-                    window.location.href = '/fault/Invalid%20Operation%20Requested';
-                } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
-                }
-            }
-        });
-    });
-
-
-    $('.save-edit-btn').click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '/firBeta/ajax/create_fir_save_edit/',
-            headers: {
-                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
-            },
-            data: {
-                fir_no: $('#fir_no').val(),
-                date: $('#date').val(),
-                under_section: $('#under_section').val(),
-                io_name: $('#io_name').val(),
-                accused_name: $('#accused_name').val(),
-                accused_status: $('#accused_status').val(),
-                limitation_period: $('#limitation_period').val(),
-                current_status: $('#current_status').val(),
-                current_status_date: $('#status_date').val(),
-            },
-            success: function (data) {
-                if (data == 0) {
-                    // window.location.href = ''; Insert edit url here
-                } else if (data == 1) {
-                    window.location.href = '/fault/Missing%20parameters%20for%registration';
-                } else if (data == 2) {
-                    window.location.href = '/fault/ACCESS%20DENIED!';
-                } else if (data == 3) {
-                    window.location.href = '/fault/Invalid%20Operation%20Requested';
-                } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                    alert('ERROR\nInvalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR\nMore than 3 phases cannot exist')
                 }
             }
         });
@@ -386,12 +308,12 @@
     $('#close-confirmation-modal-btn').click(function () {
         $.ajax({
             type: 'POST',
-            url: '/firBeta/ajax/create_fir_save_close/',
+            url: '/firBeta/ajax/add_new_phase_fir_save_close/',
             headers: {
                 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
             },
             data: {
-                fir_no: $('#fir_no').val(),
+                fir_pk: $('.container').attr('data-fir-pk'),
                 date: $('#date').val(),
                 under_section: $('#under_section').val(),
                 io_name: $('#io_name').val(),
@@ -403,15 +325,7 @@
             },
             success: function (data) {
                 if (data == 0) {
-                    $('.validate').each(function () {
-                            $(this).val('');
-                    });
-                    $('.save-btn-group').each(function () {
-                        $(this).addClass('disabled');
-                    })
-                    $('.save-close-btn').addClass('disabled');
-                    $('select').formSelect();
-                    alert('FIR Registered and Closed successfully!');
+                    window.location.href = '/firBeta/ps';
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
                 } else if (data == 2) {

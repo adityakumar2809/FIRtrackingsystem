@@ -34,3 +34,17 @@ def get_expiry_date(pk):
     fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
     expiry_date = fir_phase.date_registered + datetime.timedelta(days = fir_phase.limitation_period) 
     return expiry_date
+
+
+@register.filter
+def all_fields_filled(pk):
+    fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+    field_names = [f.name for f in models.FIRPhase._meta.get_fields()]
+
+    for field_name in field_names:
+        value = getattr(fir_phase, field_name)
+        if value in [None, '']:
+            return False
+    
+    return True
+
