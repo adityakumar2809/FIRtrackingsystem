@@ -19,8 +19,8 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    # path('', views.home, name='home'),
-    path('', include('fir.urls')),
+    path('', views.home, name='home'),
+    path('fir/', include('fir.urls')),
     path('firBeta/', include('firBeta.urls')),
     path('fault/<str:fault>/', views.fault, name='fault'),
     path('success/<str:msg>/', views.success, name='success'),

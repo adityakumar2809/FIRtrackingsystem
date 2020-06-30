@@ -69,22 +69,24 @@
                 <ul class="right hide-on-med-and-down">
                     {% if user.is_authenticated %}
                         {% if user.pk in police_station_record_keepers %}
-                            <li><a href="{% url 'fir:create_fir' %}" class="teal-text text-lighten-5">Register FIR</a></li>
-                            <li><a href="{% url 'fir:list_firs_police_station' %}">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:create' %}" class="teal-text text-lighten-5">Register FIR</a></li>
+                            <li><a href="{% url 'firBeta:list_edit_fir_ps'%}" class="teal-text text-lighten-5">View FIRs</a></li>
                         {% endif %}
                         {% if user.pk in court_record_keepers %}
-                            <li><a href="{% url 'fir:list_firs_court' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:list_edit_fir_nc' %}" class="teal-text text-lighten-5">View FIRs</a></li>
                         {% endif %}
                         {% if user.pk in dsp_record_keepers %}
-                            <li><a href="{% url 'fir:list_firs_dsp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:list_fir_dsp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:filter_fir_dsp' %}" class="teal-text text-lighten-5">Search FIRs</a></li>
                         {% endif %}
                         {% if user.pk in vrk_record_keepers %}
-                            <li><a href="{% url 'fir:list_firs_vrk' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:list_edit_fir_vrk' %}" class="teal-text text-lighten-5">View FIRs</a></li>
                         {% endif %}
                         {% if user.pk in ssp_record_keepers %}
-                            <li><a href="{% url 'fir:list_firs_ssp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:list_fir_ssp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
+                            <li><a href="{% url 'firBeta:filter_fir_ssp' %}" class="teal-text text-lighten-5">Search FIRs</a></li>
                         {% endif %}
-                        <li><a href="{% url 'fir:filter_fir_data' %}" class="teal-text text-lighten-5">Search FIRs</a></li>
+                        <!-- <li><a href="{% url 'fir:filter_fir_data' %}" class="teal-text text-lighten-5">Search FIRs</a></li> -->
                         <li style="border-left: #004d40 5px solid;"><a href="{% url 'account:logout' %}">Logout&nbsp;</a></li>
                     {% else %}
                         <li><a href="{% url 'account:login' %}">Login</a></li>

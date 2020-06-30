@@ -5,7 +5,27 @@ from fir import models as fir_models
 
 
 def home(request):
-    return render(request, 'home.html')
+    if request.user.is_authenticated:
+        police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+        court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
+        dsp_record_keepers = [u['user'] for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+        vrk_record_keepers = [u['user'] for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
+        ssp_record_keepers = [u['user'] for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+
+        if request.user.pk in police_station_record_keepers:
+            return redirect('firBeta:list_edit_fir_ps')
+        elif request.user.pk in court_record_keepers:
+            return redirect('firBeta:list_edit_fir_nc')
+        elif request.user.pk in dsp_record_keepers:
+            return redirect('firBeta:list_fir_dsp')
+        elif request.user.pk in vrk_record_keepers:
+            return redirect('firBeta:list_edit_fir_vrk')
+        elif request.user.pk in ssp_record_keepers:
+            return redirect('firBeta:list_fir_ssp')
+
+    else:
+        return redirect('account:login')
+    # return render(request, 'home.html')
 
 
 def fault(request, fault):
