@@ -246,6 +246,8 @@ def list_edit_fir_vrk_view(request):
                     fir_phase_list = fir.phases.all()
                     if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
                         continue
+                    if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
+                        continue
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
                 return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form})
@@ -529,6 +531,8 @@ def list_edit_fir_nc_view(request):
             fir_phase_list = fir.phases.all()
             if not fir_phase_list[len(fir_phase_list)-1].put_in_court_date:
                 continue
+            if fir_phase_list[len(fir_phase_list)-1].nc_status in ['Approved', 'Reinvestigation']:
+                continue
             fir_combined_list.append([fir, fir_phase_list])
         return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list})
     else:
@@ -574,7 +578,7 @@ def edit_fir_save_nc_ajax_view(request):
 
                     if nc_status_initial != 'Reinvestigation' and nc_status_final == 'Reinvestigation':
                         email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
-                        send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been approved and reverted from the Naib Court. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
+                        send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been reverted for reinvestigation from the Naib Court. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
                     
 
                     return HttpResponse(0)
