@@ -759,6 +759,67 @@ def add_new_phase_fir_save_close_ajax_view(request):
         # Integrity Error
 
 
+@login_required
+def list_fir_dsp_view(request):
+    dsp_record_keepers = [u['user']
+                          for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in dsp_record_keepers:
+        if request.method == 'POST':
+            form = forms.ChoosePoliceStationForm(data = request.POST, user = request.user)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                fir_combined_list = []
+                if police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+                form = forms.ChoosePoliceStationForm(user = request.user)
+                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.ChoosePoliceStationForm(user = request.user)
+            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': [], 'form': form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def list_fir_ssp_view(request):
+    ssp_record_keepers = [u['user']
+                          for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in ssp_record_keepers:
+        if request.method == 'POST':
+            form = forms.ChooseLocationForm(request.POST)
+            if form.is_valid():
+                sub_division = form.cleaned_data['sub_division']
+                police_station = form.cleaned_data['police_station']
+                fir_combined_list = []
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+                form = forms.ChooseLocationForm()
+                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.ChooseLocationForm()
+            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': [], 'form': form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':

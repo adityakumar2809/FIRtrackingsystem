@@ -30,4 +30,8 @@ urlpatterns = [
     path('add-new-phase/<int:pk>/', views.add_new_phase_fir_view, name='add_new_phase_fir'),
     path('ajax/add_new_phase_fir_save/', views.add_new_phase_fir_save_ajax_view, name='add_new_phase_fir_save_ajax'),
     path('ajax/add_new_phase_fir_save_close/', views.add_new_phase_fir_save_close_ajax_view, name='add_new_phase_fir_save_close_ajax'),
+
+    path('dsp/', views.list_fir_dsp_view, name='list_fir_dsp'),
+
+    path('ssp/', views.list_fir_ssp_view, name='list_fir_ssp'),
 ]

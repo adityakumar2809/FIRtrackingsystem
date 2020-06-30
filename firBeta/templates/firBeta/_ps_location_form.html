@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+
+<form method='POST' id='ps_location_form' class="center">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3">
+            {{form.police_station}}
+            <label for="Sub Division">Police Station</label>
+        </div>
+    </div>
+
+    <button class="btn waves-effect waves-light" type="submit">
+     Submit <i class="material-icons right">send</i>
+    </button>
+
+</form>
