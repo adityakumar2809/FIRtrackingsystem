@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'location',
     'fir',
+    'firBeta',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,14 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'firtrackingsystem.sbsnagar@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_PASSWORD = 'cook!es@123'
 
 
 LOGIN_URL = '/account/login'

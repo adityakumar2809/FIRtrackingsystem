@@ -1,0 +1,6 @@
+{
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.autoClosingQuotes": "always",
+    "editor.codeActionsOnSave": null,
+    "editor.foldingStrategy": "indentation"
+}
