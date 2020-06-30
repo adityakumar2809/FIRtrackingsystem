@@ -32,6 +32,7 @@ urlpatterns = [
     path('ajax/add_new_phase_fir_save_close/', views.add_new_phase_fir_save_close_ajax_view, name='add_new_phase_fir_save_close_ajax'),
 
     path('dsp/', views.list_fir_dsp_view, name='list_fir_dsp'),
+    path('dsp/filter/', views.filter_fir_dsp_view, name='filter_fir_dsp'),
 
     path('ssp/', views.list_fir_ssp_view, name='list_fir_ssp'),
     path('ssp/filter/', views.filter_fir_ssp_view, name='filter_fir_ssp'),

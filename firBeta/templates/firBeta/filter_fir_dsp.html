@@ -105,13 +105,7 @@
         <div id="filter_form" class="modal modal-fixed-footer green lighten-5">
             <div class="modal-content">
             <form method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                        {{form.sub_division|add_class:"filter-form-input-field"}}
-                        <label >Sub Division</label>
-                    </div>
-                    </div>
+                {% csrf_token %}
                 <div class="row">
                     <div class="input-field col s8 offset-s2">
                         {{form.police_station|add_class:"filter-form-input-field"}}
@@ -132,13 +126,13 @@
                 </div>
                 <div class="row">
                 <div class="input-field col s8 offset-s2">
-                    {{form.expiry_date_lower_limit|add_class:"filter-form-input-field"}}
+                    {{form.expiry_date_lower_limit|add_class:"filter-form-input-field datepicker"}}
                     <label >Expiration Date (Lower Limit)</label>
                 </div>
                 </div>
                 <div class="row">
                 <div class="input-field col s8 offset-s2">
-                    {{form.expiry_date_upper_limit|add_class:"filter-form-input-field"}}
+                    {{form.expiry_date_upper_limit|add_class:"filter-form-input-field datepicker"}}
                     <label>Expiration Date (Upper Limit)</label>
                 </div>
                 </div>
@@ -458,6 +452,7 @@
             $(this).val('');
         })
         $('select').formSelect();
+        // $('.datepicker').datepicker({format:'dd/mm/yy'});
     })
 </script>
 {% endblock tail %}

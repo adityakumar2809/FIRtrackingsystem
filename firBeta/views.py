@@ -869,10 +869,10 @@ def filter_fir_ssp_view(request):
                         if not (fir_no == fir_last_phase.fir.fir_no):
                             continue
                     if expiry_date_lower_limit:
-                        if (fir_last_phase.date_registered >= expiry_date_lower_limit - timedelta(fir_last_phase.limitation_period or 0)):
+                        if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
                             continue
                     if expiry_date_upper_limit:
-                        if (fir_last_phase.date_registered <= expiry_date_upper_limit - timedelta(fir_last_phase.limitation_period or 0)):
+                        if (fir_last_phase.date_registered >= datetime.strptime(datetime.strptime(expiry_date_upper_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
                             continue
                     if is_closed:
                         if not (bool(is_closed) == fir_last_phase.fir.is_closed):
@@ -893,6 +893,61 @@ def filter_fir_ssp_view(request):
         else:
             form = forms.FIRFilterSSPForm()
             return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': [], 'form': form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def filter_fir_dsp_view(request):
+    dsp_record_keepers = [u['user']
+                          for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in dsp_record_keepers:
+        if request.method == 'POST':
+            form = forms.FIRFilterDSPForm(data = request.POST, user = request.user)
+            if form.is_valid():
+                police_station = form.cleaned_data['police_station']
+                fir_no = form.cleaned_data['fir_no']
+                expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
+                expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
+                is_closed = form.cleaned_data['is_closed']
+                fir_combined_list = []
+
+    
+                fir_list = models.FIR.objects.all()
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+                    if police_station:
+                        if not (int(police_station) == fir_last_phase.fir.police_station.pk):
+                            continue
+                    if fir_no:
+                        if not (fir_no == fir_last_phase.fir.fir_no):
+                            continue
+                    if expiry_date_lower_limit:
+                        if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+                            continue
+                    if expiry_date_upper_limit:
+                        if (fir_last_phase.date_registered >= datetime.strptime(datetime.strptime(expiry_date_upper_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+                            continue
+                    if is_closed:
+                        if not (bool(is_closed) == fir_last_phase.fir.is_closed):
+                            continue
+                    fir_combined_list.append([fir, fir_phase_list])
+
+                initial_data = {
+                                'police_station': police_station,
+                                'fir_no': fir_no,
+                                'expiry_date_lower_limit':expiry_date_lower_limit,
+                                'expiry_date_upper_limit':expiry_date_upper_limit,
+                                'is_closed': is_closed
+                                }
+                form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
+                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.FIRFilterDSPForm(user = request.user)
+            return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': [], 'form': form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 

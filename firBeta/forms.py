@@ -79,6 +79,31 @@ class FIRFilterSSPForm(forms.Form):
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
-    expiry_date_lower_limit = forms.DateField(required=False)
-    expiry_date_upper_limit = forms.DateField(required=False)
+    expiry_date_lower_limit = forms.CharField(required=False)
+    expiry_date_upper_limit = forms.CharField(required=False)
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
+
+class FIRFilterDSPForm(forms.Form):
+
+    POLICE_STATION_CHOICES = [(None,'---Select---')]
+
+    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+
+    police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
+    fir_no = forms.CharField(required=False)
+    under_section = forms.CharField(required=False)
+    expiry_date_lower_limit = forms.CharField(required=False)
+    expiry_date_upper_limit = forms.CharField(required=False)
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
+
+    def __init__(self, user, *args, **kwargs):
+        super(FIRFilterDSPForm, self).__init__(*args, **kwargs)
+        sub_division_pk = acc_models.DSPRecordKeeper.objects.get(user__pk__exact=user.pk).sub_division.pk
+        police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('name')]
+        police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().filter(sub_division__pk__exact=sub_division_pk).values('pk')]
+
+        POLICE_STATION_CHOICES = [(None,'---Select---')]
+        for i in range(len(police_station_name_list)):
+            POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
+
+        self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
