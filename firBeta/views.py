@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.mail import send_mail
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from account import models as acc_models
 from location import models as loc_models
@@ -834,6 +834,65 @@ def list_fir_ssp_view(request):
         else:
             form = forms.ChooseLocationForm()
             return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': [], 'form': form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def filter_fir_ssp_view(request):
+    ssp_record_keepers = [u['user']
+                          for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in ssp_record_keepers:
+        if request.method == 'POST':
+            form = forms.FIRFilterSSPForm(request.POST)
+            if form.is_valid():
+                sub_division = form.cleaned_data['sub_division']
+                police_station = form.cleaned_data['police_station']
+                fir_no = form.cleaned_data['fir_no']
+                expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
+                expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
+                is_closed = form.cleaned_data['is_closed']
+                fir_combined_list = []
+
+    
+                fir_list = models.FIR.objects.all()
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+                    if sub_division:
+                        if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
+                            continue
+                    if police_station:
+                        if not (int(police_station) == fir_last_phase.fir.police_station.pk):
+                            continue
+                    if fir_no:
+                        if not (fir_no == fir_last_phase.fir.fir_no):
+                            continue
+                    if expiry_date_lower_limit:
+                        if (fir_last_phase.date_registered >= expiry_date_lower_limit - timedelta(fir_last_phase.limitation_period or 0)):
+                            continue
+                    if expiry_date_upper_limit:
+                        if (fir_last_phase.date_registered <= expiry_date_upper_limit - timedelta(fir_last_phase.limitation_period or 0)):
+                            continue
+                    if is_closed:
+                        if not (bool(is_closed) == fir_last_phase.fir.is_closed):
+                            continue
+                    fir_combined_list.append([fir, fir_phase_list])
+
+                initial_data = {'sub_division': sub_division,
+                                'police_station': police_station,
+                                'fir_no': fir_no,
+                                'expiry_date_lower_limit':expiry_date_lower_limit,
+                                'expiry_date_upper_limit':expiry_date_upper_limit,
+                                'is_closed': is_closed
+                                }
+                form = forms.FIRFilterSSPForm(initial = initial_data)
+                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.FIRFilterSSPForm()
+            return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': [], 'form': form})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 

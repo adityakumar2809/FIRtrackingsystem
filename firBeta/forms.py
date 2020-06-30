@@ -53,3 +53,32 @@ class ChoosePoliceStationForm(forms.Form):
             POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
 
         self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
+
+
+class FIRFilterSSPForm(forms.Form):
+
+    sub_division_name_list = [u['name'] for u in loc_models.SubDivision.objects.all().values('name')]
+    sub_division_pk_list = [u['pk'] for u in loc_models.SubDivision.objects.all().values('pk')]
+    i=0
+    SUB_DIVISION_CHOICES = [(None,'---Select---')]
+
+    for i in range(len(sub_division_name_list)):
+        SUB_DIVISION_CHOICES.append((sub_division_pk_list[i], sub_division_name_list[i]))
+
+    police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().values('name')]
+    police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().values('pk')]
+    i=0
+    POLICE_STATION_CHOICES = [(None,'---Select---')]
+
+    for i in range(len(police_station_name_list)):
+        POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
+
+    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+
+    sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
+    police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
+    fir_no = forms.CharField(required=False)
+    under_section = forms.CharField(required=False)
+    expiry_date_lower_limit = forms.DateField(required=False)
+    expiry_date_upper_limit = forms.DateField(required=False)
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
