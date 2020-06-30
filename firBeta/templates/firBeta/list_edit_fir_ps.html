@@ -567,39 +567,46 @@
                                         <div class="input-field">
                                             <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} appointed_io_date validate datepicker" disabled value="{{ fir_phase.appointed_io_date|date:'d/m/y' }}" placeholder="Fill Date">
                                         </div>
-                                    </td>                                                                         
-                                    <td>
-                                        <a href="#!" class="ps-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
-                                            Edit
-                                        </a>
-                                    </td>
+                                    </td>    
+                                    
+                                    {% if fir_phase.pk|is_last_phase %}
+                                        <td>
+                                            <a href="#!" class="ps-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                                Edit
+                                            </a>
+                                        </td>
 
-                                    <td>
-                                        <a href="#!" class="ps-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
-                                            Save
-                                        </a>
-                                        <br><br>
-                                        {% if fir_phase.current_status == 'Challan Filed' %}
-                                            <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
-                                                Save&Close
+                                        <td>
+                                            <a href="#!" class="ps-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                                Save
                                             </a>
-                                        {% else %}
-                                            <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
-                                                Save&Close
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.pk|all_fields_filled %}
-                                            <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4" id="add_fir_phase_{{fir_phase.pk}}">
-                                                ADD
-                                            </a>
-                                        {% else %}
-                                            <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4 disabled" id="add_fir_phase_{{fir_phase.pk}}">
-                                                ADD
-                                            </a>
-                                        {% endif %}
-                                    </td>
+                                            <br><br>
+                                            {% if fir_phase.current_status == 'Challan Filed' %}
+                                                <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% else %}
+                                                <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.pk|all_fields_filled %}
+                                                <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4" id="add_fir_phase_{{fir_phase.pk}}">
+                                                    ADD
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4 disabled" id="add_fir_phase_{{fir_phase.pk}}">
+                                                    ADD
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td><i class="material-icons">remove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
+                                    {% endif %}
                                 </tr>
 
                                 {% if fir_phase.pk|is_last_phase %}

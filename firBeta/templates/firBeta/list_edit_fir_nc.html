@@ -541,28 +541,33 @@
                                         {% else %}
                                             <i class="material-icons">remove</i>
                                         {% endif %}
-                                    </td>                                                            
-                                    <td>
-                                        <a href="#!" class="nc-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
-                                            Edit
-                                        </a>
-                                    </td>
+                                    </td>  
+                                    {% if fir_phase.pk|is_last_phase %}                                                          
+                                        <td>
+                                            <a href="#!" class="nc-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                                Edit
+                                            </a>
+                                        </td>
 
-                                    <td>
-                                        <a href="#!" class="nc-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
-                                            Save
-                                        </a>
-                                        <br><br>
-                                        {% if fir_phase.nc_status == 'Approved' %}
-                                            <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
-                                                Save&Close
+                                        <td>
+                                            <a href="#!" class="nc-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                                Save
                                             </a>
-                                        {% else %}
-                                            <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
-                                                Save&Close
-                                            </a>
-                                        {% endif %}
-                                    </td>
+                                            <br><br>
+                                            {% if fir_phase.nc_status == 'Approved' %}
+                                                <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% else %}
+                                                <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td><i class="material-icons">remove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
+                                    {% endif %}
                                 </tr>
 
                                 {% if fir_phase.pk|is_last_phase %}
