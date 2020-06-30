@@ -397,6 +397,101 @@ def edit_fir_save_ps_ajax_view(request):
         # Server Error , Error in save()
 
 
+@login_required
+def edit_fir_save_close_ps_ajax_view(request):
+    try:
+        if request.method == 'POST':
+            police_station_record_keepers = [
+                u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
+            if request.user.pk in police_station_record_keepers:
+                phase_pk = request.POST.get('phase_pk', None)
+                io_name = request.POST.get('io_name', None)
+                accused_name = request.POST.get('accused_name', None)
+                accused_status = request.POST.get('accused_status', None)
+                current_status = request.POST.get('current_status', None)
+                current_status_date = request.POST.get('current_status_date', None)
+                received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
+                put_in_court_date = request.POST.get('put_in_court_date', None)
+                received_from_nc_date = request.POST.get('received_from_nc_date', None)
+                appointed_io = request.POST.get('appointed_io', None)
+                appointed_io_date = request.POST.get('appointed_io_date', None)
+
+                if phase_pk:
+                    # Add logic to save the fir and also ensure that request is only catered if user is from same ps
+                    fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
+                        return HttpResponse(2)
+                        # return redirect('fault', fault='ACCESS DENIED!')
+
+
+                    if not (io_name and accused_name and accused_status and current_status):
+                        return HttpResponse(5)
+                        # return redirect('fault', fault='Missing essential parameters')
+                    if current_status != 'Under Investigation' and not current_status_date:
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Missing essential parameters')
+                    if not current_status == 'Challan Filed':
+                        return HttpResponse(12)
+                        # return redirect('fault', fault='Status must be Challan Filed to Close FIR')
+                    if (not fir_phase.vrk_sent_back_date) and (received_from_vrk_date):
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='File cannot be received until it is returned from SSP Office')
+                    if (put_in_court_date) and (not received_from_vrk_date):
+                        return HttpResponse(8)
+                        # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
+                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                        return HttpResponse(9)
+                        # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
+                    if (not received_from_nc_date) and (appointed_io):
+                        return HttpResponse(10)
+                        # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
+                    if (not appointed_io) and appointed_io_date:
+                        return HttpResponse(11)
+                        # return redirect('fault', fault='Please fill Marked IO name along with the date') 
+
+                    fir_phase.io_name = io_name
+                    fir_phase.accused_name = accused_name
+                    fir_phase.accused_status = accused_status
+                    fir_phase.current_status = current_status
+                    if current_status_date:
+                        fir_phase.current_status_date = datetime.strptime(
+                                current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if received_from_vrk_date:
+                        fir_phase.received_from_vrk_date = datetime.strptime(
+                                received_from_vrk_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if put_in_court_date:
+                        fir_phase.put_in_court_date = datetime.strptime(
+                                put_in_court_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if received_from_nc_date:
+                        fir_phase.received_from_nc_date = datetime.strptime(
+                                received_from_nc_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.appointed_io = appointed_io
+                    if appointed_io_date:
+                        fir_phase.appointed_io_date = datetime.strptime(
+                                appointed_io_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    fir_phase.save()
+
+                    fir = models.FIR.objects.get(pk__exact = fir_phase.fir.pk)
+                    fir.is_closed = True
+                    fir.save()
+                    
+
+                    return HttpResponse(0)
+                    # return redirect('success', msg='FIR edited and closed successfully')
+                else:
+                    return HttpResponse(1)
+                    # return redirect('fault', fault='Missing parameters for regstration. Kindly recheck')
+            else:
+                return HttpResponse(2)
+                # return redirect('fault', fault='ACCESS DENIED!')
+        else:
+            return HttpResponse(3)
+            # return redirect('fault', fault='Invalid Operation Requested')
+    except:
+        return HttpResponse(4)
+        # Server Error , Error in save()
+
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':

@@ -411,17 +411,17 @@
                                     
                                     <td>
                                         <div class="input-field">
-                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} io_name validate" disabled value="{{ fir_phase.io_name}}" placeholder="Enter name">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} io_name essential-close validate" disabled value="{{ fir_phase.io_name}}" placeholder="Enter name">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_name validate materialize-textarea" disabled>{{ fir_phase.accused_name }}</textarea>
+                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_name essential-close validate materialize-textarea" disabled>{{ fir_phase.accused_name }}</textarea>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_status validate materialize-textarea" disabled>{{ fir_phase.accused_status }}</textarea>
+                                            <textarea class="ps-editable-fields fir_phase_{{fir_phase.pk}} accused_status essential-close validate materialize-textarea" disabled>{{ fir_phase.accused_status }}</textarea>
                                         </div>
                                     </td>
 
@@ -445,7 +445,7 @@
                                     
                                     <td>
                                         <div class="input-field">
-                                            <select class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status validate" disabled>
+                                            <select class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status essential-close validate" disabled>
                                                 {% if fir_phase.current_status %}
                                                     {% if fir_phase.current_status == "Under Investigation" %}
                                                         <option class="current-status-default-option" value="" disabled>-----------------</option>
@@ -484,7 +484,7 @@
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date validate datepicker" disabled value="{{ fir_phase.current_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date essential-close validate datepicker" disabled value="{{ fir_phase.current_status_date|date:'d/m/y' }}" placeholder="Fill Date">
                                         </div>
                                     </td>
                                     <td>
@@ -568,14 +568,18 @@
                                         </div>
                                     </td>                                                                         
                                     <td>
-                                        <a href="#!" class="ps-edit-btn btn-floating btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
-                                            <i class="material-icons">edit</i>
+                                        <a href="#!" class="ps-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                            Edit
                                         </a>
                                     </td>
 
                                     <td>
-                                        <a href="#!" class="ps-save-btn btn-floating btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
-                                            <i class="material-icons">check</i>
+                                        <a href="#!" class="ps-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                            Save
+                                        </a>
+                                        <br><br>
+                                        <a class="ps-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                            Save&Close
                                         </a>
                                     </td>
                                 </tr>
@@ -604,6 +608,18 @@
                                         <td></td>
                                     </tr>
                                 {% endif %}
+
+                                <!-- Modal Structure -->
+                                <div id="close-confirmation-fir_phase_{{fir_phase.pk}}" class="modal">
+                                    <div class="modal-content">
+                                        <h4>Close FIR?</h4>
+                                        <p>Are you sure you want to close this FIR? It cannot be opened again.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
+                                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                                    </div>
+                                </div>
                             {% endfor %}
                         {% endfor %}
                     </form>
@@ -642,6 +658,18 @@
                 $(`.current_status_date.${fir_phase_pk}`).val('');
                 $(`.current_status_date.${fir_phase_pk}`).removeAttr('disabled','disabled');
             }
+        }
+
+        var isFilled = true;
+        $(`.essential-close.${fir_phase_pk}`).each(function() {
+            if ($(this).val() === '') {
+                isFilled = false;
+            }
+        })
+        if ((isFilled === true) && ($(`.current_status.${fir_phase_pk}`).val() === 'Challan Filed')) {
+            $(`#save_close_${fir_phase_pk}`).removeClass("disabled");
+        } else {
+            $(`#save_close_${fir_phase_pk}`).addClass("disabled");
         }
     })
 
@@ -700,5 +728,67 @@
             }
         });
     });
+
+    $('.close-confirmation-modal-btn').click(function () {
+        var fir_phase_id = $(this).attr('id').substring(29);
+        var fir_phase_pk = $(this).attr('id').substring(39);
+        $.ajax({
+            type: 'POST',
+            url: '/firBeta/ajax/edit_fir_save_close_ps/',
+            headers: {
+                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+            },
+            data: {
+                phase_pk: fir_phase_pk,
+                io_name: $(`.io_name.${fir_phase_id}`).val(),
+                accused_name: $(`.accused_name.${fir_phase_id}`).val(),
+                accused_status: $(`.accused_status.${fir_phase_id}`).val(),
+                current_status: $(`.current_status.${fir_phase_id}`).val(),
+                current_status_date: $(`.current_status_date.${fir_phase_id}`).val(),
+                received_from_vrk_date: $(`.received_from_vrk_date.${fir_phase_id}`).val(),
+                put_in_court_date: $(`.put_in_court_date.${fir_phase_id}`).val(),
+                received_from_nc_date: $(`.received_from_nc_date.${fir_phase_id}`).val(),
+                appointed_io: $(`.appointed_io.${fir_phase_id}`).val(),
+                appointed_io_date: $(`.appointed_io_date.${fir_phase_id}`).val(),              
+            },
+            success: function (data) {
+                if (data == 0) {
+                    $(`#save_${fir_phase_id}`).addClass('disabled');
+                    $(`#save_close_${fir_phase_id}`).addClass('disabled');
+                    $(`#edit_${fir_phase_id}`).removeClass('disabled');
+                    $(`.ps-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $('select').formSelect();
+                    alert('FIR saved and closed successfully!');
+                    window.location.href = '/firBeta/ps/';
+                } else if (data == 1) {
+                    window.location.href = '/fault/Missing%20parameters%20for%registration';
+                } else if (data == 2) {
+                    window.location.href = '/fault/ACCESS%20DENIED!';
+                } else if (data == 3) {
+                    window.location.href = '/fault/Invalid%20Operation%20Requested';
+                } else if (data == 4) {
+                    alert('ERROR\nInvalid parameters passed, kindly recheck.' )
+                } else if (data == 5) {
+                    alert('ERROR\nMissing essential parameters' )
+                } else if (data == 6) {
+                    alert('ERROR\nMissing essential parameters' )
+                } else if (data == 7) {
+                    alert('ERROR\nFile cannot be received until it is returned from SSP Office' )
+                } else if (data == 8) {
+                    alert('ERROR\nFile cannot be submitted in Court before it is received back from SSP Office' )
+                } else if (data == 9) {
+                    alert('ERROR\nFile cannot be received until it is returned from Naib Court' )
+                } else if (data == 10) {
+                    alert('ERROR\nFile cannot be marked to new IO before receiving from Naib Court' )
+                } else if (data == 11) {
+                    alert('ERROR\nPlease fill Marked IO name along with the date' )
+                } else if (data == 12) {
+                    alert('ERROR\nStatus must be Challan Filed to Close FIR' )
+                }
+            }
+        });
+    });
+
+
 </script>
 {% endblock tail %}
