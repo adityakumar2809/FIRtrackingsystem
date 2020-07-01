@@ -684,6 +684,7 @@
     $('.ps-editable-fields').change(function() {
         var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
         $(`#save_${fir_phase_pk}`).removeClass('disabled');
+        $(`#add_${fir_phase_pk}`).addClass('disabled');
 
         if ($(this).hasClass('current_status')) {
             if($(this).val() == 'Under Investigation') {
@@ -706,33 +707,6 @@
         } else {
             $(`#save_close_${fir_phase_pk}`).addClass("disabled");
         }
-
-        $.ajax({
-            type: 'GET',
-            url: '/firBeta/ajax/all_fields_filled/',
-            data: {
-                phase_pk: fir_phase_pk.substring(10)
-            },
-            success: function (data) {
-                if (data == 0) {
-                    var isFilled = true;
-                    $(`.ps-editable-fields.${fir_phase_pk}`).each(function() {
-                        if ($(this).val() === '') {
-                            isFilled = false;
-                        }
-                    })
-                    if (isFilled) {
-                        $(`#add_${fir_phase_pk}`).removeClass('disabled')
-                    } else {
-                        $(`#add_${fir_phase_pk}`).addClass('disabled')
-                    }
-
-                } else if (data == 1) {
-                    $(`#add_${fir_phase_pk}`).addClass('disabled')
-                }
-            }
-        })
-
     })
 
     $('.ps-save-btn').click(function () {
@@ -787,6 +761,33 @@
                 } else if (data == 11) {
                     alert('ERROR\nPlease fill Marked IO name along with the date' )
                 }
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/firBeta/ajax/all_fields_filled/',
+                    data: {
+                        phase_pk: fir_phase_pk
+                    },
+                    success: function (data) {
+                        if (data == 0) {
+                            $(`#add_${fir_phase_id}`).removeClass('disabled')
+                            // var isFilled = true;
+                            // $(`.ps-editable-fields.${fir_phase_pk}`).each(function() {
+                            //     if ($(this).val() === '') {
+                            //         isFilled = false;
+                            //     }
+                            // })
+                            // if (isFilled) {
+                            //     $(`#add_${fir_phase_pk}`).removeClass('disabled')
+                            // } else {
+                            //     $(`#add_${fir_phase_pk}`).addClass('disabled')
+                            // }
+
+                        } else if (data == 1) {
+                            $(`#add_${fir_phase_id}`).addClass('disabled')
+                        }
+                    }
+                })
             }
         });
     });

@@ -235,6 +235,7 @@
             if ($('#current_status').val() === 'Under Investigation') {
                 $('#status_date').val("XXXXXXX");
                 $('#status_date').attr("disabled", "disabled");
+                $('.save-close-btn').addClass('disabled'); // to be committed
             } else {
                 $('#status_date').removeAttr("disabled", "disabled");
                 $('#status_date').val("");

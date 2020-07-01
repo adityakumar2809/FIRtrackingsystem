@@ -356,6 +356,9 @@ def edit_fir_save_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
+                if current_status_date == 'XXXXXXX':
+                    current_status_date = None
+
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
@@ -442,6 +445,9 @@ def edit_fir_save_close_ps_ajax_view(request):
                 received_from_nc_date = request.POST.get('received_from_nc_date', None)
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
+
+                if current_status_date == 'XXXXXXX':
+                    current_status_date = None
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
