@@ -28,6 +28,15 @@ def is_last_phase(pk):
     else:
         return False
 
+@register.filter
+def is_third_phase(pk):
+    fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+    fir_phase_list = fir_phase.fir.phases.all()
+    if len(fir_phase_list) == 3:
+        return True
+    else:
+        return False
+
 
 @register.filter
 def get_expiry_date(pk):

@@ -598,14 +598,18 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            {% if fir_phase.pk|all_fields_filled %}
-                                                <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4" id="add_fir_phase_{{fir_phase.pk}}">
-                                                    ADD
-                                                </a>
+                                            {% if  fir_phase.pk|is_third_phase %}
+                                                <td><i class="material-icons">remove</i></td>
                                             {% else %}
-                                                <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4 disabled" id="add_fir_phase_{{fir_phase.pk}}">
-                                                    ADD
-                                                </a>
+                                                {% if fir_phase.pk|all_fields_filled %}
+                                                    <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4" id="add_fir_phase_{{fir_phase.pk}}">
+                                                        ADD
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'firBeta:add_new_phase_fir' pk=fir_phase.pk %}" class="ps-add-phase-btn btn waves-effect waves-light cyan darken-4 disabled" id="add_fir_phase_{{fir_phase.pk}}">
+                                                        ADD
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     {% else %}
