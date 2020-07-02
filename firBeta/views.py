@@ -51,7 +51,7 @@ def create_fir_save_ajax_view(request):
                         current_status_date = None
                     else:
                         if current_status_date < date:
-                            print('Recognised')
+                            
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -105,7 +105,7 @@ def create_fir_save_add_ajax_view(request):
                         current_status_date = None
                     else:
                         if current_status_date < date:
-                            print('Recognised')
+                            
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -159,7 +159,7 @@ def create_fir_save_edit_ajax_view(request):
                         current_status_date = None
                     else:
                         if current_status_date < date:
-                            print('Recognised')
+                            
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -213,7 +213,7 @@ def create_fir_save_close_ajax_view(request):
                         current_status_date = None
                     else:
                         if current_status_date < date:
-                            print('Recognised')
+                            
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -375,12 +375,18 @@ def edit_fir_save_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
-                if current_status_date == 'XXXXXXX':
-                    current_status_date = None
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < fir_phase.date_registered:
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+
                     if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -465,15 +471,20 @@ def edit_fir_save_close_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
-                if current_status_date == 'XXXXXXX':
-                    current_status_date = None
-
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
                     if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
+
+
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < fir_phase.date_registered:
+                            return HttpResponse(13)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
 
 
                     if not (io_name and accused_name and accused_status and current_status):

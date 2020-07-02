@@ -764,6 +764,8 @@
                     alert('ERROR\nFile cannot be marked to new IO before receiving from Naib Court' )
                 } else if (data == 11) {
                     alert('ERROR\nPlease fill Marked IO name along with the date' )
+                } else if (data == 12) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
 
                 $.ajax({
@@ -851,6 +853,8 @@
                     alert('ERROR\nPlease fill Marked IO name along with the date' )
                 } else if (data == 12) {
                     alert('ERROR\nStatus must be Challan Filed to Close FIR' )
+                } else if (data == 13) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
             }
         });
