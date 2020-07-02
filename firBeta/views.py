@@ -50,8 +50,7 @@ def create_fir_save_ajax_view(request):
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     else:
-                        if current_status_date < date:
-                            
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -104,8 +103,7 @@ def create_fir_save_add_ajax_view(request):
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     else:
-                        if current_status_date < date:
-                            
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -158,8 +156,7 @@ def create_fir_save_edit_ajax_view(request):
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     else:
-                        if current_status_date < date:
-                            
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -212,8 +209,7 @@ def create_fir_save_close_ajax_view(request):
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
                     else:
-                        if current_status_date < date:
-                            
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
