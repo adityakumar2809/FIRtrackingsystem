@@ -299,7 +299,9 @@
                 } else if (data == 3) {
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
-                    alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                    alert('ERROR: Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
             }
         });
@@ -343,6 +345,8 @@
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
                     alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
             }
         });
@@ -378,6 +382,8 @@
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
                     alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
             }
         });
@@ -421,6 +427,8 @@
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
                     alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
                 }
             }
         });

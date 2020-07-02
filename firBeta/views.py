@@ -47,11 +47,16 @@ def create_fir_save_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if current_status_date < date:
+                            print('Recognised')
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -96,11 +101,16 @@ def create_fir_save_add_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if current_status_date < date:
+                            print('Recognised')
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -145,12 +155,16 @@ def create_fir_save_edit_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if current_status_date < date:
+                            print('Recognised')
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
-                    
                     if current_status_date :
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -195,12 +209,17 @@ def create_fir_save_close_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if current_status_date < date:
+                            print('Recognised')
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no,
                                                            is_closed=True)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
