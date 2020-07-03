@@ -695,6 +695,12 @@
                     alert('ERROR\nFill both Status and Date' )
                 } else if (data == 7) {
                     alert('ERROR\nFIR cannot be returned before marking it for reinvestigation' )
+                } else if (data == 8) {
+                    alert('ERROR\nThe date for receiving the FIR cannot be before it is sent from the Police Station' )
+                } else if (data == 9) {
+                    alert('ERROR\nThe date of marking status cannot be before the date of receiving it' )
+                } else if (data == 10) {
+                    alert('ERROR\nThe date of sending the FIR back cannot be before the date of marking its status' )
                 }
             }
         });
@@ -741,6 +747,12 @@
                     alert('ERROR\nStatus must be Approved to close FIR' )
                 } else if (data == 8) {
                     alert('ERROR\nApproved FIRs cannot be returned' )
+                } else if (data == 9) {
+                    alert('ERROR\nThe date for receiving the FIR cannot be before it is sent from the Police Station' )
+                } else if (data == 10) {
+                    alert('ERROR\nThe date of marking status cannot be before the date of receiving it' )
+                } else if (data == 11) {
+                    alert('ERROR\nThe date of sending the FIR back cannot be before the date of marking its status' )
                 }
             }
         });

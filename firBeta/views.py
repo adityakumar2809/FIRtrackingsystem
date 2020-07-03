@@ -637,6 +637,19 @@ def edit_fir_save_nc_ajax_view(request):
                         return HttpResponse(7)
                         # return redirect('fault', fault='FIR cannot be returned before marking it for reinvestigation it')
 
+                    if fir_phase.put_in_court_date and nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
+                            return HttpResponse(8)
+                            # return redirect('fault', fault='The date for receiving the FIR cannot be before it is sent from the Police Station')
+                    if nc_receival_date and nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y') < datetime.strptime(nc_receival_date, '%d/%m/%y'):
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='The date of marking status cannot be before the date of receiving it')
+                    if nc_status_date and nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')                       
+
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
                                 nc_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -702,6 +715,19 @@ def edit_fir_save_close_nc_ajax_view(request):
                     if nc_sent_back_date:
                         return HttpResponse(8)
                         # return redirect('fault', fault='Approved FIRs cannot be returned')
+
+                    if fir_phase.put_in_court_date and nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='The date for receiving the FIR cannot be before it is sent from the Police Station')
+                    if nc_receival_date and nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y') < datetime.strptime(nc_receival_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='The date of marking status cannot be before the date of receiving it')
+                    if nc_status_date and nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')
 
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
