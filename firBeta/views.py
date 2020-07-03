@@ -396,6 +396,11 @@ def edit_fir_save_ps_ajax_view(request):
                             return HttpResponse(12)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
 
+                        if fir_phase.phase_index != 1:
+                            if datetime.strptime(current_status_date, '%d/%m/%y').date() < models.FIRPhase.objects.get(fir__pk__exact = fir_phase.fir.pk, phase_index__exact = fir_phase.phase_index - 1).appointed_io_date:
+                                return HttpResponse(17)
+                                # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
                     if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -443,7 +448,6 @@ def edit_fir_save_ps_ajax_view(request):
                             # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
 
 
-                    print(current_status)
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
                     fir_phase.accused_status = accused_status
@@ -516,6 +520,11 @@ def edit_fir_save_close_ps_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y').date() < fir_phase.date_registered:
                             return HttpResponse(13)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
+
+                        if not fir_phase.phase_index == 1:
+                            if datetime.strptime(current_status_date, '%d/%m/%y').date() < models.FIRPhase.objects.get(fir__pk__exact = fir_phase.fir.pk, phase_index__exact = fir_phase.phase_index - 1).appointed_io_date:
+                                return HttpResponse(18)
+                                # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
 
                     if not (io_name and accused_name and accused_status and current_status):

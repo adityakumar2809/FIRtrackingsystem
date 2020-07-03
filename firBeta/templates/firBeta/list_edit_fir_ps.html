@@ -784,6 +784,8 @@
                     alert('ERROR:\nThe date for receiving the FIR from Naib Court cannot be before it is sent back from there' )
                 } else if (data == 16) {
                     alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
+                } else if (data == 17) {
+                    alert('ERROR:\nDate of current status cannot be before date of appointing the new IO in previous phase' )
                 }
 
                 $.ajax({
@@ -881,6 +883,8 @@
                     alert('ERROR:\nThe date for receiving the FIR from Naib Court cannot be before it is sent back from there' )
                 } else if (data == 17) {
                     alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
+                } else if (data == 18) {
+                    alert('ERROR:\nDate of current status cannot be before date of appointing the new IO in previous phase' )
                 }
             }
         });
