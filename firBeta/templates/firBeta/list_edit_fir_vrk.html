@@ -650,6 +650,12 @@
                     alert('ERROR\nEnter Date along with status' )
                 } else if (data == 7) {
                     alert('ERROR\nFIR cannot be returned before Approving it' )
+                } else if (data == 8) {
+                    alert('ERROR\nDate of receiving FIR cannot be before date of sending by Police Station' )
+                } else if (data == 9) {
+                    alert('ERROR\nDate of marking status cannot be before the date of receiving it' )
+                } else if (data == 10) {
+                    alert('ERROR\nDate of sending back the FIR cannot be before its date of marked status' )
                 }
             }
         });
