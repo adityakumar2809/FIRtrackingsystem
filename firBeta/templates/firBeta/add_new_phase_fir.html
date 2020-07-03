@@ -299,6 +299,8 @@
                     alert('ERROR\nInvalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
                 } else if (data == 5) {
                     alert('ERROR\nMore than 3 phases cannot exist')
+                } else if (data == 6) {
+                    alert('ERROR\nDate of current status cannot be before date of appointing the new IO in previous phase')
                 }
             }
         });
@@ -334,6 +336,10 @@
                     window.location.href = '/fault/Invalid%20Operation%20Requested';
                 } else if (data == 4) {
                     alert('Invalid parameters passed, kindly recheck. \n(Possible Error: Duplication of FIR Number)' )
+                } else if (data == 5) {
+                    alert('ERROR\nMore than 3 phases cannot exist')
+                } else if (data == 6) {
+                    alert('ERROR\nDate of current status cannot be before date of appointing the new IO in previous phase')
                 }
             }
         });

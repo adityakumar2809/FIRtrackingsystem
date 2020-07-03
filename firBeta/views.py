@@ -828,6 +828,10 @@ def add_new_phase_fir_save_ajax_view(request):
                         return HttpResponse(5)
                         # return redirect('fault', fault='More than 3 phases cannot exist')
                     if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name, accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
@@ -877,6 +881,10 @@ def add_new_phase_fir_save_close_ajax_view(request):
                         return HttpResponse(5)
                         # return redirect('fault', fault='More than 3 phases cannot exist')
                     if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
