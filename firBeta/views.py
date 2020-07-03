@@ -302,15 +302,18 @@ def edit_fir_save_vrk_ajax_view(request):
                         return HttpResponse(7)
                         # return redirect('fault', fault='FIR cannot be returned before Approving it')
 
-                    if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() < fir_phase.current_status_date:
-                        return HttpResponse(8)
-                        # return redirect('fault', fault='Date of receiving FIR cannot be before date of sending by Police Station')
-                    if datetime.strptime(vrk_status_date, '%d/%m/%y') < datetime.strptime(vrk_receival_date, '%d/%m/%y'):
-                        return HttpResponse(9)
-                        # return redirect('fault', fault='Date of marking status cannot be before the date of receiving it')
-                    if datetime.strptime(vrk_sent_back_date, '%d/%m/%y') < datetime.strptime(vrk_status_date, '%d/%m/%y'):
-                        return HttpResponse(10)
-                        # return redirect('fault', fault='Date of sending back the FIR cannot be before its date of marked status')
+                    if vrk_receival_date and fir_phase.current_status_date:
+                        if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() < fir_phase.current_status_date:
+                            return HttpResponse(8)
+                            # return redirect('fault', fault='Date of receiving FIR cannot be before date of sending by Police Station')
+                    if vrk_status_date and vrk_receival_date:
+                        if datetime.strptime(vrk_status_date, '%d/%m/%y') < datetime.strptime(vrk_receival_date, '%d/%m/%y'):
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='Date of marking status cannot be before the date of receiving it')
+                    if vrk_sent_back_date and vrk_status_date:
+                        if datetime.strptime(vrk_sent_back_date, '%d/%m/%y') < datetime.strptime(vrk_status_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='Date of sending back the FIR cannot be before its date of marked status')
 
                     if vrk_receival_date:
                         fir_phase.vrk_receival_date = datetime.strptime(
