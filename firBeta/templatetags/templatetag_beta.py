@@ -57,3 +57,8 @@ def all_fields_filled(pk):
     
     return True
 
+
+@register.filter
+def get_color_shade(phase_index):
+    return 4 if phase_index == 1 else 3 if phase_index == 2 else 2
+

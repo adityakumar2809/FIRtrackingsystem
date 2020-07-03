@@ -417,7 +417,7 @@
                         {% csrf_token %}
                         {% for fir_set in fir_list %}
                             {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-4 data-row fir_phase_{{fir_phase.pk}}">
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}">
                                     <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                     <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
                                     <td>{{ fir_phase.under_section }}</td>
