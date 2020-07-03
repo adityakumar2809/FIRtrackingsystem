@@ -766,6 +766,10 @@
                     alert('ERROR\nPlease fill Marked IO name along with the date' )
                 } else if (data == 12) {
                     alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
+                } else if (data == 13) {
+                    alert('ERROR:\nThe date for receiving the FIR from VRK cannot be before it is sent back from there' )
+                } else if (data == 14) {
+                    alert('ERROR:\nThe date for submitting the FIRin courtcannot be before receiving it from VRK' )
                 }
 
                 $.ajax({
@@ -855,6 +859,10 @@
                     alert('ERROR\nStatus must be Challan Filed to Close FIR' )
                 } else if (data == 13) {
                     alert('ERROR:\nThe date for current status can\'t be before the date of registration' )
+                } else if (data == 14) {
+                    alert('ERROR:\nThe date for receiving the FIR from VRK cannot be before it is sent back from there' )
+                } else if (data == 15) {
+                    alert('ERROR:\nThe date for submitting the FIRin courtcannot be before receiving it from VRK' )
                 }
             }
         });

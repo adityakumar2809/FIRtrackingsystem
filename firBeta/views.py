@@ -422,6 +422,17 @@ def edit_fir_save_ps_ajax_view(request):
                         return HttpResponse(11)
                         # return redirect('fault', fault='Please fill Marked IO name along with the date') 
 
+                    if fir_phase.vrk_sent_back_date and received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() < fir_phase.vrk_sent_back_date:
+                            return HttpResponse(13)
+                            # return redirect('fault', fault='The date for receiving the FIR from VRK cannot be before it is sent back from there')
+
+                    if put_in_court_date and received_from_vrk_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y') < datetime.strptime(received_from_vrk_date, '%d/%m/%y'):
+                            return HttpResponse(14)
+                            # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
+
+
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
                     fir_phase.accused_status = accused_status
@@ -520,6 +531,16 @@ def edit_fir_save_close_ps_ajax_view(request):
                     if (not appointed_io) and appointed_io_date:
                         return HttpResponse(11)
                         # return redirect('fault', fault='Please fill Marked IO name along with the date') 
+
+                    if fir_phase.vrk_sent_back_date and received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() < fir_phase.vrk_sent_back_date:
+                            return HttpResponse(14)
+                            # return redirect('fault', fault='The date for receiving the FIR from VRK cannot be before it is sent back from there')
+
+                    if put_in_court_date and received_from_vrk_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y') < datetime.strptime(received_from_vrk_date, '%d/%m/%y'):
+                            return HttpResponse(15)
+                            # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
 
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
