@@ -415,7 +415,7 @@
                         {% csrf_token %}
                         {% for fir_set in fir_list %}
                             {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-4 data-row">
+                                <tr class="cyan lighten-4 data-row fir_phase_{{fir_phase.pk}}">
                                     <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                     <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
                                     <td>{{ fir_phase.under_section }}</td>
@@ -642,6 +642,8 @@
         $(`.nc-editable-fields.${fir_phase_pk}`).each(function() {
             $(this).removeAttr("disabled", "disabled");
         })
+        $(`.data-row.${fir_phase_pk}`).removeClass('cyan');
+        $(`.data-row.${fir_phase_pk}`).addClass('teal');
         $('select').formSelect();
     })
 
@@ -683,6 +685,8 @@
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
                     $(`.nc-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $(`.data-row.${fir_phase_id}`).removeClass('teal');
+                    $(`.data-row.${fir_phase_id}`).addClass('cyan');
                     $('select').formSelect();
                     alert('FIR saved successfully!');
                 } else if (data == 1) {
@@ -734,6 +738,8 @@
                     $(`#save_close_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
                     $(`.nc-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $(`.data-row.${fir_phase_id}`).removeClass('teal');
+                    $(`.data-row.${fir_phase_id}`).addClass('cyan');
                     $('select').formSelect();
                     alert('FIR saved and closed successfully!');
                     window.location.href = '/firBeta/nc/';
