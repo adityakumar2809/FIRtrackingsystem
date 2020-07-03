@@ -432,6 +432,16 @@ def edit_fir_save_ps_ajax_view(request):
                             return HttpResponse(14)
                             # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
 
+                    if fir_phase.nc_sent_back_date and received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() < fir_phase.nc_sent_back_date:
+                            return HttpResponse(15)
+                            # return redirect('fault', fault='The date for receiving the FIR from Naib Court cannot be before it is sent back from there')
+
+                    if received_from_nc_date and appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y') < datetime.strptime(received_from_nc_date, '%d/%m/%y'):
+                            return HttpResponse(16)
+                            # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
+
 
                     print(current_status)
                     fir_phase.io_name = io_name
@@ -542,6 +552,16 @@ def edit_fir_save_close_ps_ajax_view(request):
                         if datetime.strptime(put_in_court_date, '%d/%m/%y') < datetime.strptime(received_from_vrk_date, '%d/%m/%y'):
                             return HttpResponse(15)
                             # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
+
+                    if fir_phase.nc_sent_back_date and received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() < fir_phase.nc_sent_back_date:
+                            return HttpResponse(16)
+                            # return redirect('fault', fault='The date for receiving the FIR from Naib Court cannot be before it is sent back from there')
+
+                    if received_from_nc_date and appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y') < datetime.strptime(received_from_nc_date, '%d/%m/%y'):
+                            return HttpResponse(17)
+                            # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
 
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name

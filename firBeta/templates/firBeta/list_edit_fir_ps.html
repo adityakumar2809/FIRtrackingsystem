@@ -780,6 +780,10 @@
                     alert('ERROR:\nThe date for receiving the FIR from VRK cannot be before it is sent back from there' )
                 } else if (data == 14) {
                     alert('ERROR:\nThe date for submitting the FIRin courtcannot be before receiving it from VRK' )
+                } else if (data == 15) {
+                    alert('ERROR:\nThe date for receiving the FIR from Naib Court cannot be before it is sent back from there' )
+                } else if (data == 16) {
+                    alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
                 }
 
                 $.ajax({
@@ -873,6 +877,10 @@
                     alert('ERROR:\nThe date for receiving the FIR from VRK cannot be before it is sent back from there' )
                 } else if (data == 15) {
                     alert('ERROR:\nThe date for submitting the FIRin courtcannot be before receiving it from VRK' )
+                } else if (data == 16) {
+                    alert('ERROR:\nThe date for receiving the FIR from Naib Court cannot be before it is sent back from there' )
+                } else if (data == 17) {
+                    alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
                 }
             }
         });
