@@ -357,7 +357,7 @@
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
                         <th class="header-element-1" rowspan="2">Received Back in PS Date</th>
                         <th class="header-element-1" rowspan="2">Put in Court Date</th>
-                        <th class="header-element-1" colspan="3">Naib Court</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
                         <th class="header-element-1" rowspan="2">Save</th>
@@ -373,6 +373,7 @@
                         <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
                         <th class="header-element-2 sub-head-odd">Received Back on Date</th>
                         <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
@@ -398,6 +399,7 @@
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>/////////////////////////</td>
+                        <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
@@ -459,32 +461,32 @@
                                                         <option value="Under Investigation" selected>Under Investigation</option>
                                                         <option value="Challan Filed">Challan Filed</option>
                                                         <option value="Untraced">Untraced</option>
-                                                        <option value="Cancellation">Cancellation</option>
+                                                        <option value="Cancelled">Cancelled</option>
                                                     {% elif fir_phase.current_status == "Challan Filed" %}
                                                         <option class="current-status-default-option" value="" disabled>-----------------</option>
                                                         <option value="Under Investigation">Under Investigation</option>
                                                         <option value="Challan Filed" selected>Challan Filed</option>
                                                         <option value="Untraced">Untraced</option>
-                                                        <option value="Cancellation">Cancellation</option>
+                                                        <option value="Cancelled">Cancelled</option>
                                                     {% elif fir_phase.current_status == "Untraced" %}
                                                         <option class="current-status-default-option" value="" disabled>-----------------</option>
                                                         <option value="Under Investigation">Under Investigation</option>
                                                         <option value="Challan Filed">Challan Filed</option>
                                                         <option value="Untraced" selected>Untraced</option>
-                                                        <option value="Cancellation">Cancellation</option>
+                                                        <option value="Cancelled">Cancelled</option>
                                                     {% elif fir_phase.current_status == "Cancelled" %}
                                                         <option class="current-status-default-option" value="" disabled>-----------------</option>
                                                         <option value="Under Investigation">Under Investigation</option>
                                                         <option value="Challan Filed">Challan Filed</option>
                                                         <option value="Untraced">Untraced</option>
-                                                        <option value="Cancellation" selected>Cancellation</option>
+                                                        <option value="Cancelled" selected>Cancelled</option>
                                                     {% endif %}
                                                 {% else %}
                                                     <option class="current-status-default-option" value="" disabled selected>-----------------</option>
                                                     <option value="Under Investigation">Under Investigation</option>
                                                     <option value="Challan Filed">Challan Filed</option>
                                                     <option value="Untraced">Untraced</option>
-                                                    <option value="Cancellation">Cancellation</option>
+                                                    <option value="Cancelled">Cancelled</option>
                                                 {% endif %}
                                             </select>
                                         </div>
@@ -549,6 +551,13 @@
                                     <td>
                                         {% if fir_phase.nc_status_date %}
                                             {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_sent_back_date %}
+                                            {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
                                         {% else %}
                                             <i class="material-icons">remove</i>
                                         {% endif %}
@@ -621,6 +630,7 @@
 
                                 {% if fir_phase.pk|is_last_phase %}
                                     <tr class="blank-row">
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

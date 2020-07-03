@@ -58,6 +58,7 @@ class FIRPhase(models.Model):
     nc_receival_date = models.DateField(blank=True, null=True)
     nc_status = models.CharField(max_length=50, choices=NC_STATUS_CHOICES, blank=True, null=True)
     nc_status_date = models.DateField(blank=True, null=True)
+    nc_sent_back_date = models.DateField(blank=True, null=True)
 
     received_from_nc_date = models.DateField(blank=True, null=True)
     appointed_io = models.CharField(max_length=100, blank=True, null=True)

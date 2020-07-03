@@ -195,7 +195,7 @@
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
                         <th class="header-element-1" rowspan="2">Received Back in PS Date</th>
                         <th class="header-element-1" rowspan="2">Put in Court Date</th>
-                        <th class="header-element-1" colspan="3">Naib Court</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                     </tr>
                     <tr class="header-row-2">
@@ -208,6 +208,7 @@
                         <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
                         <th class="header-element-2 sub-head-odd">Received Back on Date</th>
                         <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
@@ -233,6 +234,7 @@
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>/////////////////////////</td>
+                        <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
@@ -340,6 +342,13 @@
                                     {% endif %}
                                 </td>
                                 <td>
+                                    {% if fir_phase.nc_sent_back_date %}
+                                        {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                    {% else %}
+                                        <i class="material-icons">remove</i>
+                                    {% endif %}
+                                </td>
+                                <td>
                                     {% if fir_phase.received_from_nc_date %}
                                         {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
                                     {% else %}
@@ -364,6 +373,7 @@
 
                             {% if fir_phase.pk|is_last_phase %}
                                 <tr class="blank-row">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

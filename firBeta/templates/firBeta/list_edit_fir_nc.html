@@ -357,7 +357,7 @@
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
                         <th class="header-element-1" rowspan="2">Received Back in PS Date</th>
                         <th class="header-element-1" rowspan="2">Put in Court Date</th>
-                        <th class="header-element-1" colspan="3">Naib Court</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
                         <th class="header-element-1" rowspan="2">Save</th>
@@ -372,6 +372,7 @@
                         <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
                         <th class="header-element-2 sub-head-odd">Received Back on Date</th>
                         <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
@@ -397,6 +398,7 @@
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>/////////////////////////</td>
+                        <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
@@ -527,6 +529,11 @@
                                         </div>
                                     </td> 
                                     <td>
+                                        <div class="input-field">
+                                            <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_sent_back_date validate datepicker" disabled value="{{ fir_phase.nc_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>  
+                                    <td>
                                         {% if fir_phase.received_from_nc_date %}
                                             {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
                                         {% else %}
@@ -577,6 +584,7 @@
 
                                 {% if fir_phase.pk|is_last_phase %}
                                     <tr class="blank-row">
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -664,6 +672,7 @@
                 nc_receival_date: $(`.nc_receival_date.${fir_phase_id}`).val(),
                 nc_status: $(`.nc_status.${fir_phase_id}`).val(),
                 nc_status_date: $(`.nc_status_date.${fir_phase_id}`).val(),
+                nc_sent_back_date: $(`.nc_sent_back_date.${fir_phase_id}`).val(),
             },
             success: function (data) {
                 if (data == 0) {
@@ -684,6 +693,8 @@
                     alert('ERROR\nFile cannot be received until it is submitted by Police Station' )
                 } else if (data == 6) {
                     alert('ERROR\nFill both Status and Date' )
+                } else if (data == 7) {
+                    alert('ERROR\nFIR cannot be returned before marking it for reinvestigation' )
                 }
             }
         });
@@ -703,6 +714,7 @@
                 nc_receival_date: $(`.nc_receival_date.${fir_phase_id}`).val(),
                 nc_status: $(`.nc_status.${fir_phase_id}`).val(),
                 nc_status_date: $(`.nc_status_date.${fir_phase_id}`).val(),            
+                nc_sent_back_date: $(`.nc_sent_back_date.${fir_phase_id}`).val(),            
             },
             success: function (data) {
                 if (data == 0) {
@@ -727,6 +739,8 @@
                     alert('ERROR\nFill both Status and Date' )
                 } else if (data == 7) {
                     alert('ERROR\nStatus must be Approved to close FIR' )
+                } else if (data == 8) {
+                    alert('ERROR\nApproved FIRs cannot be returned' )
                 }
             }
         });

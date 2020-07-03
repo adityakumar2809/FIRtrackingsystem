@@ -412,13 +412,13 @@ def edit_fir_save_ps_ajax_view(request):
                     if (put_in_court_date) and (not received_from_vrk_date):
                         return HttpResponse(8)
                         # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
-                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                    if (not fir_phase.nc_sent_back_date) and (received_from_nc_date):
                         return HttpResponse(9)
                         # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
                     if (not received_from_nc_date) and (appointed_io):
                         return HttpResponse(10)
                         # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
-                    if (not appointed_io) and appointed_io_date:
+                    if ((not appointed_io) and appointed_io_date) or (appointed_io and (not appointed_io_date)):
                         return HttpResponse(11)
                         # return redirect('fault', fault='Please fill Marked IO name along with the date') 
 
@@ -433,6 +433,7 @@ def edit_fir_save_ps_ajax_view(request):
                             # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
 
 
+                    print(current_status)
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
                     fir_phase.accused_status = accused_status
@@ -522,10 +523,10 @@ def edit_fir_save_close_ps_ajax_view(request):
                     if (put_in_court_date) and (not received_from_vrk_date):
                         return HttpResponse(8)
                         # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
-                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                    if (received_from_nc_date) and (not fir_phase.nc_sent_back_date):
                         return HttpResponse(9)
                         # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
-                    if (not received_from_nc_date) and (appointed_io):
+                    if ((not appointed_io) and appointed_io_date) or (appointed_io and (not appointed_io_date)):
                         return HttpResponse(10)
                         # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
                     if (not appointed_io) and appointed_io_date:
@@ -597,7 +598,7 @@ def list_edit_fir_nc_view(request):
             fir_phase_list = fir.phases.all()
             if not fir_phase_list[len(fir_phase_list)-1].put_in_court_date:
                 continue
-            if fir_phase_list[len(fir_phase_list)-1].nc_status in ['Approved', 'Reinvestigation']:
+            if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
         return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list})
@@ -616,11 +617,12 @@ def edit_fir_save_nc_ajax_view(request):
                 nc_receival_date = request.POST.get('nc_receival_date', None)
                 nc_status = request.POST.get('nc_status', None)
                 nc_status_date = request.POST.get('nc_status_date', None)
+                nc_sent_back_date = request.POST.get('nc_sent_back_date', None)
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
-                    nc_status_initial = fir_phase.nc_status
+                    nc_sent_back_date_initial = fir_phase.nc_sent_back_date
                     if fir_phase.fir.police_station != acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -631,6 +633,9 @@ def edit_fir_save_nc_ajax_view(request):
                     if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
                         return HttpResponse(6)
                         # return redirect('fault', fault='Fill both Status and Date')
+                    if (not nc_status == 'Reinvestigation') and nc_sent_back_date:
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='FIR cannot be returned before marking it for reinvestigation it')
 
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
@@ -639,10 +644,12 @@ def edit_fir_save_nc_ajax_view(request):
                     if nc_status_date:
                         fir_phase.nc_status_date = datetime.strptime(
                                 nc_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if nc_sent_back_date:
+                        fir_phase.nc_sent_back_date = datetime.strptime(nc_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
-                    nc_status_final = fir_phase.nc_status
+                    nc_sent_back_date_final = fir_phase.nc_sent_back_date
 
-                    if nc_status_initial != 'Reinvestigation' and nc_status_final == 'Reinvestigation':
+                    if (not nc_sent_back_date_initial) and nc_sent_back_date_final:
                         email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
                         send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been reverted for reinvestigation from the Naib Court. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
                     
@@ -674,6 +681,7 @@ def edit_fir_save_close_nc_ajax_view(request):
                 nc_receival_date = request.POST.get('nc_receival_date', None)
                 nc_status = request.POST.get('nc_status', None)
                 nc_status_date = request.POST.get('nc_status_date', None)
+                nc_sent_back_date = request.POST.get('nc_sent_back_date', None)
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
@@ -691,6 +699,10 @@ def edit_fir_save_close_nc_ajax_view(request):
                     if nc_status != 'Approved':
                         return HttpResponse(7)
                         # return redirect('fault', fault='The status must be Approved to Close the FIR')
+                    if nc_sent_back_date:
+                        return HttpResponse(8)
+                        # return redirect('fault', fault='Approved FIRs cannot be returned')
+
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
                                 nc_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
