@@ -786,6 +786,8 @@
                     alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
                 } else if (data == 17) {
                     alert('ERROR:\nDate of current status cannot be before date of appointing the new IO in previous phase' )
+                } else if (data == 18) {
+                    alert('ERROR:\nFuture Dates are not permitted')
                 }
 
                 $.ajax({
@@ -885,6 +887,8 @@
                     alert('ERROR:\nThe date for marking IO cannot be before the date of receiving the FIR' )
                 } else if (data == 18) {
                     alert('ERROR:\nDate of current status cannot be before date of appointing the new IO in previous phase' )
+                } else if (data == 19) {
+                    alert('ERROR:\nFuture Dates are not permitted')
                 }
             }
         });

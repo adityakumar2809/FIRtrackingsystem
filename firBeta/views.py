@@ -53,6 +53,12 @@ def create_fir_save_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
@@ -106,6 +112,12 @@ def create_fir_save_add_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
@@ -159,6 +171,12 @@ def create_fir_save_edit_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
@@ -212,6 +230,12 @@ def create_fir_save_close_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no,
@@ -314,6 +338,20 @@ def edit_fir_save_vrk_ajax_view(request):
                         if datetime.strptime(vrk_sent_back_date, '%d/%m/%y') < datetime.strptime(vrk_status_date, '%d/%m/%y'):
                             return HttpResponse(10)
                             # return redirect('fault', fault='Date of sending back the FIR cannot be before its date of marked status')
+
+                    if vrk_receival_date:
+                        if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if vrk_status_date:
+                        if datetime.strptime(vrk_status_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if vrk_sent_back_date:
+                        if datetime.strptime(vrk_sent_back_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+
 
                     if vrk_receival_date:
                         fir_phase.vrk_receival_date = datetime.strptime(
@@ -446,6 +484,27 @@ def edit_fir_save_ps_ajax_view(request):
                         if datetime.strptime(appointed_io_date, '%d/%m/%y') < datetime.strptime(received_from_nc_date, '%d/%m/%y'):
                             return HttpResponse(16)
                             # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
+                    
+                    if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if put_in_court_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
 
 
                     fir_phase.io_name = io_name
@@ -572,6 +631,27 @@ def edit_fir_save_close_ps_ajax_view(request):
                             return HttpResponse(17)
                             # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
 
+                    if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if put_in_court_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
                     fir_phase.accused_status = accused_status
@@ -677,7 +757,20 @@ def edit_fir_save_nc_ajax_view(request):
                     if nc_status_date and nc_sent_back_date:
                         if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
                             return HttpResponse(10)
-                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')                       
+                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')    
+
+                    if nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
 
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
@@ -757,6 +850,19 @@ def edit_fir_save_close_nc_ajax_view(request):
                         if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
                             return HttpResponse(11)
                             # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')
+
+                    if nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y').date() > datetime.today():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
 
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
@@ -840,6 +946,13 @@ def add_new_phase_fir_save_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
                             return HttpResponse(6)
                             # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+                        
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(7)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='Future Dates are not permitted')
 
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name, accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
@@ -893,6 +1006,13 @@ def add_new_phase_fir_save_close_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
                             return HttpResponse(6)
                             # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
+                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today():
+                            return HttpResponse(7)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y') > datetime.today():
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='Future Dates are not permitted')
 
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
