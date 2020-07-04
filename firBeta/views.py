@@ -955,14 +955,12 @@ def add_new_phase_fir_save_ajax_view(request):
                             return HttpResponse(6)
                             # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
                         
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(7)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(7)
                         # return redirect('fault', fault='Future Dates are not permitted')
-
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name, accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)

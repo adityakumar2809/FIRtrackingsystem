@@ -500,7 +500,11 @@
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date essential-close validate datepicker" disabled value="{{ fir_phase.current_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            {% if fir_phase.current_status == "Under Investigation" %}
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date essential-close validate datepicker" disabled value="XXXXXXX" placeholder="Fill Date">
+                                            {% else %}
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} current_status_date essential-close validate datepicker" disabled value="{{ fir_phase.current_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -790,7 +794,7 @@
                 } else if (data == 13) {
                     alert('ERROR:\nThe date for receiving the FIR from VRK cannot be before it is sent back from there' )
                 } else if (data == 14) {
-                    alert('ERROR:\nThe date for submitting the FIRin courtcannot be before receiving it from VRK' )
+                    alert('ERROR:\nThe date for submitting the FIRin court cannot be before receiving it from VRK' )
                 } else if (data == 15) {
                     alert('ERROR:\nThe date for receiving the FIR from Naib Court cannot be before it is sent back from there' )
                 } else if (data == 16) {
@@ -801,20 +805,23 @@
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
 
-                $.ajax({
-                    type: 'GET',
-                    url: '/firBeta/ajax/all_fields_filled/',
-                    data: {
-                        phase_pk: fir_phase_pk
-                    },
-                    success: function (data) {
-                        if (data == 0) {
-                            $(`#add_${fir_phase_id}`).removeClass('disabled')
-                        } else if (data == 1) {
-                            $(`#add_${fir_phase_id}`).addClass('disabled')
+                if (data == 0){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/firBeta/ajax/all_fields_filled/',
+                        data: {
+                            phase_pk: fir_phase_pk
+                        },
+                        success: function (data) {
+                            if (data == 0) {
+                                $(`#add_${fir_phase_id}`).removeClass('disabled')
+                                window.location.href = `/firBeta/add-new-phase/${fir_phase_pk}/`;
+                            } else if (data == 1) {
+                                $(`#add_${fir_phase_id}`).addClass('disabled')
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         });
     });
