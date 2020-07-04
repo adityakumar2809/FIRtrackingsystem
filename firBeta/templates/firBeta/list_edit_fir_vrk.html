@@ -489,7 +489,15 @@
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            {% if fir_phase.vrk_status %}
+                                                {% if fir_phase.vrk_status == "Pending" %}
+                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="XXXXXXX" placeholder="Fill Date">
+                                                {% elif fir_phase.vrk_status == "Approved" %}
+                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                {% endif %}
+                                            {% else %}
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td>
@@ -631,6 +639,16 @@
     $('.vrk-editable-fields').change(function() {
         var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
         $(`#save_${fir_phase_pk}`).removeClass('disabled');
+
+        if ($(this).hasClass('vrk_status')){
+            if ($(this).val() == 'Pending'){
+                $(`.vrk_status_date.${fir_phase_pk}`).val('XXXXXXX');
+                $(`.vrk_status_date.${fir_phase_pk}`).attr('disabled','disabled');
+            } else {
+                $(`.vrk_status_date.${fir_phase_pk}`).val('');
+                $(`.vrk_status_date.${fir_phase_pk}`).removeAttr('disabled','disabled');
+            }
+        }
     })
 
     $('.vrk-save-btn').click(function () {

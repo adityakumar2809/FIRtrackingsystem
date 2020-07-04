@@ -326,6 +326,9 @@ def edit_fir_save_vrk_ajax_view(request):
                         return HttpResponse(7)
                         # return redirect('fault', fault='FIR cannot be returned before Approving it')
 
+                    if vrk_status_date == 'XXXXXXX':
+                        vrk_status_date = None
+
                     if vrk_receival_date and fir_phase.current_status_date:
                         if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() < fir_phase.current_status_date:
                             return HttpResponse(8)
@@ -738,12 +741,15 @@ def edit_fir_save_nc_ajax_view(request):
                     if (not fir_phase.put_in_court_date) and (nc_receival_date):
                         return HttpResponse(5)
                         # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
-                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                    if (not nc_status and nc_status_date) or (nc_status in ['Approved','Reinvestigation'] and not nc_status_date):
                         return HttpResponse(6)
                         # return redirect('fault', fault='Fill both Status and Date')
                     if (not nc_status == 'Reinvestigation') and nc_sent_back_date:
                         return HttpResponse(7)
                         # return redirect('fault', fault='FIR cannot be returned before marking it for reinvestigation it')
+
+                    if nc_status_date == 'XXXXXXX':
+                        nc_status_date = None
 
                     if fir_phase.put_in_court_date and nc_receival_date:
                         if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
@@ -827,7 +833,7 @@ def edit_fir_save_close_nc_ajax_view(request):
                     if (not fir_phase.put_in_court_date) and (nc_receival_date):
                         return HttpResponse(5)
                         # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
-                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                    if (not nc_status and nc_status_date) or (nc_status in ['Approved','Reinvestigation'] and not nc_status_date):
                         return HttpResponse(6)
                         # return redirect('fault', fault='Fill both Status and Date')
                     if nc_status != 'Approved':
@@ -836,6 +842,9 @@ def edit_fir_save_close_nc_ajax_view(request):
                     if nc_sent_back_date:
                         return HttpResponse(8)
                         # return redirect('fault', fault='Approved FIRs cannot be returned')
+
+                    if nc_status_date == 'XXXXXXX':
+                        nc_status_date = None
 
                     if fir_phase.put_in_court_date and nc_receival_date:
                         if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
