@@ -182,6 +182,7 @@
 
                 <thead>
                     <tr class="header-row-1">
+                        <th class="header-element-1" rowspan="2">S. No.</th>
                         <th class="header-element-1" rowspan="2">Sub Division<br>PS</th>
                         <th class="header-element-1" rowspan="2">FIR No.<br>Date</th>
                         <th class="header-element-1" rowspan="2">U/S</th>
@@ -197,24 +198,25 @@
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                     </tr>
                     <tr class="header-row-2">
-                        <th class="header-element-2 sub-head-even">Status</th>
-                        <th class="header-element-2 sub-head-even">Date</th>
-                        <th class="header-element-2 sub-head-odd">Received at VRK Branch Date</th>
                         <th class="header-element-2 sub-head-odd">Status</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
-                        <th class="header-element-2 sub-head-odd">Sent back to PS Date</th>
-                        <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
+                        <th class="header-element-2 sub-head-even">Received at VRK Branch Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
                         <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
-                        <th class="header-element-2 sub-head-odd">Received Back on Date</th>
-                        <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
+                        <th class="header-element-2 sub-head-odd">Received by Naib Court Date</th>
+                        <th class="header-element-2 sub-head-odd">Status</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
+                        <th class="header-element-2 sub-head-odd">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-even">Received Back on Date</th>
+                        <th class="header-element-2 sub-head-even">Marked to I/O Name</th>
+                        <th class="header-element-2 sub-head-even">Date</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr class="blank-row">
+                        <td>//////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
                         <td>///////////////</td>
@@ -242,6 +244,7 @@
                     {% for fir_set in fir_list %}
                         {% for fir_phase in fir_set.1 %}
                             <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                 <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                 <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
                                 <td>{{ fir_phase.under_section }}</td>
@@ -371,6 +374,7 @@
 
                             {% if fir_phase.pk|is_last_phase %}
                                 <tr class="blank-row">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
