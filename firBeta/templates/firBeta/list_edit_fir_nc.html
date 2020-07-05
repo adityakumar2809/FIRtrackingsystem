@@ -35,8 +35,20 @@
     }
 
     tr.header-row-1 th.header-element-1:last-child {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
+        /* border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px; */
+        position: sticky !important;
+        right: 0;
+        z-index: 5;
+    }
+    tr.header-row-1 th.header-element-1:nth-last-child(2) {
+        /* border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px; */
+
+        position: sticky !important;
+        right: 131px;
+        z-index: 5;
+        border-left: 2px black solid;
     }
 
     table.data-table td {
@@ -50,8 +62,21 @@
     }
 
     tr.data-row td:last-child {
-        border-bottom-right-radius: 15px;
-        border-top-right-radius: 15px;
+        /* border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px; */
+        position: sticky !important;
+        right: 0;
+        z-index: 4;
+    }
+    tr.data-row td:nth-last-child(2) {
+        /* border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px; */
+
+        position: sticky !important;
+        right: 131.5px;
+        z-index: 4;
+
+        border-left: 1px gray solid;
     }
 
     table.data-table thead tr.header-row-1 th {
@@ -578,13 +603,13 @@
                                             {% endif %}
                                         </td>  
                                         {% if fir_phase.pk|is_last_phase %}                                                          
-                                            <td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 <a href="#!" class="nc-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
                                                     Edit
                                                 </a>
                                             </td>
 
-                                            <td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 <a href="#!" class="nc-save-btn fir_{{fir_set.0.pk}} btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
                                                     Save
                                                 </a>
@@ -600,8 +625,8 @@
                                                 {% endif %}
                                             </td>
                                         {% else %}
-                                            <td><i class="material-icons">remove</i></td>
-                                            <td><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
                                         {% endif %}
                                     </tr>
 
@@ -834,13 +859,13 @@
                                             {% endif %}
                                         </td>  
                                         {% if fir_phase.pk|is_last_phase %}                                                          
-                                            <td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 <a href="#!" class="nc-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
                                                     Edit
                                                 </a>
                                             </td>
 
-                                            <td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 <a href="#!" class="nc-save-btn fir_{{fir_set.0.pk}} btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
                                                     Save
                                                 </a>
@@ -856,8 +881,8 @@
                                                 {% endif %}
                                             </td>
                                         {% else %}
-                                            <td><i class="material-icons">remove</i></td>
-                                            <td><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
                                         {% endif %}
                                     </tr>
 
@@ -921,6 +946,11 @@
         })
         $(`.data-row.${fir_phase_pk}`).removeClass('cyan');
         $(`.data-row.${fir_phase_pk}`).addClass('teal');
+        $(`.right-sticky-column.${fir_phase_pk}`).each(function() {
+            $(this).removeClass('cyan');
+            $(this).addClass('teal');
+        })
+
         $('select').formSelect();
     })
 
@@ -982,6 +1012,10 @@
                     $(`.nc-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
                     $(`.data-row.${fir_phase_id}`).removeClass('teal');
                     $(`.data-row.${fir_phase_id}`).addClass('cyan');
+                    $(`.right-sticky-column.${fir_phase_id}`).each(function() {
+                        $(this).removeClass('teal');
+                        $(this).addClass('cyan');
+                    })
                     $('select').formSelect();
 
                     if(to_be_removed === 1) {
@@ -1053,6 +1087,10 @@
                     $(`.nc-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
                     $(`.data-row.${fir_phase_id}`).removeClass('teal');
                     $(`.data-row.${fir_phase_id}`).addClass('cyan');
+                    $(`.right-sticky-column.${fir_phase_id}`).each(function() {
+                        $(this).removeClass('teal');
+                        $(this).addClass('cyan');
+                    })
                     $('select').formSelect();
 
                     $(`.data-row.${fir_id}`).each(function() {
