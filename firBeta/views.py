@@ -263,7 +263,7 @@ def create_fir_save_close_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_vrk_view(request):
+def list_edit_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
@@ -302,7 +302,7 @@ def list_edit_fir_vrk_view(request):
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -403,7 +403,7 @@ def edit_fir_save_vrk_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_ps_view(request):
+def list_edit_fir_ps_view(request, asc = 0):
     police_station_record_keepers = [
         u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
     if request.user.pk in police_station_record_keepers:
@@ -426,7 +426,7 @@ def list_edit_fir_ps_view(request):
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list})
+        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -724,7 +724,7 @@ def edit_fir_save_close_ps_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_nc_view(request):
+def list_edit_fir_nc_view(request, asc = 0):
     nc_record_keepers = [
         u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
     if request.user.pk in nc_record_keepers:
@@ -751,7 +751,7 @@ def list_edit_fir_nc_view(request):
             if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list})
+        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -1084,7 +1084,7 @@ def add_new_phase_fir_save_close_ajax_view(request):
 
 
 @login_required
-def list_fir_dsp_view(request):
+def list_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
@@ -1114,7 +1114,7 @@ def list_fir_dsp_view(request):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChoosePoliceStationForm(user = request.user)
-                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1125,7 +1125,7 @@ def list_fir_dsp_view(request):
 
 
 @login_required
-def list_fir_ssp_view(request):
+def list_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
@@ -1159,7 +1159,7 @@ def list_fir_ssp_view(request):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1170,7 +1170,7 @@ def list_fir_ssp_view(request):
 
 
 @login_required
-def filter_fir_ssp_view(request):
+def filter_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
@@ -1235,7 +1235,7 @@ def filter_fir_ssp_view(request):
                                 'is_closed': is_closed
                                 }
                 form = forms.FIRFilterSSPForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1246,7 +1246,7 @@ def filter_fir_ssp_view(request):
 
 
 @login_required
-def filter_fir_dsp_view(request):
+def filter_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
@@ -1307,7 +1307,7 @@ def filter_fir_dsp_view(request):
                                 'is_closed': is_closed
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
-                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
