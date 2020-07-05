@@ -285,6 +285,8 @@ def list_edit_fir_vrk_view(request):
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
                                                         -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                         -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                         )
@@ -411,6 +413,8 @@ def list_edit_fir_ps_view(request):
         try:
             fir_list = sorted(fir_list, 
                             key = lambda fir: (
+                                                fir.sub_division.pk,
+                                                fir.police_station.pk,
                                                 -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                 -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                 )
@@ -731,6 +735,8 @@ def list_edit_fir_nc_view(request):
         try:
             fir_list = sorted(fir_list, 
                             key = lambda fir: (
+                                                fir.sub_division.pk,
+                                                fir.police_station.pk,
                                                 -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                 -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                 )
@@ -1095,6 +1101,8 @@ def list_fir_dsp_view(request):
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
                                                         -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                         -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                         )
@@ -1138,6 +1146,8 @@ def list_fir_ssp_view(request):
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
                                                         -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                         -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                         )
@@ -1182,6 +1192,8 @@ def filter_fir_ssp_view(request):
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
                                                         -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                         -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                         )
@@ -1255,6 +1267,8 @@ def filter_fir_dsp_view(request):
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
                                                         -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
                                                         -1*int(fir.fir_no[0:fir.fir_no.index('/')])
                                                         )
