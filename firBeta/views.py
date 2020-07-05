@@ -53,10 +53,10 @@ def create_fir_save_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(6)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(6)
                         # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -112,10 +112,10 @@ def create_fir_save_add_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(6)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(6)
                         # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -171,10 +171,10 @@ def create_fir_save_edit_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(6)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(6)
                         # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -230,10 +230,10 @@ def create_fir_save_close_ajax_view(request):
                         if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
                             return HttpResponse(5)
                             # return redirect('fault', fault='The date for current status can't be before the date of registration')
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(6)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(6)
                         # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
@@ -281,6 +281,17 @@ def list_edit_fir_vrk_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+                    
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
@@ -396,6 +407,17 @@ def list_edit_fir_ps_view(request):
     if request.user.pk in police_station_record_keepers:
         fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.PoliceStationRecordKeeper.objects.get(
             user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+
+        try:
+            fir_list = sorted(fir_list, 
+                            key = lambda fir: (
+                                                -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                )
+                            )
+        except:
+            pass
+
         fir_combined_list = []
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
@@ -705,6 +727,17 @@ def list_edit_fir_nc_view(request):
         fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.CourtRecordKeeper.objects.get(
             user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
         fir_combined_list = []
+        
+        try:
+            fir_list = sorted(fir_list, 
+                            key = lambda fir: (
+                                                -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                )
+                            )
+        except:
+            pass
+
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             if not fir_phase_list[len(fir_phase_list)-1].put_in_court_date:
@@ -1013,10 +1046,10 @@ def add_new_phase_fir_save_close_ajax_view(request):
                             return HttpResponse(6)
                             # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
-                        if datetime.strptime(current_status_date, '%d/%m/%y') > datetime.today().date():
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
                             return HttpResponse(7)
                             # return redirect('fault', fault='Future Dates are not permitted')
-                    if datetime.strptime(date, '%d/%m/%y') > datetime.today().date():
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(7)
                         # return redirect('fault', fault='Future Dates are not permitted')
 
@@ -1058,6 +1091,17 @@ def list_fir_dsp_view(request):
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
@@ -1091,6 +1135,16 @@ def list_fir_ssp_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
@@ -1124,6 +1178,17 @@ def filter_fir_ssp_view(request):
 
     
                 fir_list = models.FIR.objects.all()
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
@@ -1186,6 +1251,17 @@ def filter_fir_dsp_view(request):
 
     
                 fir_list = models.FIR.objects.all()
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]

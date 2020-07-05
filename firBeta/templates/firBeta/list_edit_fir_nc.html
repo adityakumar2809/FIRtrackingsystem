@@ -342,7 +342,9 @@
 
 
 <div class="container">
-    <div class="section"></div>
+    <div class="section">
+        <button class="toggle-btn btn waves-effect waves-light">Toggle Sorting Order</button>
+    </div>
     <div class="section">
         <div class="table-wrapper" data-fl-scrolls>
             <table class="centered responsive-table data-table">
@@ -389,7 +391,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody class="content-descending">
                     <tr class="blank-row">
                         <td>//////////</td>
                         <td>///////////////</td>
@@ -421,6 +423,262 @@
                     <form method="POST">
                         {% csrf_token %}
                         {% for fir_set in fir_list %}
+                            {% for fir_phase in fir_set.1 %}
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
+                                    <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
+                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                    <td>{{ fir_phase.under_section }}</td>
+                                    
+                                    <td>{{ fir_phase.io_name }}</td>
+                                    <td>{{ fir_phase.accused_name }}</td>
+                                    <td>{{ fir_phase.accused_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|will_expire_at == 0 %}
+                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                        {% else %}
+                                            {{ fir_phase.limitation_period }} days
+                                        {% endif %}
+                                        <br>
+                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                    </td>
+                                    
+                                    <td>{{ fir_phase.current_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.current_status_date %}
+                                            {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_receival_date %}
+                                            {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status %}
+                                            {{ fir_phase.vrk_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status_date %}
+                                            {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_sent_back_date %}
+                                            {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.received_from_vrk_date %}
+                                            {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>   
+                                    <td>
+                                        {% if fir_phase.put_in_court_date %}
+                                            {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_receival_date essential-close validate datepicker" disabled value="{{ fir_phase.nc_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>    
+                                    <td>
+                                        <div class="input-field">
+                                            <select class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_status essential-close validate" disabled>
+                                                {% if fir_phase.nc_status %}
+                                                    {% if fir_phase.nc_status == "Pending" %}
+                                                        <option class="nc-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Pending" selected>Pending</option>
+                                                        <option value="Approved">Approved</option>
+                                                        <option value="Reinvestigation">Reinvestigation</option>
+                                                    {% elif fir_phase.nc_status == "Approved" %}
+                                                        <option class="nc-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Approved" selected>Approved</option>
+                                                        <option value="Reinvestigation">Reinvestigation</option>
+                                                    {% elif fir_phase.nc_status == "Reinvestigation" %}
+                                                        <option class="nc-status-default-option" value="" disabled>-----------------</option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Approved">Approved</option>
+                                                        <option value="Reinvestigation" selected>Reinvestigation</option>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <option class="nc-status-default-option" value="" selected disabled>-----------------</option>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Reinvestigation">Reinvestigation</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-field">
+                                            {% if fir_phase.vrk_status %}
+                                                {% if fir_phase.vrk_status == "Pending" %}
+                                                    <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_status_date essential-close validate datepicker" disabled value="XXXXXXX" placeholder="Fill Date">
+                                                {% elif fir_phase.vrk_status == "Approved" %}
+                                                    <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_status_date essential-close validate datepicker" disabled value="{{ fir_phase.nc_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                {% endif %}
+                                            {% else %}
+                                                <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_status_date essential-close validate datepicker" disabled value="{{ fir_phase.nc_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            {% endif %}
+                                        </div>
+                                    </td> 
+                                    <td>
+                                        <div class="input-field">
+                                            <input type="text" class="nc-editable-fields fir_phase_{{fir_phase.pk}} nc_sent_back_date validate datepicker" disabled value="{{ fir_phase.nc_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                        </div>
+                                    </td>  
+                                    <td>
+                                        {% if fir_phase.received_from_nc_date %}
+                                            {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>  
+                                    <td>
+                                        {% if fir_phase.appointed_io %}
+                                            {{ fir_phase.appointed_io }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td> 
+                                    <td>
+                                        {% if fir_phase.appointed_io_date %}
+                                            {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>  
+                                    {% if fir_phase.pk|is_last_phase %}                                                          
+                                        <td>
+                                            <a href="#!" class="nc-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                                Edit
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="#!" class="nc-save-btn fir_{{fir_set.0.pk}} btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                                Save
+                                            </a>
+                                            <br><br>
+                                            {% if fir_phase.nc_status == 'Approved' %}
+                                                <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% else %}
+                                                <a class="nc-save-close-btn btn waves-effect waves-light red darken-4 modal-trigger disabled"  href="#close-confirmation-fir_phase_{{fir_phase.pk}}" id="save_close_fir_phase_{{fir_phase.pk}}">
+                                                    Save&Close
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td><i class="material-icons">remove</i></td>
+                                        <td><i class="material-icons">remove</i></td>
+                                    {% endif %}
+                                </tr>
+
+                                {% if fir_phase.pk|is_last_phase %}
+                                    <tr class="blank-row fir_{{fir_set.0.pk}}">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+
+                                <!-- Modal Structure -->
+                                <div id="close-confirmation-fir_phase_{{fir_phase.pk}}" class="modal">
+                                    <div class="modal-content">
+                                        <h4>Close FIR?</h4>
+                                        <p>Are you sure you want to close this FIR? It cannot be opened again.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn fir_{{fir_set.0.pk}} waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
+                                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </form>
+                </tbody>
+
+                <tbody class="content-ascending" style="display: none;">
+                    <tr class="blank-row">
+                        <td>//////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>////////////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>////////////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>/////////////////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                        <td>///////////////</td>
+                    </tr>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for fir_set in fir_list reversed %}
                             {% for fir_phase in fir_set.1 %}
                                 <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
                                     <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
@@ -824,6 +1082,10 @@
         });
     });
 
-
+    $('.toggle-btn').click(function() {
+        $('tbody.content-descending').toggle();
+        $('tbody.content-ascending').toggle();
+    })
+    
 </script>
 {% endblock tail %}
