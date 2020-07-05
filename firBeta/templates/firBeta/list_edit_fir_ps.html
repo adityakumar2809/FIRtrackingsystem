@@ -427,7 +427,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -648,7 +648,7 @@
                                     </tr>
 
                                     {% if fir_phase.pk|is_last_phase %}
-                                        <tr class="blank-row">
+                                        <tr class="blank-row fir_{{fir_set.0.pk}}">
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -684,7 +684,7 @@
                                             <p>Are you sure you want to close this FIR? It cannot be opened again.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
+                                            <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn fir_{{fir_set.0.pk}} waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
                                             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
                                         </div>
                                     </div>
@@ -727,7 +727,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list reversed %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -948,7 +948,7 @@
                                     </tr>
 
                                     {% if fir_phase.pk|is_last_phase %}
-                                        <tr class="blank-row">
+                                        <tr class="blank-row fir_{{fir_set.0.pk}}">
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -984,7 +984,7 @@
                                             <p>Are you sure you want to close this FIR? It cannot be opened again.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
+                                            <a href="#!" id="close-confirmation-modal-btn-fir_phase_{{fir_phase.pk}}" class="modal-close close-confirmation-modal-btn fir_{{fir_set.0.pk}} waves-effect waves-red red darken-3 white-text btn-flat">Close FIR</a>
                                             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
                                         </div>
                                     </div>
@@ -1145,6 +1145,8 @@
         var fir_phase_id = $(this).attr('id').substring(29);
         var fir_phase_pk = $(this).attr('id').substring(39);
 
+        var fir_id = $(this).attr('class').split(' ')[2] // fir_{{fir_set.0.pk}} is the third class allotted to delete ocnfirmation button
+
         $(this).text("WAIT..");
 
         $.ajax({
@@ -1177,7 +1179,13 @@
                     $(`.data-row.${fir_phase_id}`).removeClass('teal');
                     $(`.data-row.${fir_phase_id}`).addClass('cyan');
                     alert('FIR saved and closed successfully!');
-                    window.location.href = '/firBeta/ps/';
+
+                    $(`.data-row.${fir_id}`).each(function() {
+                            $(this).hide();
+                    })
+                    $(`.blank-row.${fir_id}`).each(function() {
+                        $(this).hide();
+                    })
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
                 } else if (data == 2) {
