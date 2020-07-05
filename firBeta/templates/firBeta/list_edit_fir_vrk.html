@@ -895,6 +895,8 @@
         if ($(`.vrk_sent_back_date.${fir_phase_id}`).val()) {
             var to_be_removed = 1
         }
+
+        $(this).text("Wait..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_vrk/',
@@ -909,6 +911,7 @@
                 vrk_sent_back_date: $(`.vrk_sent_back_date.${fir_phase_id}`).val(),                
             },
             success: function (data) {
+                $(`#save_${fir_phase_id}`).text("SAVE");
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
@@ -950,7 +953,10 @@
                 } else if (data == 11) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
-            }
+            },
+            fail: function() {
+                $(`#save_${fir_phase_id}`).text("SAVE");
+            } 
         });
     });
 

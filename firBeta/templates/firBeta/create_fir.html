@@ -280,6 +280,7 @@
 
 <script>
     $('.save-btn').click(function () {
+        $(this).text("WAIT..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/create_fir_save/',
@@ -298,6 +299,7 @@
                 current_status_date: $('#status_date').val(),
             },
             success: function (data) {
+                $('.save-btn').text("SAVE")
                 if (data == 0) {
                     window.location.href = '/success/FIR%20registered%20Successfully';
                 } else if (data == 1) {
@@ -313,12 +315,16 @@
                 } else if (data == 6) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
+            },
+            fail: function() {
+                $('.save-btn').text("SAVE")
             }
         });
     });
 
 
     $('.save-add-btn').click(function () {
+        $(this).text("WAIT..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/create_fir_save_add/',
@@ -337,6 +343,7 @@
                 current_status_date: $('#status_date').val(),
             },
             success: function (data) {
+                $('.save-add-btn').text("SAVE AND ADD ANOTHER")
                 if (data == 0) {
                     $('.validate').each(function () {
                         $(this).val('');
@@ -360,12 +367,16 @@
                 } else if (data == 6) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
+            },
+            fail: function() {
+                $('.save-add-btn').text("SAVE AND ADD ANOTHER")
             }
         });
     });
 
 
     $('.save-edit-btn').click(function () {
+        $(this).text("WAIT..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/create_fir_save_edit/',
@@ -384,6 +395,7 @@
                 current_status_date: $('#status_date').val(),
             },
             success: function (data) {
+                $('.save-edit-btn').text("SAVE AND CONTINUE EDITING")
                 if (data == 0) {
                     window.location.href = '/firBeta/ps'; // Insert edit url here
                 } else if (data == 1) {
@@ -399,12 +411,16 @@
                 } else if (data == 6) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
+            }, 
+            fail: function() {
+                $('.save-edit-btn').text("SAVE AND CONTINUE EDITING")
             }
         });
     });
 
 
     $('#close-confirmation-modal-btn').click(function () {
+        $(this).text("WAIT..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/create_fir_save_close/',
@@ -423,6 +439,7 @@
                 current_status_date: $('#status_date').val(),
             },
             success: function (data) {
+                $('#close-confirmation-modal-btn').text("CLOSE FIR")
                 if (data == 0) {
                     $('.validate').each(function () {
                             $(this).val('');
@@ -446,6 +463,9 @@
                 } else if (data == 6) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
+            },
+            fail: function() {
+                $('#close-confirmation-modal-btn').text("CLOSE FIR")
             }
         });
     });

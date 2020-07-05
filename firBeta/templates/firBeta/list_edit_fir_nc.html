@@ -957,6 +957,8 @@
         if ($(`.nc_sent_back_date.${fir_phase_id}`).val()) {
             var to_be_removed = 1
         }
+
+        $(this).text("Wait..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_nc/',
@@ -971,6 +973,7 @@
                 nc_sent_back_date: $(`.nc_sent_back_date.${fir_phase_id}`).val(),
             },
             success: function (data) {
+                $(`#save_${fir_phase_id}`).text("SAVE");
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
@@ -1012,6 +1015,9 @@
                 } else if (data == 11) {
                     alert('ERROR\nFuture Dates are not permitted' )
                 }
+            },
+            fail: function() {
+                $(`#save_${fir_phase_id}`).text("SAVE");
             }
         });
     });
@@ -1022,6 +1028,7 @@
 
         var fir_id = $(this).attr('class').split(' ')[2] // fir_{{fir_set.0.pk}} is the third class allotted to delete ocnfirmation button
 
+        $(this).text("WAIT..");
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_close_nc/',
@@ -1036,6 +1043,7 @@
                 nc_sent_back_date: $(`.nc_sent_back_date.${fir_phase_id}`).val(),            
             },
             success: function (data) {
+                $(`#close-confirmation-modal-btn-${fir_phase_id}`).text("CLOSE FIR");
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#save_close_${fir_phase_id}`).addClass('disabled');
@@ -1078,6 +1086,9 @@
                 } else if (data == 12) {
                     alert('ERROR\nFuture Dates are not permitted' )
                 }
+            },
+            fail: function() {
+                $(`#close-confirmation-modal-btn-${fir_phase_id}`).text("CLOSE FIR");
             }
         });
     });

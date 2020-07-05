@@ -277,6 +277,7 @@
 
 <script>
     $('.save-btn').click(function () {
+        $(this).text("WAIT..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/add_new_phase_fir_save/',
@@ -295,6 +296,7 @@
                 current_status_date: $('#status_date').val(),
             },
             success: function (data) {
+                $('.save-btn').text('SAVE');
                 if (data == 0) {
                     window.location.href = '/firBeta/ps';
                 } else if (data == 1) {
@@ -312,6 +314,9 @@
                 } else if (data == 7) {
                     alert('ERROR\nFuture Dates are not permitted')
                 }
+            },
+            fail: function() {
+                $('.save-btn').text('SAVE');
             }
         });
     });

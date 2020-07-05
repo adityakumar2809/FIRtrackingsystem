@@ -1046,6 +1046,9 @@
     $('.ps-save-btn').click(function () {
         var fir_phase_id = $(this).attr('id').substring(5);
         var fir_phase_pk = $(this).attr('id').substring(15);
+
+        $(this).text("Wait..")
+
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_ps/',
@@ -1066,6 +1069,7 @@
                 appointed_io_date: $(`.appointed_io_date.${fir_phase_id}`).val(),              
             },
             success: function (data) {
+                $(`#save_${fir_phase_id}`).text("SAVE");
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
@@ -1129,6 +1133,8 @@
                         }
                     })
                 }
+
+                $(`#save_${fir_phase_id}`).text("SAVE");
             }
         });
     });
@@ -1136,6 +1142,9 @@
     $('.close-confirmation-modal-btn').click(function () {
         var fir_phase_id = $(this).attr('id').substring(29);
         var fir_phase_pk = $(this).attr('id').substring(39);
+
+        $(this).text("WAIT..");
+
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_close_ps/',
@@ -1156,6 +1165,7 @@
                 appointed_io_date: $(`.appointed_io_date.${fir_phase_id}`).val(),              
             },
             success: function (data) {
+                $(`#close-confirmation-modal-btn-${fir_phase_id}`).text("CLOSE FIR")
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#save_close_${fir_phase_id}`).addClass('disabled');
@@ -1205,6 +1215,9 @@
                 } else if (data == 19) {
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
+            },
+            fail: function() {
+                $(`#close-confirmation-modal-btn-${fir_phase_id}`).text("CLOSE FIR")
             }
         });
     });
