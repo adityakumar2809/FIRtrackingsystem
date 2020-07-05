@@ -281,6 +281,10 @@ def list_edit_fir_vrk_view(request, asc = 0):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+
+                
+                request.session['vrk_ps_choice'] = police_station
+                request.session['vrk_sd_choice'] = sub_division
                     
                 try:
                     fir_list = sorted(fir_list, 
@@ -306,8 +310,41 @@ def list_edit_fir_vrk_view(request, asc = 0):
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('vrk_ps_choice', None)
+            sub_division = request.session.get('vrk_sd_choice', None)
+            fir_combined_list = []
+            if police_station and sub_division:
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
+                        continue
+                    if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
+                        continue
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -1098,6 +1135,8 @@ def list_fir_dsp_view(request, asc = 0):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
                 
+                request.session['dsp_ps_choice'] = police_station
+
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
@@ -1118,8 +1157,39 @@ def list_fir_dsp_view(request, asc = 0):
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('dsp_ps_choice', None)
+            fir_combined_list = []
+
+            try:
+                if loc_models.PoliceStation.objects.get(pk__exact = police_station).sub_division.pk != acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk:
+                    police_station = None
+            except:
+                pass
+
+            if police_station:
+                if police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChoosePoliceStationForm(user = request.user)
-            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -1143,6 +1213,10 @@ def list_fir_ssp_view(request, asc = 0):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                request.session['ssp_ps_choice'] = police_station
+                request.session['ssp_sd_choice'] = sub_division
+                
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
@@ -1163,8 +1237,37 @@ def list_fir_ssp_view(request, asc = 0):
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('ssp_ps_choice', None)
+            sub_division = request.session.get('ssp_sd_choice', None)
+            fir_combined_list = []
+            if police_station and sub_division:
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
