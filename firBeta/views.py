@@ -1459,8 +1459,6 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'police_station': police_station,
                                 'fir_no': fir_no,
                                 'under_section': under_section,
-                                # 'expiry_date_lower_limit':expiry_date_lower_limit,
-                                # 'expiry_date_upper_limit':expiry_date_upper_limit,
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
@@ -1495,13 +1493,19 @@ def filter_fir_dsp_view(request, asc = 0):
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
                 under_section = form.cleaned_data['under_section']
-                expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
-                expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
-                is_closed = form.cleaned_data['is_closed']
+                gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
+                gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
+                gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
+                gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
+                fir_pendency = form.cleaned_data['fir_pendency']
+                expiry_date = form.cleaned_data['expiry_date']
+                vrk_approval_pendency = form.cleaned_data['vrk_approval_pendency']
+                nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 fir_combined_list = []
 
     
-                fir_list = models.FIR.objects.all()
+                fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
                 
                 try:
                     fir_list = sorted(fir_list, 
@@ -1518,6 +1522,10 @@ def filter_fir_dsp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+
+                    if fir_last_phase.fir.is_closed == True:
+                        continue
+
                     if police_station:
                         if not (int(police_station) == fir_last_phase.fir.police_station.pk):
                             continue
@@ -1527,23 +1535,144 @@ def filter_fir_dsp_view(request, asc = 0):
                     if under_section:
                         if fir_last_phase.under_section.find(under_section) == -1:
                             continue
-                    if expiry_date_lower_limit:
-                        if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+
+                    if gap_ps_sent_vrk_received:
+                        if not fir_last_phase.current_status in ['Untraced', 'Cancelled']:
                             continue
-                    if expiry_date_upper_limit:
-                        if (fir_last_phase.date_registered >= datetime.strptime(datetime.strptime(expiry_date_upper_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+                        if not fir_last_phase.current_status_date:
                             continue
-                    if is_closed:
-                        if not (bool(is_closed) == fir_last_phase.fir.is_closed):
+                        if fir_last_phase.vrk_receival_date:
                             continue
+                        gap = gap_ps_sent_vrk_received.split('-')
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(gap[1]):
+                                continue
+
+                    if gap_vrk_sent_ps_received:
+                        gap = gap_vrk_sent_ps_received.split('-')
+                        if not fir_last_phase.vrk_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_vrk_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_nc_sent:
+                        gap = gap_ps_received_nc_sent.split('-')
+                        if not fir_last_phase.received_from_vrk_date:
+                            continue
+                        if fir_last_phase.put_in_court_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_sent_ps_received:
+                        gap = gap_nc_sent_ps_received.split('-')
+                        if not fir_last_phase.nc_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_nc_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_mark_io:
+                        gap = gap_ps_received_mark_io.split('-')
+                        if not fir_last_phase.received_from_nc_date:
+                            continue
+                        if fir_last_phase.appointed_io_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_nc_date).days > int(gap[1]):
+                                continue
+
+                    if fir_pendency:
+                        pendency_bounds = fir_pendency.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(pendency_bounds[1]):
+                                continue
+
+                    if expiry_date:
+                        expiry_bounds = expiry_date.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+
+                        if expiry_bounds[0] == 'overdue':
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                        else:
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+
+                    if vrk_approval_pendency:
+                        pendency_bounds = vrk_approval_pendency.split('-')
+                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.vrk_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
+                    if nc_approval_pendency:
+                        pendency_bounds = nc_approval_pendency.split('-')
+                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
                                 'police_station': police_station,
                                 'fir_no': fir_no,
-                                'expiry_date_lower_limit':expiry_date_lower_limit,
-                                'expiry_date_upper_limit':expiry_date_upper_limit,
-                                'is_closed': is_closed
+                                'under_section': under_section,
+                                'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
+                                'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
+                                'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
+                                'gap_ps_received_mark_io': gap_ps_received_mark_io,
+                                'fir_pendency': fir_pendency,
+                                'expiry_date': expiry_date,
+                                'vrk_approval_pendency': vrk_approval_pendency,
+                                'nc_approval_pendency': nc_approval_pendency,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
                 return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
@@ -1551,7 +1680,8 @@ def filter_fir_dsp_view(request, asc = 0):
                 return redirect('fault', fault='Invalid Parameters!')
         else:
             form = forms.FIRFilterDSPForm(user = request.user)
-            return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': [], 'form': form})
+            fir_combined_list = []
+            return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 

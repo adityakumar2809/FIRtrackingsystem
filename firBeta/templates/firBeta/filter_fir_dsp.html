@@ -114,57 +114,99 @@
         <!-- Form Modal Structure -->
         <div id="filter_form" class="modal modal-fixed-footer green lighten-5">
             <div class="modal-content">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                        {{form.police_station|add_class:"filter-form-input-field"}}
-                        <label >Police Station</label>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.police_station|add_class:"filter-form-input-field"}}
+                            <label >Police Station</label>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.fir_no|add_class:"filter-form-input-field"}}
+                            <label >FIR No.</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.under_section|add_class:"filter-form-input-field"}}
+                            <label>Under Section</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_sent_vrk_received|add_class:"filter-form-input-field"}}
+                            <label >Gap between Sent-By-PS-Date and VRK-Received-Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_vrk_sent_ps_received|add_class:"filter-form-input-field"}}
+                            <label >Gap between VRK-Sent-Back-Date and PS-Received-Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_received_nc_sent|add_class:"filter-form-input-field"}}
+                            <label >Gap between Received-from-VRK-Date and Put-in-Court-Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_nc_sent_ps_received|add_class:"filter-form-input-field"}}
+                            <label >Gap between NC-Sent-Back-Date and PS-Received-Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_received_mark_io|add_class:"filter-form-input-field"}}
+                            <label >Gap between PS-Recieved-Date and PS-Marked-to-IO-Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.fir_pendency|add_class:"filter-form-input-field"}}
+                            <label>FIR Pendency</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.expiry_date|add_class:"filter-form-input-field"}}
+                            <label >Expiry Period</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.vrk_approval_pendency|add_class:"filter-form-input-field"}}
+                            <label >Approval Pendency from VRK</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.nc_approval_pendency|add_class:"filter-form-input-field"}}
+                            <label >Approval Pendency from NC</label>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.is_closed|add_class:"filter-form-input-field"}}
+                            <label >Is Closed</label>
+                        </div>
+                    </div> -->
                 </div>
-                <div class="row">
-                <div class="input-field col s8 offset-s2">
-                    {{form.fir_no|add_class:"filter-form-input-field"}}
-                    <label >FIR No.</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s8 offset-s2">
-                    {{form.under_section|add_class:"filter-form-input-field"}}
-                    <label >Under Section</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s8 offset-s2">
-                    {{form.expiry_date_lower_limit|add_class:"filter-form-input-field datepicker"}}
-                    <label >Expiration Date (Lower Limit)</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s8 offset-s2">
-                    {{form.expiry_date_upper_limit|add_class:"filter-form-input-field datepicker"}}
-                    <label>Expiration Date (Upper Limit)</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s8 offset-s2">
-                    {{form.is_closed|add_class:"filter-form-input-field"}}
-                    <label >Closed FIR</label>
-                </div>
-                </div>
-            </div>
-            <div class="modal-footer green lighten-5">
-                <button class="btn waves-effect waves-light" type="submit">
-                Submit <i class="material-icons right">send</i>
-                </button>
+                <div class="modal-footer green lighten-5">
+                    <button class="btn waves-effect waves-light" type="submit">
+                    Submit <i class="material-icons right">send</i>
+                    </button>
+                    </form>
+                    <button class="btn waves-effect waves-light modal-close">
+                    Cancel <i class="material-icons right">close</i>
+                    </button>
+                    <!-- <button class="btn waves-effect waves-light reset-button">
+                    Reset <i class="material-icons right">delete</i>
+                    </button> -->
                 </form>
-                <button class="btn waves-effect waves-light modal-close">
-                Cancel <i class="material-icons right">close</i>
-                </button>
-                <!-- <button class="btn waves-effect waves-light reset-button">
-                Reset <i class="material-icons right">delete</i>
-                </button> -->
-            </form>
             </div>
         </div>
 
