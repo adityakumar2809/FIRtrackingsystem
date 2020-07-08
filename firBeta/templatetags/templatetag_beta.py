@@ -76,3 +76,58 @@ def all_fields_filled(pk):
 def get_color_shade(phase_index):
     return 4 if phase_index == 1 else 3 if phase_index == 2 else 2
 
+
+@register.filter
+def gap_greater_than_3(pk, stage):
+    fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+    if stage == 'ps-sent-vrk-received':
+        if (fir_phase.current_status in ['Untraced', 'Cancelled']) and (not fir_phase.vrk_receival_date):
+            if (datetime.datetime.today().date() - fir_phase.current_status_date).days > 3:
+                return True
+    elif stage == 'vrk-sent-ps-received':
+        if (fir_phase.vrk_sent_back_date) and (not fir_phase.received_from_vrk_date):
+            if (datetime.datetime.today().date() - fir_phase.vrk_sent_back_date).days > 3:
+                return True
+    elif stage == 'ps-received-nc-sent':
+        if (fir_phase.received_from_vrk_date) and (not fir_phase.put_in_court_date):
+            if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 3:
+                return True
+    elif stage == 'ps-sent-nc-received':
+        if (fir_phase.put_in_court_date) and (not fir_phase.nc_receival_date):
+            if (datetime.datetime.today().date() - fir_phase.put_in_court_date).days > 3:
+                return True
+    elif stage == 'nc-sent-ps-received':
+        if (fir_phase.nc_sent_back_date) and (not fir_phase.received_from_nc_date):
+            if (datetime.datetime.today().date() - fir_phase.nc_sent_back_date).days > 3:
+                return True
+    elif stage == 'ps-received_mark_io':
+        if (fir_phase.received_from_nc_date) and (not fir_phase.appointed_io_date):
+            if (datetime.datetime.today().date() - fir_phase.received_from_nc_date).days > 3:
+                return True
+    
+    return False
+
+
+@register.filter
+def any_gap_greater_than_3(pk):
+    fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+    if (fir_phase.current_status in ['Untraced', 'Cancelled']) and (not fir_phase.vrk_receival_date):
+        if (datetime.datetime.today().date() - fir_phase.current_status_date).days > 3:
+            return True
+    if (fir_phase.vrk_sent_back_date) and (not fir_phase.received_from_vrk_date):
+        if (datetime.datetime.today().date() - fir_phase.vrk_sent_back_date).days > 3:
+            return True
+    if (fir_phase.received_from_vrk_date) and (not fir_phase.put_in_court_date):
+        if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 3:
+            return True
+    if (fir_phase.put_in_court_date) and (not fir_phase.nc_receival_date):
+        if (datetime.datetime.today().date() - fir_phase.put_in_court_date).days > 3:
+            return True
+    if (fir_phase.nc_sent_back_date) and (not fir_phase.received_from_nc_date):
+        if (datetime.datetime.today().date() - fir_phase.nc_sent_back_date).days > 3:
+            return True
+    if (fir_phase.received_from_nc_date) and (not fir_phase.appointed_io_date):
+        if (datetime.datetime.today().date() - fir_phase.received_from_nc_date).days > 3:
+            return True
+
+    return False
