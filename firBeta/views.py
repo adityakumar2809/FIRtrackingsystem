@@ -1686,6 +1686,488 @@ def filter_fir_dsp_view(request, asc = 0):
         return redirect('fault', fault='ACCESS DENIED!')
 
 
+@login_required
+def dashboard_ssp_view(request):
+    ssp_record_keepers = [u['user']
+                          for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in ssp_record_keepers:
+        if request.method == 'POST':
+            form = forms.SSPDashboardForm(request.POST)
+            if form.is_valid():
+                sub_division = form.cleaned_data['sub_division']
+                police_station = form.cleaned_data['police_station']
+                start_date = datetime.strptime(form.cleaned_data['start_date'], '%d/%m/%y').date()
+                end_date = datetime.strptime(form.cleaned_data['end_date'], '%d/%m/%y').date()
+
+                if sub_division == 'all':
+                    firs_registered_count = models.FIRPhase.objects.all().filter(phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                else:
+                    if police_station == 'all':
+                        firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                        firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                        firs_status_challan_filed_count = firs_closed_count
+                        firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                        firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_untraced_count = firs_status_untraced.count()
+                        firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                        firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_cancelled_count = firs_status_cancelled.count()
+                        firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                        firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                        firs_vrk_received_count = firs_vrk_received.count()
+                        firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                        firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                        firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                        firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                        firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                        firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                        firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                        firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                        firs_received_from_vrk_count = firs_received_from_vrk.count()
+                        firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                        firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                        firs_put_in_court_count = firs_put_in_court.count()
+                        firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                        firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                        firs_nc_receival_count = firs_nc_receival.count()
+                        firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                        firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_approved_count = firs_nc_status_approved.count()
+                        firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                        firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                        firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                        firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                        firs_nc_sent_back_count = firs_nc_sent_back.count()
+                        firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                        firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                        firs_received_from_nc_count = firs_received_from_nc.count()
+                        firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                        firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                        firs_appointed_io_count = firs_appointed_io.count()
+                        firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                    else:
+                        firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                        firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                        firs_status_challan_filed_count = firs_closed_count
+                        firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                        firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_untraced_count = firs_status_untraced.count()
+                        firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                        firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_cancelled_count = firs_status_cancelled.count()
+                        firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                        firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                        firs_vrk_received_count = firs_vrk_received.count()
+                        firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                        firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                        firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                        firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                        firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                        firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                        firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                        firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                        firs_received_from_vrk_count = firs_received_from_vrk.count()
+                        firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                        firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                        firs_put_in_court_count = firs_put_in_court.count()
+                        firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                        firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                        firs_nc_receival_count = firs_nc_receival.count()
+                        firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                        firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_approved_count = firs_nc_status_approved.count()
+                        firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                        firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                        firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                        firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                        firs_nc_sent_back_count = firs_nc_sent_back.count()
+                        firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                        firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                        firs_received_from_nc_count = firs_received_from_nc.count()
+                        firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                        firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                        firs_appointed_io_count = firs_appointed_io.count()
+                        firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+                
+                form = forms.SSPDashboardForm(initial = {
+                                                            'start_date': start_date.strftime('%d/%m/%y'),
+                                                            'end_date': end_date.strftime('%d/%m/%y'),
+                                                        })
+
+                return render(request, 'firBeta/dashboard_ssp.html', {
+                                                                        'form':form,
+                                                                        'firs_registered_count':firs_registered_count,
+                                                                        'firs_closed_count':firs_closed_count,
+                                                                        'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                                                                        'firs_status_untraced_count':firs_status_untraced_count,
+                                                                        'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                                                                        'firs_status_cancelled_count':firs_status_cancelled_count,
+                                                                        'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                                                                        'firs_vrk_received_count':firs_vrk_received_count,
+                                                                        'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                                                                        'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                                                                        'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                                                                        'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                                                                        'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                                                                        'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                                                                        'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                                                                        'firs_put_in_court_count':firs_put_in_court_count,
+                                                                        'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                                                                        'firs_nc_receival_count':firs_nc_receival_count,
+                                                                        'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                                                                        'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                                                                        'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                                                                        'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                                                                        'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                                                                        'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                                                                        'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                                                                        'firs_received_from_nc_count':firs_received_from_nc_count,
+                                                                        'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                                                                        'firs_appointed_io_count':firs_appointed_io_count,
+                                                                        'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                                                                        })
+
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.SSPDashboardForm()
+            return render(request, 'firBeta/dashboard_ssp.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    
+
+    # print("FIRs Registered: ", firs_registered_count)
+    # print("FIRs Closed: ", firs_closed_count)
+    # print("FIRs Challan Filed: ", firs_status_challan_filed_count)
+    # print("FIRs Untraced: ", firs_status_untraced_count)
+    # print("FIRs Untraced Unique: ", firs_status_untraced_unique_count)
+    # print("FIRs Cancelled: ", firs_status_cancelled_count)
+    # print("FIRs Cancelled Unique: ", firs_status_cancelled_unique_count)
+    # print("FIRs VRK Received: ", firs_vrk_received_count)
+    # print("FIRs VRK Received Unique: ", firs_vrk_received_unique_count)
+    # print("FIRs VRK Approved: ", firs_vrk_status_approved_count)
+    # print("FIRs VRK Approved Unique: ", firs_vrk_status_approved_unique_count)
+    # print("FIRs VRK Sent Back: ", firs_vrk_sent_back_count)
+    # print("FIRs VRK Sent Back Unique: ", firs_vrk_sent_back_unique_count)
+    # print("FIRs Received From VRK: ", firs_received_from_vrk_count)
+    # print("FIRs Received From VRK Unique: ", firs_received_from_vrk_unique_count)
+    # print("FIRs Put in Court: ", firs_put_in_court_count)
+    # print("FIRs Put in Court Unique: ", firs_put_in_court_unique_count)
+    # print("FIRs NC Received: ", firs_nc_receival_count)
+    # print("FIRs NC Received Unique: ", firs_nc_receival_unique_count)
+    # print("FIRs NC Approved: ", firs_nc_status_approved_count)
+    # print("FIRs NC Approved Unique: ", firs_nc_status_approved_unique_count)
+    # print("FIRs NC Reinvestigation: ", firs_nc_status_reinvestigation_count)
+    # print("FIRs NC Reinvestigation Unique: ", firs_nc_status_reinvestigation_unique_count)
+    # print("FIRs NC Sent Back: ", firs_nc_sent_back_count)
+    # print("FIRs NC Sent Back Unique: ", firs_nc_sent_back_unique_count)
+    # print("FIRs Received From NC: ", firs_received_from_nc_count)
+    # print("FIRs Received From NC Unique: ", firs_received_from_nc_unique_count)
+    # print("FIRs Appointed IO: ", firs_appointed_io_count)
+    # print("FIRs Appointed IO Unique: ", firs_appointed_io_unique_count)
+    # return HttpResponse(0)
+
+
+@login_required
+def dashboard_dsp_view(request):
+    dsp_record_keepers = [u['user']
+                          for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in dsp_record_keepers:
+        if request.method == 'POST':
+            form = forms.DSPDashboardForm(data = request.POST, user = request.user)
+            if form.is_valid():
+                sub_division = loc_models.SubDivision.objects.get(pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                police_station = form.cleaned_data['police_station']
+                start_date = datetime.strptime(form.cleaned_data['start_date'], '%d/%m/%y').date()
+                end_date = datetime.strptime(form.cleaned_data['end_date'], '%d/%m/%y').date()
+
+                if police_station == 'all':
+                    firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                else:
+                    firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+            
+                form = forms.DSPDashboardForm(user = request.user, initial = {
+                                                                                'start_date': start_date.strftime('%d/%m/%y'),
+                                                                                'end_date': end_date.strftime('%d/%m/%y'),
+                                                                            })
+
+                return render(request, 'firBeta/dashboard_dsp.html', {
+                                                                        'form':form,
+                                                                        'firs_registered_count':firs_registered_count,
+                                                                        'firs_closed_count':firs_closed_count,
+                                                                        'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                                                                        'firs_status_untraced_count':firs_status_untraced_count,
+                                                                        'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                                                                        'firs_status_cancelled_count':firs_status_cancelled_count,
+                                                                        'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                                                                        'firs_vrk_received_count':firs_vrk_received_count,
+                                                                        'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                                                                        'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                                                                        'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                                                                        'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                                                                        'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                                                                        'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                                                                        'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                                                                        'firs_put_in_court_count':firs_put_in_court_count,
+                                                                        'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                                                                        'firs_nc_receival_count':firs_nc_receival_count,
+                                                                        'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                                                                        'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                                                                        'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                                                                        'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                                                                        'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                                                                        'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                                                                        'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                                                                        'firs_received_from_nc_count':firs_received_from_nc_count,
+                                                                        'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                                                                        'firs_appointed_io_count':firs_appointed_io_count,
+                                                                        'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                                                                        })
+
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.DSPDashboardForm(user = request.user)
+            return render(request, 'firBeta/dashboard_dsp.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    
+
+    # print("FIRs Registered: ", firs_registered_count)
+    # print("FIRs Closed: ", firs_closed_count)
+    # print("FIRs Challan Filed: ", firs_status_challan_filed_count)
+    # print("FIRs Untraced: ", firs_status_untraced_count)
+    # print("FIRs Untraced Unique: ", firs_status_untraced_unique_count)
+    # print("FIRs Cancelled: ", firs_status_cancelled_count)
+    # print("FIRs Cancelled Unique: ", firs_status_cancelled_unique_count)
+    # print("FIRs VRK Received: ", firs_vrk_received_count)
+    # print("FIRs VRK Received Unique: ", firs_vrk_received_unique_count)
+    # print("FIRs VRK Approved: ", firs_vrk_status_approved_count)
+    # print("FIRs VRK Approved Unique: ", firs_vrk_status_approved_unique_count)
+    # print("FIRs VRK Sent Back: ", firs_vrk_sent_back_count)
+    # print("FIRs VRK Sent Back Unique: ", firs_vrk_sent_back_unique_count)
+    # print("FIRs Received From VRK: ", firs_received_from_vrk_count)
+    # print("FIRs Received From VRK Unique: ", firs_received_from_vrk_unique_count)
+    # print("FIRs Put in Court: ", firs_put_in_court_count)
+    # print("FIRs Put in Court Unique: ", firs_put_in_court_unique_count)
+    # print("FIRs NC Received: ", firs_nc_receival_count)
+    # print("FIRs NC Received Unique: ", firs_nc_receival_unique_count)
+    # print("FIRs NC Approved: ", firs_nc_status_approved_count)
+    # print("FIRs NC Approved Unique: ", firs_nc_status_approved_unique_count)
+    # print("FIRs NC Reinvestigation: ", firs_nc_status_reinvestigation_count)
+    # print("FIRs NC Reinvestigation Unique: ", firs_nc_status_reinvestigation_unique_count)
+    # print("FIRs NC Sent Back: ", firs_nc_sent_back_count)
+    # print("FIRs NC Sent Back Unique: ", firs_nc_sent_back_unique_count)
+    # print("FIRs Received From NC: ", firs_received_from_nc_count)
+    # print("FIRs Received From NC Unique: ", firs_received_from_nc_unique_count)
+    # print("FIRs Appointed IO: ", firs_appointed_io_count)
+    # print("FIRs Appointed IO Unique: ", firs_appointed_io_unique_count)
+    # return HttpResponse(0)
+
+
 def load_police_stations_view(request):
     sub_division_pk = request.GET.get('sub_division')
     if sub_division_pk == 'all':

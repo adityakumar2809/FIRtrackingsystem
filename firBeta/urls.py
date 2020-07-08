@@ -38,9 +38,11 @@ urlpatterns = [
     path('dsp/<int:asc>/', views.list_fir_dsp_view, name='list_fir_dsp_asc'),
     path('dsp/filter/', views.filter_fir_dsp_view, name='filter_fir_dsp'),
     path('dsp/filter/<int:asc>/', views.filter_fir_dsp_view, name='filter_fir_dsp_asc'),
+    path('dsp/dashboard/', views.dashboard_dsp_view, name='dashboard_dsp'),
 
     path('ssp/', views.list_fir_ssp_view, name='list_fir_ssp'),
     path('ssp/<int:asc>/', views.list_fir_ssp_view, name='list_fir_ssp_asc'),
     path('ssp/filter/', views.filter_fir_ssp_view, name='filter_fir_ssp'),
     path('ssp/filter/<int:asc>/', views.filter_fir_ssp_view, name='filter_fir_ssp_asc'),
+    path('ssp/dashboard/', views.dashboard_ssp_view, name='dashboard_ssp'),
 ]
