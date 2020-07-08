@@ -47,11 +47,21 @@ def create_fir_save_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -96,11 +106,21 @@ def create_fir_save_add_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -145,12 +165,21 @@ def create_fir_save_edit_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
-                    
                     if current_status_date :
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -195,12 +224,22 @@ def create_fir_save_close_ajax_view(request):
                 if not 'N/A' in [fir_no, date, under_section, io_name, accused_name, accused_status, limitation_period, current_status, current_status_date]:
                     ps_record_keeper = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk)
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y') < datetime.strptime(date, '%d/%m/%y'):
+                            return HttpResponse(5)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(6)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     fir_object = models.FIR.objects.create(sub_division=ps_record_keeper.sub_division,
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no,
                                                            is_closed=True)
-                    if current_status_date == 'XXXXXXX':
-                        current_status_date = None
                     if current_status_date:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
@@ -224,7 +263,7 @@ def create_fir_save_close_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_vrk_view(request):
+def list_edit_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
@@ -242,6 +281,23 @@ def list_edit_fir_vrk_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+
+                
+                request.session['vrk_ps_choice'] = police_station
+                request.session['vrk_sd_choice'] = sub_division
+                    
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
@@ -250,12 +306,45 @@ def list_edit_fir_vrk_view(request):
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('vrk_ps_choice', None)
+            sub_division = request.session.get('vrk_sd_choice', None)
+            fir_combined_list = []
+            if police_station and sub_division:
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    if not fir_phase_list[len(fir_phase_list)-1].current_status in ['Untraced', 'Cancelled']:
+                        continue
+                    if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
+                        continue
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -286,7 +375,36 @@ def edit_fir_save_vrk_ajax_view(request):
                     if (not vrk_status == 'Approved') and vrk_sent_back_date:
                         return HttpResponse(7)
                         # return redirect('fault', fault='FIR cannot be returned before Approving it')
-                    
+
+                    if vrk_status_date == 'XXXXXXX':
+                        vrk_status_date = None
+
+                    if vrk_receival_date and fir_phase.current_status_date:
+                        if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() < fir_phase.current_status_date:
+                            return HttpResponse(8)
+                            # return redirect('fault', fault='Date of receiving FIR cannot be before date of sending by Police Station')
+                    if vrk_status_date and vrk_receival_date:
+                        if datetime.strptime(vrk_status_date, '%d/%m/%y') < datetime.strptime(vrk_receival_date, '%d/%m/%y'):
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='Date of marking status cannot be before the date of receiving it')
+                    if vrk_sent_back_date and vrk_status_date:
+                        if datetime.strptime(vrk_sent_back_date, '%d/%m/%y') < datetime.strptime(vrk_status_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='Date of sending back the FIR cannot be before its date of marked status')
+
+                    if vrk_receival_date:
+                        if datetime.strptime(vrk_receival_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if vrk_status_date:
+                        if datetime.strptime(vrk_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if vrk_sent_back_date:
+                        if datetime.strptime(vrk_sent_back_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+
                     if vrk_receival_date:
                         fir_phase.vrk_receival_date = datetime.strptime(
                             vrk_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -322,17 +440,30 @@ def edit_fir_save_vrk_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_ps_view(request):
+def list_edit_fir_ps_view(request, asc = 0):
     police_station_record_keepers = [
         u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
     if request.user.pk in police_station_record_keepers:
         fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.PoliceStationRecordKeeper.objects.get(
             user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
+
+        try:
+            fir_list = sorted(fir_list, 
+                            key = lambda fir: (
+                                                fir.sub_division.pk,
+                                                fir.police_station.pk,
+                                                -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                )
+                            )
+        except:
+            pass
+
         fir_combined_list = []
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list})
+        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -356,12 +487,23 @@ def edit_fir_save_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
-                if current_status_date == 'XXXXXXX':
-                    current_status_date = None
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < fir_phase.date_registered:
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+
+                        if fir_phase.phase_index != 1:
+                            if datetime.strptime(current_status_date, '%d/%m/%y').date() < models.FIRPhase.objects.get(fir__pk__exact = fir_phase.fir.pk, phase_index__exact = fir_phase.phase_index - 1).appointed_io_date:
+                                return HttpResponse(17)
+                                # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
                     if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -378,15 +520,57 @@ def edit_fir_save_ps_ajax_view(request):
                     if (put_in_court_date) and (not received_from_vrk_date):
                         return HttpResponse(8)
                         # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
-                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                    if (not fir_phase.nc_sent_back_date) and (received_from_nc_date):
                         return HttpResponse(9)
                         # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
                     if (not received_from_nc_date) and (appointed_io):
                         return HttpResponse(10)
                         # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
-                    if (not appointed_io) and appointed_io_date:
+                    if ((not appointed_io) and appointed_io_date) or (appointed_io and (not appointed_io_date)):
                         return HttpResponse(11)
                         # return redirect('fault', fault='Please fill Marked IO name along with the date') 
+
+                    if fir_phase.vrk_sent_back_date and received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() < fir_phase.vrk_sent_back_date:
+                            return HttpResponse(13)
+                            # return redirect('fault', fault='The date for receiving the FIR from VRK cannot be before it is sent back from there')
+
+                    if put_in_court_date and received_from_vrk_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y') < datetime.strptime(received_from_vrk_date, '%d/%m/%y'):
+                            return HttpResponse(14)
+                            # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
+
+                    if fir_phase.nc_sent_back_date and received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() < fir_phase.nc_sent_back_date:
+                            return HttpResponse(15)
+                            # return redirect('fault', fault='The date for receiving the FIR from Naib Court cannot be before it is sent back from there')
+
+                    if received_from_nc_date and appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y') < datetime.strptime(received_from_nc_date, '%d/%m/%y'):
+                            return HttpResponse(16)
+                            # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
+                    
+                    if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if put_in_court_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(18)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+
 
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
@@ -446,15 +630,25 @@ def edit_fir_save_close_ps_ajax_view(request):
                 appointed_io = request.POST.get('appointed_io', None)
                 appointed_io_date = request.POST.get('appointed_io_date', None)
 
-                if current_status_date == 'XXXXXXX':
-                    current_status_date = None
-
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
                     if fir_phase.fir.police_station != acc_models.PoliceStationRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
+
+
+                    if current_status_date == 'XXXXXXX':
+                        current_status_date = None
+                    else:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < fir_phase.date_registered:
+                            return HttpResponse(13)
+                            # return redirect('fault', fault='The date for current status can't be before the date of registration')
+
+                        if not fir_phase.phase_index == 1:
+                            if datetime.strptime(current_status_date, '%d/%m/%y').date() < models.FIRPhase.objects.get(fir__pk__exact = fir_phase.fir.pk, phase_index__exact = fir_phase.phase_index - 1).appointed_io_date:
+                                return HttpResponse(18)
+                                # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
 
                     if not (io_name and accused_name and accused_status and current_status):
@@ -472,15 +666,56 @@ def edit_fir_save_close_ps_ajax_view(request):
                     if (put_in_court_date) and (not received_from_vrk_date):
                         return HttpResponse(8)
                         # return redirect('fault', fault='File cannot be submitted in Court before it is received back from SSP Office')
-                    if (received_from_nc_date) and (fir_phase.nc_status != 'Reinvestigation'):
+                    if (received_from_nc_date) and (not fir_phase.nc_sent_back_date):
                         return HttpResponse(9)
                         # return redirect('fault', fault='File cannot be received until it is returned from Naib Court')
-                    if (not received_from_nc_date) and (appointed_io):
+                    if ((not appointed_io) and appointed_io_date) or (appointed_io and (not appointed_io_date)):
                         return HttpResponse(10)
                         # return redirect('fault', fault='File cannot be marked to new IO before receiving from Naib Court')
                     if (not appointed_io) and appointed_io_date:
                         return HttpResponse(11)
                         # return redirect('fault', fault='Please fill Marked IO name along with the date') 
+
+                    if fir_phase.vrk_sent_back_date and received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() < fir_phase.vrk_sent_back_date:
+                            return HttpResponse(14)
+                            # return redirect('fault', fault='The date for receiving the FIR from VRK cannot be before it is sent back from there')
+
+                    if put_in_court_date and received_from_vrk_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y') < datetime.strptime(received_from_vrk_date, '%d/%m/%y'):
+                            return HttpResponse(15)
+                            # return redirect('fault', fault='The date for submitting the FIRin courtcannot be before receiving it from VRK')
+
+                    if fir_phase.nc_sent_back_date and received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() < fir_phase.nc_sent_back_date:
+                            return HttpResponse(16)
+                            # return redirect('fault', fault='The date for receiving the FIR from Naib Court cannot be before it is sent back from there')
+
+                    if received_from_nc_date and appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y') < datetime.strptime(received_from_nc_date, '%d/%m/%y'):
+                            return HttpResponse(17)
+                            # return redirect('fault', fault='The date for marking IO cannot be before the date of receiving the FIR')
+
+                    if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_vrk_date:
+                        if datetime.strptime(received_from_vrk_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if put_in_court_date:
+                        if datetime.strptime(put_in_court_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if received_from_nc_date:
+                        if datetime.strptime(received_from_nc_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if appointed_io_date:
+                        if datetime.strptime(appointed_io_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(19)
+                            # return redirect('fault', fault='Future Dates are not permitted')
 
                     fir_phase.io_name = io_name
                     fir_phase.accused_name = accused_name
@@ -526,21 +761,34 @@ def edit_fir_save_close_ps_ajax_view(request):
 
 
 @login_required
-def list_edit_fir_nc_view(request):
+def list_edit_fir_nc_view(request, asc = 0):
     nc_record_keepers = [
         u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
     if request.user.pk in nc_record_keepers:
         fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__exact=acc_models.CourtRecordKeeper.objects.get(
             user__pk__exact=request.user.pk).sub_division, police_station__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station)
         fir_combined_list = []
+        
+        try:
+            fir_list = sorted(fir_list, 
+                            key = lambda fir: (
+                                                fir.sub_division.pk,
+                                                fir.police_station.pk,
+                                                -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                )
+                            )
+        except:
+            pass
+
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             if not fir_phase_list[len(fir_phase_list)-1].put_in_court_date:
                 continue
-            if fir_phase_list[len(fir_phase_list)-1].nc_status in ['Approved', 'Reinvestigation']:
+            if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list})
+        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -556,11 +804,12 @@ def edit_fir_save_nc_ajax_view(request):
                 nc_receival_date = request.POST.get('nc_receival_date', None)
                 nc_status = request.POST.get('nc_status', None)
                 nc_status_date = request.POST.get('nc_status_date', None)
+                nc_sent_back_date = request.POST.get('nc_sent_back_date', None)
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
-                    nc_status_initial = fir_phase.nc_status
+                    nc_sent_back_date_initial = fir_phase.nc_sent_back_date
                     if fir_phase.fir.police_station != acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station:
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
@@ -568,9 +817,41 @@ def edit_fir_save_nc_ajax_view(request):
                     if (not fir_phase.put_in_court_date) and (nc_receival_date):
                         return HttpResponse(5)
                         # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
-                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                    if (not nc_status and nc_status_date) or (nc_status in ['Approved','Reinvestigation'] and not nc_status_date):
                         return HttpResponse(6)
                         # return redirect('fault', fault='Fill both Status and Date')
+                    if (not nc_status == 'Reinvestigation') and nc_sent_back_date:
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='FIR cannot be returned before marking it for reinvestigation it')
+
+                    if nc_status_date == 'XXXXXXX':
+                        nc_status_date = None
+
+                    if fir_phase.put_in_court_date and nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
+                            return HttpResponse(8)
+                            # return redirect('fault', fault='The date for receiving the FIR cannot be before it is sent from the Police Station')
+                    if nc_receival_date and nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y') < datetime.strptime(nc_receival_date, '%d/%m/%y'):
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='The date of marking status cannot be before the date of receiving it')
+                    if nc_status_date and nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')    
+
+                    if nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='Future Dates are not permitted')
 
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
@@ -579,10 +860,12 @@ def edit_fir_save_nc_ajax_view(request):
                     if nc_status_date:
                         fir_phase.nc_status_date = datetime.strptime(
                                 nc_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
+                    if nc_sent_back_date:
+                        fir_phase.nc_sent_back_date = datetime.strptime(nc_sent_back_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
-                    nc_status_final = fir_phase.nc_status
+                    nc_sent_back_date_final = fir_phase.nc_sent_back_date
 
-                    if nc_status_initial != 'Reinvestigation' and nc_status_final == 'Reinvestigation':
+                    if (not nc_sent_back_date_initial) and nc_sent_back_date_final:
                         email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
                         send_mail('FIR File Reverted', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been reverted for reinvestigation from the Naib Court. Kindly check and acknowledge the receival on the online FIR Tracking System.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
                     
@@ -614,6 +897,7 @@ def edit_fir_save_close_nc_ajax_view(request):
                 nc_receival_date = request.POST.get('nc_receival_date', None)
                 nc_status = request.POST.get('nc_status', None)
                 nc_status_date = request.POST.get('nc_status_date', None)
+                nc_sent_back_date = request.POST.get('nc_sent_back_date', None)
 
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
@@ -625,12 +909,45 @@ def edit_fir_save_close_nc_ajax_view(request):
                     if (not fir_phase.put_in_court_date) and (nc_receival_date):
                         return HttpResponse(5)
                         # return redirect('fault', fault='File cannot be received until it is submitted by Police Station')
-                    if (not nc_status and nc_status_date) or (nc_status and not nc_status_date):
+                    if (not nc_status and nc_status_date) or (nc_status in ['Approved','Reinvestigation'] and not nc_status_date):
                         return HttpResponse(6)
                         # return redirect('fault', fault='Fill both Status and Date')
                     if nc_status != 'Approved':
                         return HttpResponse(7)
                         # return redirect('fault', fault='The status must be Approved to Close the FIR')
+                    if nc_sent_back_date:
+                        return HttpResponse(8)
+                        # return redirect('fault', fault='Approved FIRs cannot be returned')
+
+                    if nc_status_date == 'XXXXXXX':
+                        nc_status_date = None
+
+                    if fir_phase.put_in_court_date and nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() < fir_phase.put_in_court_date:
+                            return HttpResponse(9)
+                            # return redirect('fault', fault='The date for receiving the FIR cannot be before it is sent from the Police Station')
+                    if nc_receival_date and nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y') < datetime.strptime(nc_receival_date, '%d/%m/%y'):
+                            return HttpResponse(10)
+                            # return redirect('fault', fault='The date of marking status cannot be before the date of receiving it')
+                    if nc_status_date and nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y') < datetime.strptime(nc_status_date, '%d/%m/%y'):
+                            return HttpResponse(11)
+                            # return redirect('fault', fault='The date of sending the FIR back cannot be before the date of marking its status')
+
+                    if nc_receival_date:
+                        if datetime.strptime(nc_receival_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_status_date:
+                        if datetime.strptime(nc_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if nc_sent_back_date:
+                        if datetime.strptime(nc_sent_back_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(12)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+
                     if nc_receival_date:
                         fir_phase.nc_receival_date = datetime.strptime(
                                 nc_receival_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -710,7 +1027,16 @@ def add_new_phase_fir_save_ajax_view(request):
                         return HttpResponse(5)
                         # return redirect('fault', fault='More than 3 phases cannot exist')
                     if current_status_date:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name, accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+                        
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(7)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='Future Dates are not permitted')
                     else:
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
@@ -759,6 +1085,17 @@ def add_new_phase_fir_save_close_ajax_view(request):
                         return HttpResponse(5)
                         # return redirect('fault', fault='More than 3 phases cannot exist')
                     if current_status_date:
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() < phase_list[len(phase_list)-1].appointed_io_date:
+                            return HttpResponse(6)
+                            # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
+
+                        if datetime.strptime(current_status_date, '%d/%m/%y').date() > datetime.today().date():
+                            return HttpResponse(7)
+                            # return redirect('fault', fault='Future Dates are not permitted')
+                    if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
+                        return HttpResponse(7)
+                        # return redirect('fault', fault='Future Dates are not permitted')
+
                         models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
                                                     accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
@@ -784,7 +1121,7 @@ def add_new_phase_fir_save_close_ajax_view(request):
 
 
 @login_required
-def list_fir_dsp_view(request):
+def list_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
@@ -797,22 +1134,68 @@ def list_fir_dsp_view(request):
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                request.session['dsp_ps_choice'] = police_station
+
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChoosePoliceStationForm(user = request.user)
-                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('dsp_ps_choice', None)
+            fir_combined_list = []
+
+            try:
+                if loc_models.PoliceStation.objects.get(pk__exact = police_station).sub_division.pk != acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk:
+                    police_station = None
+            except:
+                pass
+
+            if police_station:
+                if police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False, police_station__pk__exact=police_station, sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChoosePoliceStationForm(user = request.user)
-            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
 
 @login_required
-def list_fir_ssp_view(request):
+def list_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
@@ -830,22 +1213,67 @@ def list_fir_ssp_view(request):
                 else:
                     fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
                                                                sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                request.session['ssp_ps_choice'] = police_station
+                request.session['ssp_sd_choice'] = sub_division
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
+            police_station = request.session.get('ssp_ps_choice', None)
+            sub_division = request.session.get('ssp_sd_choice', None)
+            fir_combined_list = []
+            if police_station and sub_division:
+                if sub_division == 'all':
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False)
+                elif police_station == 'all':
+                    fir_list = models.FIR.objects.all().filter(
+                        is_closed__exact=False, sub_division__exact=sub_division)
+                else:
+                    fir_list = models.FIR.objects.all().filter(is_closed__exact=False,
+                                                               sub_division__exact=sub_division, police_station__exact=police_station)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+                
+                for fir in fir_list:
+                    fir_phase_list = fir.phases.all()
+                    fir_combined_list.append([fir, fir_phase_list])
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': [], 'form': form})
+            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
 
 @login_required
-def filter_fir_ssp_view(request):
+def filter_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
@@ -856,16 +1284,38 @@ def filter_fir_ssp_view(request):
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
                 under_section = form.cleaned_data['under_section']
-                expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
-                expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
-                is_closed = form.cleaned_data['is_closed']
-                fir_combined_list = []
-
+                gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
+                gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
+                gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
+                gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
+                fir_pendency = form.cleaned_data['fir_pendency']
+                expiry_date = form.cleaned_data['expiry_date']
+                vrk_approval_pendency = form.cleaned_data['vrk_approval_pendency']
+                nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
     
                 fir_list = models.FIR.objects.all()
+                fir_combined_list = []
+
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+
+                    if fir_last_phase.fir.is_closed == True:
+                        continue
+
                     if sub_division:
                         if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
                             continue
@@ -878,37 +1328,162 @@ def filter_fir_ssp_view(request):
                     if under_section:
                         if fir_last_phase.under_section.find(under_section) == -1:
                             continue
-                    if expiry_date_lower_limit:
-                        if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
-                            continue
-                    if expiry_date_upper_limit:
-                        if (fir_last_phase.date_registered >= datetime.strptime(datetime.strptime(expiry_date_upper_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
-                            continue
-                    if is_closed:
-                        if not (bool(is_closed) == fir_last_phase.fir.is_closed):
-                            continue
-                    fir_combined_list.append([fir, fir_phase_list])
 
-                initial_data = {'sub_division': sub_division,
+                    if gap_ps_sent_vrk_received:
+                        if not fir_last_phase.current_status in ['Untraced', 'Cancelled']:
+                            continue
+                        if not fir_last_phase.current_status_date:
+                            continue
+                        if fir_last_phase.vrk_receival_date:
+                            continue
+                        gap = gap_ps_sent_vrk_received.split('-')
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(gap[1]):
+                                continue
+
+                    if gap_vrk_sent_ps_received:
+                        gap = gap_vrk_sent_ps_received.split('-')
+                        if not fir_last_phase.vrk_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_vrk_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_nc_sent:
+                        gap = gap_ps_received_nc_sent.split('-')
+                        if not fir_last_phase.received_from_vrk_date:
+                            continue
+                        if fir_last_phase.put_in_court_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_sent_ps_received:
+                        gap = gap_nc_sent_ps_received.split('-')
+                        if not fir_last_phase.nc_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_nc_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_mark_io:
+                        gap = gap_ps_received_mark_io.split('-')
+                        if not fir_last_phase.received_from_nc_date:
+                            continue
+                        if fir_last_phase.appointed_io_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_nc_date).days > int(gap[1]):
+                                continue
+
+                    if fir_pendency:
+                        pendency_bounds = fir_pendency.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(pendency_bounds[1]):
+                                continue
+
+                    if expiry_date:
+                        expiry_bounds = expiry_date.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+
+                        if expiry_bounds[0] == 'overdue':
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                        else:
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+
+                    if vrk_approval_pendency:
+                        pendency_bounds = vrk_approval_pendency.split('-')
+                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.vrk_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
+                    if nc_approval_pendency:
+                        pendency_bounds = nc_approval_pendency.split('-')
+                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
+                    fir_combined_list.append([fir, fir_phase_list])
+                    
+                
+                initial_data = {
+                                'sub_division': sub_division,
                                 'police_station': police_station,
                                 'fir_no': fir_no,
-                                'expiry_date_lower_limit':expiry_date_lower_limit,
-                                'expiry_date_upper_limit':expiry_date_upper_limit,
-                                'is_closed': is_closed
+                                'under_section': under_section,
+                                'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
+                                'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
+                                'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
+                                'gap_ps_received_mark_io': gap_ps_received_mark_io,
+                                'fir_pendency': fir_pendency,
+                                'expiry_date': expiry_date,
+                                'vrk_approval_pendency': vrk_approval_pendency,
+                                'nc_approval_pendency': nc_approval_pendency,
                                 }
+
                 form = forms.FIRFilterSSPForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
             form = forms.FIRFilterSSPForm()
-            return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': [], 'form': form})
+            fir_combined_list = []
+            return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
 
 @login_required
-def filter_fir_dsp_view(request):
+def filter_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
@@ -918,16 +1493,39 @@ def filter_fir_dsp_view(request):
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
                 under_section = form.cleaned_data['under_section']
-                expiry_date_lower_limit = form.cleaned_data['expiry_date_lower_limit']
-                expiry_date_upper_limit = form.cleaned_data['expiry_date_upper_limit']
-                is_closed = form.cleaned_data['is_closed']
+                gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
+                gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
+                gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
+                gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
+                fir_pendency = form.cleaned_data['fir_pendency']
+                expiry_date = form.cleaned_data['expiry_date']
+                vrk_approval_pendency = form.cleaned_data['vrk_approval_pendency']
+                nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 fir_combined_list = []
 
     
-                fir_list = models.FIR.objects.all()
+                fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                
+                try:
+                    fir_list = sorted(fir_list, 
+                                    key = lambda fir: (
+                                                        fir.sub_division.pk,
+                                                        fir.police_station.pk,
+                                                        -1*int(fir.fir_no[fir.fir_no.index('/')+1:len(fir.fir_no)]), 
+                                                        -1*int(fir.fir_no[0:fir.fir_no.index('/')])
+                                                        )
+                                    )
+                except:
+                    pass
+
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+
+                    if fir_last_phase.fir.is_closed == True:
+                        continue
+
                     if police_station:
                         if not (int(police_station) == fir_last_phase.fir.police_station.pk):
                             continue
@@ -937,33 +1535,637 @@ def filter_fir_dsp_view(request):
                     if under_section:
                         if fir_last_phase.under_section.find(under_section) == -1:
                             continue
-                    if expiry_date_lower_limit:
-                        if (fir_last_phase.date_registered <= datetime.strptime(datetime.strptime(expiry_date_lower_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+
+                    if gap_ps_sent_vrk_received:
+                        if not fir_last_phase.current_status in ['Untraced', 'Cancelled']:
                             continue
-                    if expiry_date_upper_limit:
-                        if (fir_last_phase.date_registered >= datetime.strptime(datetime.strptime(expiry_date_upper_limit, '%d/%m/%y').strftime('%Y-%m-%d'),'%Y-%m-%d').date() - timedelta(fir_last_phase.limitation_period or 0)):
+                        if not fir_last_phase.current_status_date:
                             continue
-                    if is_closed:
-                        if not (bool(is_closed) == fir_last_phase.fir.is_closed):
+                        if fir_last_phase.vrk_receival_date:
                             continue
+                        gap = gap_ps_sent_vrk_received.split('-')
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(gap[1]):
+                                continue
+
+                    if gap_vrk_sent_ps_received:
+                        gap = gap_vrk_sent_ps_received.split('-')
+                        if not fir_last_phase.vrk_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_vrk_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.vrk_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_nc_sent:
+                        gap = gap_ps_received_nc_sent.split('-')
+                        if not fir_last_phase.received_from_vrk_date:
+                            continue
+                        if fir_last_phase.put_in_court_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_sent_ps_received:
+                        gap = gap_nc_sent_ps_received.split('-')
+                        if not fir_last_phase.nc_sent_back_date:
+                            continue
+                        if fir_last_phase.received_from_nc_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_sent_back_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_sent_back_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_received_mark_io:
+                        gap = gap_ps_received_mark_io.split('-')
+                        if not fir_last_phase.received_from_nc_date:
+                            continue
+                        if fir_last_phase.appointed_io_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.received_from_nc_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_nc_date).days > int(gap[1]):
+                                continue
+
+                    if fir_pendency:
+                        pendency_bounds = fir_pendency.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(pendency_bounds[1]):
+                                continue
+
+                    if expiry_date:
+                        expiry_bounds = expiry_date.split('-')
+                        if fir_last_phase.fir.is_closed == True:
+                            continue
+
+                        if expiry_bounds[0] == 'overdue':
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                        else:
+                            if fir_last_phase.phase_index == 1:
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+                            else:
+                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    continue
+
+                    if vrk_approval_pendency:
+                        pendency_bounds = vrk_approval_pendency.split('-')
+                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.vrk_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
+                    if nc_approval_pendency:
+                        pendency_bounds = nc_approval_pendency.split('-')
+                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_sent_back_date):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
                                 'police_station': police_station,
                                 'fir_no': fir_no,
-                                'expiry_date_lower_limit':expiry_date_lower_limit,
-                                'expiry_date_upper_limit':expiry_date_upper_limit,
-                                'is_closed': is_closed
+                                'under_section': under_section,
+                                'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
+                                'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
+                                'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
+                                'gap_ps_received_mark_io': gap_ps_received_mark_io,
+                                'fir_pendency': fir_pendency,
+                                'expiry_date': expiry_date,
+                                'vrk_approval_pendency': vrk_approval_pendency,
+                                'nc_approval_pendency': nc_approval_pendency,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
-                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form})
+                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
             form = forms.FIRFilterDSPForm(user = request.user)
-            return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': [], 'form': form})
+            fir_combined_list = []
+            return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
+
+
+@login_required
+def dashboard_ssp_view(request):
+    ssp_record_keepers = [u['user']
+                          for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in ssp_record_keepers:
+        if request.method == 'POST':
+            form = forms.SSPDashboardForm(request.POST)
+            if form.is_valid():
+                sub_division = form.cleaned_data['sub_division']
+                police_station = form.cleaned_data['police_station']
+                start_date = datetime.strptime(form.cleaned_data['start_date'], '%d/%m/%y').date()
+                end_date = datetime.strptime(form.cleaned_data['end_date'], '%d/%m/%y').date()
+
+                if sub_division == 'all':
+                    firs_registered_count = models.FIRPhase.objects.all().filter(phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                else:
+                    if police_station == 'all':
+                        firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                        firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                        firs_status_challan_filed_count = firs_closed_count
+                        firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                        firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_untraced_count = firs_status_untraced.count()
+                        firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                        firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_cancelled_count = firs_status_cancelled.count()
+                        firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                        firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                        firs_vrk_received_count = firs_vrk_received.count()
+                        firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                        firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                        firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                        firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                        firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                        firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                        firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                        firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                        firs_received_from_vrk_count = firs_received_from_vrk.count()
+                        firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                        firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                        firs_put_in_court_count = firs_put_in_court.count()
+                        firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                        firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                        firs_nc_receival_count = firs_nc_receival.count()
+                        firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                        firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_approved_count = firs_nc_status_approved.count()
+                        firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                        firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                        firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                        firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                        firs_nc_sent_back_count = firs_nc_sent_back.count()
+                        firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                        firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                        firs_received_from_nc_count = firs_received_from_nc.count()
+                        firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                        firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                        firs_appointed_io_count = firs_appointed_io.count()
+                        firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                    else:
+                        firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+    
+                        firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                        firs_status_challan_filed_count = firs_closed_count
+                        firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                        firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_untraced_count = firs_status_untraced.count()
+                        firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                        firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                        firs_status_cancelled_count = firs_status_cancelled.count()
+                        firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                        firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                        firs_vrk_received_count = firs_vrk_received.count()
+                        firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                        firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                        firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                        firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                        firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                        firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                        firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                        firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                        firs_received_from_vrk_count = firs_received_from_vrk.count()
+                        firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                        firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                        firs_put_in_court_count = firs_put_in_court.count()
+                        firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                        firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                        firs_nc_receival_count = firs_nc_receival.count()
+                        firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                        firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_approved_count = firs_nc_status_approved.count()
+                        firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                        firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                        firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                        firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                        firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                        firs_nc_sent_back_count = firs_nc_sent_back.count()
+                        firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                        firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                        firs_received_from_nc_count = firs_received_from_nc.count()
+                        firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                        firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                        firs_appointed_io_count = firs_appointed_io.count()
+                        firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+                
+                form = forms.SSPDashboardForm(initial = {
+                                                            'start_date': start_date.strftime('%d/%m/%y'),
+                                                            'end_date': end_date.strftime('%d/%m/%y'),
+                                                        })
+
+                return render(request, 'firBeta/dashboard_ssp.html', {
+                                                                        'form':form,
+                                                                        'firs_registered_count':firs_registered_count,
+                                                                        'firs_closed_count':firs_closed_count,
+                                                                        'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                                                                        'firs_status_untraced_count':firs_status_untraced_count,
+                                                                        'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                                                                        'firs_status_cancelled_count':firs_status_cancelled_count,
+                                                                        'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                                                                        'firs_vrk_received_count':firs_vrk_received_count,
+                                                                        'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                                                                        'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                                                                        'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                                                                        'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                                                                        'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                                                                        'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                                                                        'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                                                                        'firs_put_in_court_count':firs_put_in_court_count,
+                                                                        'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                                                                        'firs_nc_receival_count':firs_nc_receival_count,
+                                                                        'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                                                                        'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                                                                        'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                                                                        'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                                                                        'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                                                                        'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                                                                        'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                                                                        'firs_received_from_nc_count':firs_received_from_nc_count,
+                                                                        'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                                                                        'firs_appointed_io_count':firs_appointed_io_count,
+                                                                        'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                                                                        })
+
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.SSPDashboardForm()
+            return render(request, 'firBeta/dashboard_ssp.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    
+
+    # print("FIRs Registered: ", firs_registered_count)
+    # print("FIRs Closed: ", firs_closed_count)
+    # print("FIRs Challan Filed: ", firs_status_challan_filed_count)
+    # print("FIRs Untraced: ", firs_status_untraced_count)
+    # print("FIRs Untraced Unique: ", firs_status_untraced_unique_count)
+    # print("FIRs Cancelled: ", firs_status_cancelled_count)
+    # print("FIRs Cancelled Unique: ", firs_status_cancelled_unique_count)
+    # print("FIRs VRK Received: ", firs_vrk_received_count)
+    # print("FIRs VRK Received Unique: ", firs_vrk_received_unique_count)
+    # print("FIRs VRK Approved: ", firs_vrk_status_approved_count)
+    # print("FIRs VRK Approved Unique: ", firs_vrk_status_approved_unique_count)
+    # print("FIRs VRK Sent Back: ", firs_vrk_sent_back_count)
+    # print("FIRs VRK Sent Back Unique: ", firs_vrk_sent_back_unique_count)
+    # print("FIRs Received From VRK: ", firs_received_from_vrk_count)
+    # print("FIRs Received From VRK Unique: ", firs_received_from_vrk_unique_count)
+    # print("FIRs Put in Court: ", firs_put_in_court_count)
+    # print("FIRs Put in Court Unique: ", firs_put_in_court_unique_count)
+    # print("FIRs NC Received: ", firs_nc_receival_count)
+    # print("FIRs NC Received Unique: ", firs_nc_receival_unique_count)
+    # print("FIRs NC Approved: ", firs_nc_status_approved_count)
+    # print("FIRs NC Approved Unique: ", firs_nc_status_approved_unique_count)
+    # print("FIRs NC Reinvestigation: ", firs_nc_status_reinvestigation_count)
+    # print("FIRs NC Reinvestigation Unique: ", firs_nc_status_reinvestigation_unique_count)
+    # print("FIRs NC Sent Back: ", firs_nc_sent_back_count)
+    # print("FIRs NC Sent Back Unique: ", firs_nc_sent_back_unique_count)
+    # print("FIRs Received From NC: ", firs_received_from_nc_count)
+    # print("FIRs Received From NC Unique: ", firs_received_from_nc_unique_count)
+    # print("FIRs Appointed IO: ", firs_appointed_io_count)
+    # print("FIRs Appointed IO Unique: ", firs_appointed_io_unique_count)
+    # return HttpResponse(0)
+
+
+@login_required
+def dashboard_dsp_view(request):
+    dsp_record_keepers = [u['user']
+                          for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
+    if request.user.pk in dsp_record_keepers:
+        if request.method == 'POST':
+            form = forms.DSPDashboardForm(data = request.POST, user = request.user)
+            if form.is_valid():
+                sub_division = loc_models.SubDivision.objects.get(pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
+                police_station = form.cleaned_data['police_station']
+                start_date = datetime.strptime(form.cleaned_data['start_date'], '%d/%m/%y').date()
+                end_date = datetime.strptime(form.cleaned_data['end_date'], '%d/%m/%y').date()
+
+                if police_station == 'all':
+                    firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                else:
+                    firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
+
+                    firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
+                    firs_status_challan_filed_count = firs_closed_count
+                    firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
+
+                    firs_status_untraced = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Untraced', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_untraced_count = firs_status_untraced.count()
+                    firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                    firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, current_status__exact='Cancelled', current_status_date__gte = start_date, current_status_date__lte = end_date)
+                    firs_status_cancelled_count = firs_status_cancelled.count()
+                    firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                    firs_vrk_received = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_receival_date__gte = start_date, vrk_receival_date__lte = end_date)
+                    firs_vrk_received_count = firs_vrk_received.count()
+                    firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                    firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_status__exact = 'Approved', vrk_status_date__gte = start_date, vrk_status_date__lte = end_date)
+                    firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                    firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                    firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, vrk_sent_back_date__gte = start_date, vrk_sent_back_date__lte = end_date)
+                    firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                    firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                    firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_vrk_date__gte = start_date, received_from_vrk_date__lte = end_date)
+                    firs_received_from_vrk_count = firs_received_from_vrk.count()
+                    firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                    firs_put_in_court = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, put_in_court_date__gte = start_date, put_in_court_date__lte = end_date)
+                    firs_put_in_court_count = firs_put_in_court.count()
+                    firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                    firs_nc_receival = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_receival_date__gte = start_date, nc_receival_date__lte = end_date)
+                    firs_nc_receival_count = firs_nc_receival.count()
+                    firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                    firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_approved_count = firs_nc_status_approved.count()
+                    firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                    firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_status__exact = 'Reinvestigation', nc_status_date__gte = start_date, nc_status_date__lte = end_date)
+                    firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                    firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                    firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, nc_sent_back_date__gte = start_date, nc_sent_back_date__lte = end_date)
+                    firs_nc_sent_back_count = firs_nc_sent_back.count()
+                    firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                    firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, received_from_nc_date__gte = start_date, received_from_nc_date__lte = end_date)
+                    firs_received_from_nc_count = firs_received_from_nc.count()
+                    firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                    firs_appointed_io = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__police_station__exact = police_station, appointed_io_date__gte = start_date, appointed_io_date__lte = end_date)
+                    firs_appointed_io_count = firs_appointed_io.count()
+                    firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+            
+                form = forms.DSPDashboardForm(user = request.user, initial = {
+                                                                                'start_date': start_date.strftime('%d/%m/%y'),
+                                                                                'end_date': end_date.strftime('%d/%m/%y'),
+                                                                            })
+
+                return render(request, 'firBeta/dashboard_dsp.html', {
+                                                                        'form':form,
+                                                                        'firs_registered_count':firs_registered_count,
+                                                                        'firs_closed_count':firs_closed_count,
+                                                                        'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                                                                        'firs_status_untraced_count':firs_status_untraced_count,
+                                                                        'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                                                                        'firs_status_cancelled_count':firs_status_cancelled_count,
+                                                                        'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                                                                        'firs_vrk_received_count':firs_vrk_received_count,
+                                                                        'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                                                                        'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                                                                        'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                                                                        'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                                                                        'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                                                                        'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                                                                        'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                                                                        'firs_put_in_court_count':firs_put_in_court_count,
+                                                                        'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                                                                        'firs_nc_receival_count':firs_nc_receival_count,
+                                                                        'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                                                                        'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                                                                        'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                                                                        'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                                                                        'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                                                                        'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                                                                        'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                                                                        'firs_received_from_nc_count':firs_received_from_nc_count,
+                                                                        'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                                                                        'firs_appointed_io_count':firs_appointed_io_count,
+                                                                        'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                                                                        })
+
+            else:
+                return redirect('fault', fault='Invalid Parameters!')
+        else:
+            form = forms.DSPDashboardForm(user = request.user)
+            return render(request, 'firBeta/dashboard_dsp.html', {'form':form})
+    else:
+        return redirect('fault', fault='ACCESS DENIED!')
+
+    
+
+    # print("FIRs Registered: ", firs_registered_count)
+    # print("FIRs Closed: ", firs_closed_count)
+    # print("FIRs Challan Filed: ", firs_status_challan_filed_count)
+    # print("FIRs Untraced: ", firs_status_untraced_count)
+    # print("FIRs Untraced Unique: ", firs_status_untraced_unique_count)
+    # print("FIRs Cancelled: ", firs_status_cancelled_count)
+    # print("FIRs Cancelled Unique: ", firs_status_cancelled_unique_count)
+    # print("FIRs VRK Received: ", firs_vrk_received_count)
+    # print("FIRs VRK Received Unique: ", firs_vrk_received_unique_count)
+    # print("FIRs VRK Approved: ", firs_vrk_status_approved_count)
+    # print("FIRs VRK Approved Unique: ", firs_vrk_status_approved_unique_count)
+    # print("FIRs VRK Sent Back: ", firs_vrk_sent_back_count)
+    # print("FIRs VRK Sent Back Unique: ", firs_vrk_sent_back_unique_count)
+    # print("FIRs Received From VRK: ", firs_received_from_vrk_count)
+    # print("FIRs Received From VRK Unique: ", firs_received_from_vrk_unique_count)
+    # print("FIRs Put in Court: ", firs_put_in_court_count)
+    # print("FIRs Put in Court Unique: ", firs_put_in_court_unique_count)
+    # print("FIRs NC Received: ", firs_nc_receival_count)
+    # print("FIRs NC Received Unique: ", firs_nc_receival_unique_count)
+    # print("FIRs NC Approved: ", firs_nc_status_approved_count)
+    # print("FIRs NC Approved Unique: ", firs_nc_status_approved_unique_count)
+    # print("FIRs NC Reinvestigation: ", firs_nc_status_reinvestigation_count)
+    # print("FIRs NC Reinvestigation Unique: ", firs_nc_status_reinvestigation_unique_count)
+    # print("FIRs NC Sent Back: ", firs_nc_sent_back_count)
+    # print("FIRs NC Sent Back Unique: ", firs_nc_sent_back_unique_count)
+    # print("FIRs Received From NC: ", firs_received_from_nc_count)
+    # print("FIRs Received From NC Unique: ", firs_received_from_nc_unique_count)
+    # print("FIRs Appointed IO: ", firs_appointed_io_count)
+    # print("FIRs Appointed IO Unique: ", firs_appointed_io_unique_count)
+    # return HttpResponse(0)
 
 
 def load_police_stations_view(request):

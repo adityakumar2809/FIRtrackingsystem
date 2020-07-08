@@ -1,0 +1,28 @@
+{% load widget_tweaks %}
+
+<form method='POST' id='ps_location_form' class="center">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3">
+            {{form.police_station}}
+            <label for="Sub Division">Police Station</label>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="input-field col s3 offset-s3">
+            {{form.start_date|add_class:'datepicker'}}
+            <label for="Start Date">Start Date</label>
+        </div>
+        <div class="input-field col s3">
+            {{form.end_date|add_class:'datepicker'}}
+            <label for="End Date">End Date</label>
+        </div>
+    </div>
+
+    <button class="btn waves-effect waves-light" type="submit">
+     Submit <i class="material-icons right">send</i>
+    </button>
+
+</form>

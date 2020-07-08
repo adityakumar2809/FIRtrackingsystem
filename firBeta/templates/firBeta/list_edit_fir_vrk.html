@@ -21,64 +21,97 @@
         border-collapse: separate;
     }
 
-    table.data-table th {
+    table.data-table > thead > tr.header-row-1 > th, table.data-table > thead > tr.header-row-2 > th {
         border: 2px black solid;
         border-left: 0px;
         border-radius: 0;
         z-index: 3;
     }
 
-    tr.header-row-1 th.header-element-1:nth-child(1) {
+    tr.header-row-1 > th.header-element-1:nth-child(1) {
         border-left: 2px black solid;
         border-bottom-left-radius: 15px;
         border-top-left-radius: 15px;
     }
 
-    tr.header-row-1 th.header-element-1:last-child {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
+    tr.header-row-1 > th.header-element-1:last-child {
+        /* border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px; */
+        position: sticky !important;
+        right: 0;
+        z-index: 5;
+    }
+    tr.header-row-1 > th.header-element-1:nth-last-child(2) {
+        /* border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px; */
+
+        position: sticky !important;
+        right: 98px;
+        z-index: 5;
+        border-left: 2px black solid;
     }
 
-    table.data-table td {
+    table.data-table > tbody > tr.data-row > td {
         border: 1px gray solid;
         border-radius: 0;
     }
 
-    tr.data-row td:nth-child(1) {
-        border-bottom-left-radius: 15px;
-        border-top-left-radius: 15px;
+    tr.data-row > td:nth-child(1) {
+        border-bottom-left-radius: 15px !important;
+        border-top-left-radius: 15px !important;
     }
 
-    tr.data-row td:last-child {
-        border-bottom-right-radius: 15px;
-        border-top-right-radius: 15px;
+    tr.data-row > td:last-child {
+        /* border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px; */
+        position: sticky !important;
+        right: 0;
+        z-index: 4;
+    }
+    tr.data-row > td:nth-last-child(2) {
+        /* border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px; */
+
+        position: sticky !important;
+        right: 98.5px;
+        z-index: 4;
+
+        border-left: 1px gray solid;
     }
 
-    table.data-table thead tr.header-row-1 th {
+    table.data-table > thead > tr.header-row-1 > th {
         position: sticky !important;
         top: 0;
     }
 
-    table.data-table thead tr.header-row-2 th {
+    table.data-table > thead > tr.header-row-2 > th {
         position: sticky !important;
-        top: 55px;
+        top: 77px;
     }
 
 
-    tr.header-row-1 th.header-element-1:nth-child(even),
-    tr.header-row-2 th.header-element-2.sub-head-even {
+    tr.header-row-1 > th.header-element-1:nth-child(even),
+    tr.header-row-2 > th.header-element-2.sub-head-even {
         background-color: #0097a7 !important;
     }
 
-    tr.header-row-1 th.header-element-1:nth-child(odd),
-    tr.header-row-2 th.header-element-2.sub-head-odd {
+    tr.header-row-1 > th.header-element-1:nth-child(odd),
+    tr.header-row-2 > th.header-element-2.sub-head-odd {
         background-color: #00838f !important;
     }
 
-    tr.blank-row td {
+    tr.blank-row > td {
         border: 0px;
         color: #e8f5e9;
         background-color: #e8f5e9;
+    }
+
+    input, textarea {
+        text-transform: capitalize;
+    }
+
+    input:disabled, textarea:disabled {
+        color: rgba(0, 0, 0, 0.87) !important;
     }
 </style>
 {% endblock head %}
@@ -337,7 +370,9 @@
 <br><br>
 
 <div class="container">
-    <div class="section"></div>
+    <div class="section">
+        <button class="toggle-btn btn waves-effect waves-light">Toggle Sorting Order</button>
+    </div>
     <div class="section">
         <div class="table-wrapper" data-fl-scrolls>
             <table class="centered responsive-table data-table">
@@ -349,6 +384,7 @@
 
                 <thead>
                     <tr class="header-row-1">
+                        <th class="header-element-1" rowspan="2">S. No.</th>
                         <th class="header-element-1" rowspan="2">Sub Division<br>PS</th>
                         <th class="header-element-1" rowspan="2">FIR No.<br>Date</th>
                         <th class="header-element-1" rowspan="2">U/S</th>
@@ -358,238 +394,492 @@
                         <th class="header-element-1" rowspan="2">Limitation Period</th>
                         <th class="header-element-1" colspan="2">Current Status</th>
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
-                        <th class="header-element-1" rowspan="2">Received Back in PS Date</th>
-                        <th class="header-element-1" rowspan="2">Put in Court Date</th>
-                        <th class="header-element-1" colspan="3">Naib Court</th>
+                        <th class="header-element-1" colspan="2">Post SSP Approval Details (PS)</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
                         <th class="header-element-1" rowspan="2">Save</th>
                     </tr>
                     <tr class="header-row-2">
-                        <th class="header-element-2 sub-head-even">Status</th>
-                        <th class="header-element-2 sub-head-even">Date</th>
-                        <th class="header-element-2 sub-head-odd">Received at VRK Branch Date</th>
                         <th class="header-element-2 sub-head-odd">Status</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
-                        <th class="header-element-2 sub-head-odd">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-even">Received at VRK Branch Date</th>
+                        <th class="header-element-2 sub-head-even">Status</th>
+                        <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Received Back in PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Put in Court Date</th>
                         <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
                         <th class="header-element-2 sub-head-odd">Received Back on Date</th>
                         <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr class="blank-row">
+                {% if asc == 0 %}
+                    <tbody class="data-table-body content-descending">
                         <tr class="blank-row">
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>////////////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>/////////////////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>/////////////////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
-                            <td>///////////////</td>
+                            <tr class="blank-row">
+                                <td>//////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>/////////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>/////////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                            </tr>
                         </tr>
-                    </tr>
 
-                    <form method="POST">
-                        {% csrf_token %}
-                        {% for fir_set in fir_list %}
-                            {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-4 data-row">
-                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
-                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                    <td>{{ fir_phase.under_section }}</td>
-                                    <td>{{ fir_phase.io_name }}</td>
-                                    <td>{{ fir_phase.accused_name }}</td>
-                                    <td>{{ fir_phase.accused_status }}</td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for fir_set in fir_list %}
+                                {% for fir_phase in fir_set.1 %}
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
+                                        <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
+                                        <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                        <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                        <td>{{ fir_phase.under_section }}</td>
+                                        <td>{{ fir_phase.io_name }}</td>
+                                        <td>{{ fir_phase.accused_name }}</td>
+                                        <td>{{ fir_phase.accused_status }}</td>
 
-                                    <td>
-                                        {% if fir_phase.pk|is_last_phase %}
-                                            {% if fir_phase.pk|will_expire_at == 0 %}
-                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 1 %}
-                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 2 %}
-                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                        <td>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.limitation_period }} days
+                                                {% endif %}
+                                            {% else %}
                                                 {{ fir_phase.limitation_period }} days
                                             {% endif %}
-                                        {% else %}
-                                            {{ fir_phase.limitation_period }} days
-                                        {% endif %}
-                                        <br>
-                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
-                                    </td>
-                                    
-                                    <td>{{ fir_phase.current_status }}</td>
+                                            <br>
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                        </td>
+                                        
+                                        <td>{{ fir_phase.current_status }}</td>
 
-                                    <td>
-                                        {% if fir_phase.current_status_date %}
-                                            {{ fir_phase.current_status_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="input-field">
-                                            <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_receival_date validate datepicker" disabled value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-field">
-                                            <select class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status validate" disabled>
-                                                {% if fir_phase.vrk_status %}
-                                                    {% if fir_phase.vrk_status == "Pending" %}
-                                                        <option class="vrk-status-default-option" value="" disabled>-----------------
-                                                        </option>
-                                                        <option value="Pending" selected>Pending</option>
-                                                        <option value="Approved">Approved</option>
-                                                    {% elif fir_phase.vrk_status == "Approved" %}
-                                                        <option class="vrk-status-default-option" value="" disabled>-----------------
+                                        <td>
+                                            {% if fir_phase.current_status_date %}
+                                                {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_receival_date validate datepicker" disabled value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <select class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status validate" disabled>
+                                                    {% if fir_phase.vrk_status %}
+                                                        {% if fir_phase.vrk_status == "Pending" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending" selected>Pending</option>
+                                                            <option value="Approved">Approved</option>
+                                                        {% elif fir_phase.vrk_status == "Approved" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Approved" selected>Approved</option>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <option class="vrk-status-default-option" value="" disabled selected>-----------------
                                                         </option>
                                                         <option value="Pending">Pending</option>
-                                                        <option value="Approved" selected>Approved</option>
+                                                        <option value="Approved">Approved</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                {% if fir_phase.vrk_status %}
+                                                    {% if fir_phase.vrk_status == "Pending" %}
+                                                        <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="XXXXXXX" placeholder="Fill Date">
+                                                    {% elif fir_phase.vrk_status == "Approved" %}
+                                                        <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
                                                     {% endif %}
                                                 {% else %}
-                                                    <option class="vrk-status-default-option" value="" disabled selected>-----------------
-                                                    </option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Approved">Approved</option>
+                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
                                                 {% endif %}
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-field">
-                                            <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-field">
-                                            <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_sent_back_date validate datepicker" disabled value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.received_from_vrk_date %}
-                                            {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>   
-                                    <td>
-                                        {% if fir_phase.put_in_court_date %}
-                                            {{ fir_phase.put_in_court_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.nc_receival_date %}
-                                            {{ fir_phase.nc_receival_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>    
-                                    <td>
-                                        {% if fir_phase.nc_status %}
-                                            {{ fir_phase.nc_status }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.nc_status_date %}
-                                            {{ fir_phase.nc_status_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.received_from_nc_date %}
-                                            {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>  
-                                    <td>
-                                        {% if fir_phase.appointed_io %}
-                                            {{ fir_phase.appointed_io }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td> 
-                                    <td>
-                                        {% if fir_phase.appointed_io_date %}
-                                            {{ fir_phase.appointed_io_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>       
-                                    {% if fir_phase.pk|is_last_phase %}                      
-                                        <td>
-                                            <a href="#!" class="vrk-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
-                                                EDIT
-                                            </a>
+                                            </div>
                                         </td>
-
                                         <td>
-                                            <a href="#!" class="vrk-save-btn btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
-                                                SAVE
-                                            </a>
+                                            <div class="input-field">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_sent_back_date validate datepicker" disabled value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
                                         </td>
-                                    {% else %}
-                                        <td><i class="material-icons">remove</i></td>
-                                        <td><i class="material-icons">remove</i></td>
-                                    {% endif %}
-                                </tr>
+                                        <td>
+                                            {% if fir_phase.received_from_vrk_date %}
+                                                {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>   
+                                        <td>
+                                            {% if fir_phase.put_in_court_date %}
+                                                {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_receival_date %}
+                                                {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>    
+                                        <td>
+                                            {% if fir_phase.nc_status %}
+                                                {{ fir_phase.nc_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_status_date %}
+                                                {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_sent_back_date %}
+                                                {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_nc_date %}
+                                                {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>  
+                                        <td>
+                                            {% if fir_phase.appointed_io %}
+                                                {{ fir_phase.appointed_io }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td> 
+                                        <td>
+                                            {% if fir_phase.appointed_io_date %}
+                                                {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>       
+                                        {% if fir_phase.pk|is_last_phase %}                      
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
+                                                <a href="#!" class="vrk-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                                    EDIT
+                                                </a>
+                                            </td>
 
-                                {% if fir_phase.pk|is_last_phase %}
-                                    <tr class="blank-row">
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
+                                                <a href="#!" class="vrk-save-btn fir_{{fir_set.0.pk}} btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                                    SAVE
+                                                </a>
+                                            </td>
+                                        {% else %}
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                        {% endif %}
                                     </tr>
-                                {% endif %}
+
+                                    {% if fir_phase.pk|is_last_phase %}
+                                        <tr class="blank-row fir_{{fir_set.0.pk}}">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </form>
-                </tbody>
+                        </form>
+                    </tbody>
+                {% else %}   
+                    <tbody class="data-table-body content-ascending">
+                        <tr class="blank-row">
+                            <tr class="blank-row">
+                                <td>//////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>/////////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>/////////////////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                                <td>///////////////</td>
+                            </tr>
+                        </tr>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for fir_set in fir_list reversed %}
+                                {% for fir_phase in fir_set.1 %}
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
+                                        <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
+                                        <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                        <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                        <td>{{ fir_phase.under_section }}</td>
+                                        <td>{{ fir_phase.io_name }}</td>
+                                        <td>{{ fir_phase.accused_name }}</td>
+                                        <td>{{ fir_phase.accused_status }}</td>
+
+                                        <td>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.limitation_period }} days
+                                                {% endif %}
+                                            {% else %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                            <br>
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                        </td>
+                                        
+                                        <td>{{ fir_phase.current_status }}</td>
+
+                                        <td>
+                                            {% if fir_phase.current_status_date %}
+                                                {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_receival_date validate datepicker" disabled value="{{ fir_phase.vrk_receival_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <select class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status validate" disabled>
+                                                    {% if fir_phase.vrk_status %}
+                                                        {% if fir_phase.vrk_status == "Pending" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending" selected>Pending</option>
+                                                            <option value="Approved">Approved</option>
+                                                        {% elif fir_phase.vrk_status == "Approved" %}
+                                                            <option class="vrk-status-default-option" value="" disabled>-----------------
+                                                            </option>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Approved" selected>Approved</option>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <option class="vrk-status-default-option" value="" disabled selected>-----------------
+                                                        </option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Approved">Approved</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                {% if fir_phase.vrk_status %}
+                                                    {% if fir_phase.vrk_status == "Pending" %}
+                                                        <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="XXXXXXX" placeholder="Fill Date">
+                                                    {% elif fir_phase.vrk_status == "Approved" %}
+                                                        <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                    {% endif %}
+                                                {% else %}
+                                                    <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_status_date validate datepicker" disabled value="{{ fir_phase.vrk_status_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="vrk-editable-fields fir_phase_{{fir_phase.pk}} vrk_sent_back_date validate datepicker" disabled value="{{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}" placeholder="Fill Date">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_vrk_date %}
+                                                {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>   
+                                        <td>
+                                            {% if fir_phase.put_in_court_date %}
+                                                {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_receival_date %}
+                                                {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>    
+                                        <td>
+                                            {% if fir_phase.nc_status %}
+                                                {{ fir_phase.nc_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_status_date %}
+                                                {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_sent_back_date %}
+                                                {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_nc_date %}
+                                                {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>  
+                                        <td>
+                                            {% if fir_phase.appointed_io %}
+                                                {{ fir_phase.appointed_io }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td> 
+                                        <td>
+                                            {% if fir_phase.appointed_io_date %}
+                                                {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>       
+                                        {% if fir_phase.pk|is_last_phase %}                      
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
+                                                <a href="#!" class="vrk-edit-btn btn waves-effect waves-light cyan darken-4" id="edit_fir_phase_{{fir_phase.pk}}">
+                                                    EDIT
+                                                </a>
+                                            </td>
+
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
+                                                <a href="#!" class="vrk-save-btn fir_{{fir_set.0.pk}} btn waves-effect waves-light cyan darken-4 disabled" id="save_fir_phase_{{fir_phase.pk}}">
+                                                    SAVE
+                                                </a>
+                                            </td>
+                                        {% else %}
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                        {% endif %}
+                                    </tr>
+
+                                    {% if fir_phase.pk|is_last_phase %}
+                                        <tr class="blank-row fir_{{fir_set.0.pk}}">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </form>
+                    </tbody>
+                {% endif %}
             </table>
         </div>
     </div>
@@ -605,17 +895,42 @@
         $(`.vrk-editable-fields.${fir_phase_pk}`).each(function() {
             $(this).removeAttr("disabled", "disabled");
         })
+        $(`.data-row.${fir_phase_pk}`).removeClass('cyan');
+        $(`.data-row.${fir_phase_pk}`).addClass('teal');
+
+        $(`.right-sticky-column.${fir_phase_pk}`).each(function() {
+            $(this).removeClass('cyan');
+            $(this).addClass('teal');
+        })
+
         $('select').formSelect();
     })
 
     $('.vrk-editable-fields').change(function() {
         var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
         $(`#save_${fir_phase_pk}`).removeClass('disabled');
+
+        if ($(this).hasClass('vrk_status')){
+            if ($(this).val() == 'Pending'){
+                $(`.vrk_status_date.${fir_phase_pk}`).val('XXXXXXX');
+                $(`.vrk_status_date.${fir_phase_pk}`).attr('disabled','disabled');
+            } else {
+                $(`.vrk_status_date.${fir_phase_pk}`).val('');
+                $(`.vrk_status_date.${fir_phase_pk}`).removeAttr('disabled','disabled');
+            }
+        }
     })
 
     $('.vrk-save-btn').click(function () {
         var fir_phase_id = $(this).attr('id').substring(5);
         var fir_phase_pk = $(this).attr('id').substring(15);
+
+        var fir_id = $(this).attr('class').split(' ')[1] // fir_{{fir_set.0.pk}} is the second class allotted to save btn
+        if ($(`.vrk_sent_back_date.${fir_phase_id}`).val()) {
+            var to_be_removed = 1
+        }
+
+        $(this).text("Wait..")
         $.ajax({
             type: 'POST',
             url: '/firBeta/ajax/edit_fir_save_vrk/',
@@ -630,11 +945,28 @@
                 vrk_sent_back_date: $(`.vrk_sent_back_date.${fir_phase_id}`).val(),                
             },
             success: function (data) {
+                $(`#save_${fir_phase_id}`).text("SAVE");
                 if (data == 0) {
                     $(`#save_${fir_phase_id}`).addClass('disabled');
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
                     $(`.vrk-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $(`.data-row.${fir_phase_id}`).removeClass('teal');
+                    $(`.data-row.${fir_phase_id}`).addClass('cyan');
+                    $(`.right-sticky-column.${fir_phase_id}`).each(function() {
+                        $(this).removeClass('teal');
+                        $(this).addClass('cyan');
+                    })
                     $('select').formSelect();
+
+                    if(to_be_removed === 1) {
+                        $(`.data-row.${fir_id}`).each(function() {
+                            $(this).hide();
+                        })
+                        $(`.blank-row.${fir_id}`).each(function() {
+                            $(this).hide();
+                        })
+                    }
+
                     alert('FIR saved successfully!');
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
@@ -650,9 +982,30 @@
                     alert('ERROR\nEnter Date along with status' )
                 } else if (data == 7) {
                     alert('ERROR\nFIR cannot be returned before Approving it' )
+                } else if (data == 8) {
+                    alert('ERROR\nDate of receiving FIR cannot be before date of sending by Police Station' )
+                } else if (data == 9) {
+                    alert('ERROR\nDate of marking status cannot be before the date of receiving it' )
+                } else if (data == 10) {
+                    alert('ERROR\nDate of sending back the FIR cannot be before its date of marked status' )
+                } else if (data == 11) {
+                    alert('ERROR:\nFuture Dates are not permitted')
                 }
-            }
+            },
+            fail: function() {
+                $(`#save_${fir_phase_id}`).text("SAVE");
+            } 
         });
     });
+
+    $('.toggle-btn').click(function() {
+        // $('tbody.content-descending').toggle();
+        // $('tbody.content-ascending').toggle();
+        if ($('.data-table-body').hasClass('content-descending')) {
+            window.location.href = '/firBeta/vrk/1/';
+        } else {
+            window.location.href = '/firBeta/vrk/';
+        }
+    })
 </script>
 {% endblock tail %}

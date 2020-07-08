@@ -1,0 +1,55 @@
+{% load widget_tweaks %}
+
+<form method='POST' id='dashboard_form' class="center" data-police-stations-url="{% url 'firBeta:load_police_stations' %}">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="input-field col s6 offset-s3">
+            {{form.sub_division}}
+            <label for="Sub Division">Sub Division</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s3 offset-s2">
+            <label for="Police Station">Police Station</label>
+        </div>
+        <br><br>
+        <div class="col s6 offset-s3 police_station_dropdown" style="border-bottom: 1px solid black;">
+            {{form.police_station|add_class:'browser-default  green lighten-5'}}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="input-field col s3 offset-s3">
+            {{form.start_date|add_class:'datepicker'}}
+            <label for="Start Date">Start Date</label>
+        </div>
+        <div class="input-field col s3">
+            {{form.end_date|add_class:'datepicker'}}
+            <label for="End Date">End Date</label>
+        </div>
+    </div>
+
+    <button class="btn waves-effect waves-light" type="submit">
+     Submit <i class="material-icons right">send</i>
+    </button>
+
+</form>
+
+<script>
+    $("#id_sub_division").change(function(){
+        var url = $("#dashboard_form").attr("data-police-stations-url");
+        var sub_division_pk =  $(this).val();
+
+        $.ajax({
+            url: url,
+            data: {
+                'sub_division': sub_division_pk
+            },
+            success: function(data){
+                $("#id_police_station").html(data);
+            }
+        });       
+    });
+</script>

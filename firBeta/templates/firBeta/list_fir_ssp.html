@@ -21,67 +21,75 @@
         border-collapse: separate;
     }
 
-    table.data-table th {
+    table.data-table > thead > tr.header-row-1 > th, table.data-table > thead > tr.header-row-2 > th {
         border: 2px black solid;
         border-left: 0px;
         border-radius: 0;
         z-index: 3;
     }
 
-    tr.header-row-1 th.header-element-1:nth-child(1) {
+    tr.header-row-1 > th.header-element-1:nth-child(1) {
         border-left: 2px black solid;
         border-bottom-left-radius: 15px;
         border-top-left-radius: 15px;
     }
 
-    tr.header-row-1 th.header-element-1:last-child {
+    tr.header-row-1 > th.header-element-1:last-child {
         border-top-right-radius: 15px;
     }
 
-    tr.header-row-2 th.header-element-2:last-child {
+    tr.header-row-2 > th.header-element-2:last-child {
         border-bottom-right-radius: 15px;
     }
 
-    table.data-table td {
+    table.data-table > tbody > tr.data-row > td {
         border: 1px gray solid;
         border-radius: 0;
     }
 
-    tr.data-row td:nth-child(1) {
-        border-bottom-left-radius: 15px;
-        border-top-left-radius: 15px;
+    tr.data-row > td:nth-child(1) {
+        border-bottom-left-radius: 15px !important;
+        border-top-left-radius: 15px !important;
     }
 
-    tr.data-row td:last-child {
-        border-bottom-right-radius: 15px;
-        border-top-right-radius: 15px;
+    tr.data-row > td:last-child {
+        border-bottom-right-radius: 15px !important;
+        border-top-right-radius: 15px !important;
     }
 
-    table.data-table thead tr.header-row-1 th {
+    table.data-table > thead > tr.header-row-1 > th {
         position: sticky !important;
         top: 0;
     }
 
-    table.data-table thead tr.header-row-2 th {
+    table.data-table > thead > tr.header-row-2 > th {
         position: sticky !important;
-        top: 55px;
+        top: 77px;
     }
 
 
-    tr.header-row-1 th.header-element-1:nth-child(even),
-    tr.header-row-2 th.header-element-2.sub-head-even {
+    tr.header-row-1 > th.header-element-1:nth-child(even),
+    tr.header-row-2 > th.header-element-2.sub-head-even {
         background-color: #0097a7 !important;
     }
 
-    tr.header-row-1 th.header-element-1:nth-child(odd),
-    tr.header-row-2 th.header-element-2.sub-head-odd {
+    tr.header-row-1 > th.header-element-1:nth-child(odd),
+    tr.header-row-2 > th.header-element-2.sub-head-odd {
         background-color: #00838f !important;
     }
 
-    tr.blank-row td {
+    tr.blank-row > td {
         border: 0px;
         color: #e8f5e9;
         background-color: #e8f5e9;
+    }
+
+    input, textarea {
+        text-transform: capitalize;
+    }
+
+    input:disabled, textarea:disabled {
+        color: rgba(0, 0, 0, 0.87) !important;
     }
 </style>
 {% endblock head %}
@@ -340,7 +348,9 @@
 <br><br>
 
 <div class="container">
-    <div class="section"></div>
+    <div class="section">
+        <button class="toggle-btn btn waves-effect waves-light">Toggle Sorting Order</button>
+    </div>
     <div class="section">
         <div class="table-wrapper" data-fl-scrolls>
             <table class="centered responsive-table data-table">
@@ -352,6 +362,7 @@
 
                 <thead>
                     <tr class="header-row-1">
+                        <th class="header-element-1" rowspan="2">S. No.</th>
                         <th class="header-element-1" rowspan="2">Sub Division<br>PS</th>
                         <th class="header-element-1" rowspan="2">FIR No.<br>Date</th>
                         <th class="header-element-1" rowspan="2">U/S</th>
@@ -361,203 +372,520 @@
                         <th class="header-element-1" rowspan="2">Limitation Period</th>
                         <th class="header-element-1" colspan="2">Current Status</th>
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
-                        <th class="header-element-1" rowspan="2">Received Back in PS Date</th>
-                        <th class="header-element-1" rowspan="2">Put in Court Date</th>
-                        <th class="header-element-1" colspan="3">Naib Court</th>
+                        <th class="header-element-1" colspan="2">Post SSP Approval Details (PS)</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                     </tr>
                     <tr class="header-row-2">
-                        <th class="header-element-2 sub-head-even">Status</th>
-                        <th class="header-element-2 sub-head-even">Date</th>
-                        <th class="header-element-2 sub-head-odd">Received at VRK Branch Date</th>
                         <th class="header-element-2 sub-head-odd">Status</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
-                        <th class="header-element-2 sub-head-odd">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-even">Received at VRK Branch Date</th>
+                        <th class="header-element-2 sub-head-even">Status</th>
+                        <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Received Back in PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Put in Court Date</th>
                         <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
                         <th class="header-element-2 sub-head-even">Status</th>
                         <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
                         <th class="header-element-2 sub-head-odd">Received Back on Date</th>
                         <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
                         <th class="header-element-2 sub-head-odd">Date</th>
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr class="blank-row">
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>////////////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>////////////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>/////////////////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                        <td>///////////////</td>
-                    </tr>
+                {% if asc == 0 %}
+                    <tbody class="data-table-body content-descending">
+                        <tr class="blank-row">
+                            <td>//////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>/////////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                        </tr>
 
-                    <form method="POST">
-                        {% csrf_token %}
-                        {% for fir_set in fir_list %}
-                            {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-4 data-row">
-                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
-                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                    <td>{{ fir_phase.under_section }}</td>
-                                    <td>{{ fir_phase.io_name }}</td>
-                                    <td>{{ fir_phase.accused_name }}</td>
-                                    <td>{{ fir_phase.accused_status }}</td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for fir_set in fir_list %}
+                                {% for fir_phase in fir_set.1 %}
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                        <td>
+                                            <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                            <br>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|any_gap_greater_than_3 %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                        <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                        <td>{{ fir_phase.under_section }}</td>
+                                        <td>{{ fir_phase.io_name }}</td>
+                                        <td>{{ fir_phase.accused_name }}</td>
+                                        <td>{{ fir_phase.accused_status }}</td>
 
-                                    <td>
-                                        {% if fir_phase.pk|is_last_phase %}
-                                            {% if fir_phase.pk|will_expire_at == 0 %}
-                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 1 %}
-                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 2 %}
-                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
-                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                        <td>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.limitation_period }} days
+                                                {% endif %}
+                                            {% else %}
                                                 {{ fir_phase.limitation_period }} days
                                             {% endif %}
-                                        {% else %}
-                                            {{ fir_phase.limitation_period }} days
-                                        {% endif %}
-                                        <br>
-                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
-                                    </td>
-                                    
-                                    <td>{{ fir_phase.current_status }}</td>
+                                            <br>
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                        </td>
+                                        
+                                        <td>{{ fir_phase.current_status }}</td>
 
-                                    <td>
-                                        {% if fir_phase.current_status_date %}
-                                            {{ fir_phase.current_status_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.vrk_receival_date %}
-                                            {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.vrk_status %}
-                                            {{ fir_phase.vrk_status }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.vrk_status_date %}
-                                            {{ fir_phase.vrk_status_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.vrk_sent_back_date %}
-                                            {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.received_from_vrk_date %}
-                                            {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>   
-                                    <td>
-                                        {% if fir_phase.put_in_court_date %}
-                                            {{ fir_phase.put_in_court_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.nc_receival_date %}
-                                            {{ fir_phase.nc_receival_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>    
-                                    <td>
-                                        {% if fir_phase.nc_status %}
-                                            {{ fir_phase.nc_status }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.nc_status_date %}
-                                            {{ fir_phase.nc_status_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if fir_phase.received_from_nc_date %}
-                                            {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>  
-                                    <td>
-                                        {% if fir_phase.appointed_io %}
-                                            {{ fir_phase.appointed_io }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td> 
-                                    <td>
-                                        {% if fir_phase.appointed_io_date %}
-                                            {{ fir_phase.appointed_io_date|date:'d/m/y' }}
-                                        {% else %}
-                                            <i class="material-icons">remove</i>
-                                        {% endif %}
-                                    </td>       
-                                </tr>
-
-                                {% if fir_phase.pk|is_last_phase %}
-                                    <tr class="blank-row">
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                            {% if fir_phase.current_status_date %}
+                                                {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_receival_date %}
+                                                {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-sent-vrk-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_status %}
+                                                {{ fir_phase.vrk_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_status_date %}
+                                                {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_sent_back_date %}
+                                                {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_vrk_date %}
+                                                {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'vrk-sent-ps-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>   
+                                        <td>
+                                            {% if fir_phase.put_in_court_date %}
+                                                {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_receival_date %}
+                                                {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-sent-nc-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>    
+                                        <td>
+                                            {% if fir_phase.nc_status %}
+                                                {{ fir_phase.nc_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_status_date %}
+                                                {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_sent_back_date %}
+                                                {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_nc_date %}
+                                                {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'nc-sent-ps-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>  
+                                        <td>
+                                            {% if fir_phase.appointed_io %}
+                                                {{ fir_phase.appointed_io }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td> 
+                                        <td>
+                                            {% if fir_phase.appointed_io_date %}
+                                                {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received_mark_io' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>       
                                     </tr>
-                                {% endif %}
+
+                                    {% if fir_phase.pk|is_last_phase %}
+                                        <tr class="blank-row">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </form>
-                </tbody>
+                        </form>
+                    </tbody>
+                {% else %}
+                    <tbody class="data-table-body content-ascending">
+                        <tr class="blank-row">
+                            <td>//////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>/////////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                        </tr>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for fir_set in fir_list reversed %}
+                                {% for fir_phase in fir_set.1 %}
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                        <td>
+                                            <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                            <br>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|any_gap_greater_than_3 %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                        <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                        <td>{{ fir_phase.under_section }}</td>
+                                        <td>{{ fir_phase.io_name }}</td>
+                                        <td>{{ fir_phase.accused_name }}</td>
+                                        <td>{{ fir_phase.accused_status }}</td>
+
+                                        <td>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.limitation_period }} days
+                                                {% endif %}
+                                            {% else %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                            <br>
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                        </td>
+                                        
+                                        <td>{{ fir_phase.current_status }}</td>
+
+                                        <td>
+                                            {% if fir_phase.current_status_date %}
+                                                {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_receival_date %}
+                                                {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-sent-vrk-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_status %}
+                                                {{ fir_phase.vrk_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_status_date %}
+                                                {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.vrk_sent_back_date %}
+                                                {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_vrk_date %}
+                                                {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'vrk-sent-ps-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>   
+                                        <td>
+                                            {% if fir_phase.put_in_court_date %}
+                                                {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_receival_date %}
+                                                {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-sent-nc-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>    
+                                        <td>
+                                            {% if fir_phase.nc_status %}
+                                                {{ fir_phase.nc_status }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_status_date %}
+                                                {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.nc_sent_back_date %}
+                                                {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if fir_phase.received_from_nc_date %}
+                                                {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'nc-sent-ps-received' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>  
+                                        <td>
+                                            {% if fir_phase.appointed_io %}
+                                                {{ fir_phase.appointed_io }}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        </td> 
+                                        <td>
+                                            {% if fir_phase.appointed_io_date %}
+                                                {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                            {% else %}
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received_mark_io' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>       
+                                    </tr>
+
+                                    {% if fir_phase.pk|is_last_phase %}
+                                        <tr class="blank-row">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </form>
+                    </tbody>
+                {% endif %}
             </table>
         </div>
     </div>
@@ -623,4 +951,16 @@
         });
     });
 </script> -->
+
+<script>
+    $('.toggle-btn').click(function() {
+        // $('tbody.content-descending').toggle();
+        // $('tbody.content-ascending').toggle();
+        if ($('.data-table-body').hasClass('content-descending')) {
+            window.location.href = '/firBeta/ssp/1/';
+        } else {
+            window.location.href = '/firBeta/ssp/';
+        }
+    })
+</script>
 {% endblock tail %}
