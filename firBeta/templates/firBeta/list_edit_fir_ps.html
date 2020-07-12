@@ -47,18 +47,18 @@
         border-bottom-right-radius: 15px; */
 
         position: sticky !important;
-        right: 98px;
+        right: 132px;
         z-index: 5;
+
+        border-left: 2px black solid;
     }
-    tr.header-row-1 > th.header-element-1:nth-last-child(3) {
-        /* border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px; */
+    /* tr.header-row-1 > th.header-element-1:nth-last-child(3) {
 
         position: sticky !important;
         right: 230px;
         z-index: 5;
         border-left: 2px black solid;
-    }
+    } */
 
     table.data-table > tbody.data-table-body > tr.data-row > td {
         border: 1px gray solid;
@@ -83,19 +83,18 @@
         border-top-right-radius: 15px; */
 
         position: sticky !important;
-        right: 98px;
+        right: 131px;
         z-index: 4;
-    }
-    tr.data-row > td:nth-last-child(3) {
-        /* border-bottom-right-radius: 15px;
-        border-top-right-radius: 15px; */
 
+        border-left: 1px gray solid;
+    }
+    /* tr.data-row > td:nth-last-child(3) {
         position: sticky !important;
         right: 230.5px;
         z-index: 4;
 
         border-left: 1px gray solid;
-    }
+    } */
 
     table.data-table > thead > tr.header-row-1 > th {
         position: sticky !important;
@@ -414,7 +413,7 @@
                         <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
                         <th class="header-element-1" rowspan="2">Edit</th>
                         <th class="header-element-1" rowspan="2">Save</th>
-                        <th class="header-element-1" rowspan="2">Add</th>
+                        {% comment %} <th class="header-element-1" rowspan="2">Add</th> {% endcomment %}
                     </tr>
                     <tr class="header-row-2">
                         <th class="header-element-2 sub-head-odd">Status</th>
@@ -463,7 +462,7 @@
                             <td>///////////////</td>
                             <td>///////////////</td>
                             <td>///////////////</td>
-                            <td>///////////////</td>
+                            {% comment %} <td>///////////////</td> {% endcomment %}
                         </tr>
 
                         <form method="POST">
@@ -668,6 +667,7 @@
                                                     </a>
                                                 {% endif %}
                                             </td>
+                                            {% comment %}                                             
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 {% if  fir_phase.pk|is_third_phase %}
                                                     <i class="material-icons">remove</i>
@@ -683,10 +683,11 @@
                                                     {% endif %}
                                                 {% endif %}
                                             </td>
+                                             {% endcomment %}
                                         {% else %}
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
-                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            {% comment %} <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td> {% endcomment %}
                                         {% endif %}
                                     </tr>
 
@@ -716,7 +717,7 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            {% comment %} <td></td> {% endcomment %}
                                         </tr>
                                     {% endif %}
 
@@ -763,7 +764,7 @@
                             <td>///////////////</td>
                             <td>///////////////</td>
                             <td>///////////////</td>
-                            <td>///////////////</td>
+                            {% comment %} <td>///////////////</td> {% endcomment %}
                         </tr>
 
                         <form method="POST">
@@ -968,6 +969,7 @@
                                                     </a>
                                                 {% endif %}
                                             </td>
+                                            {% comment %}
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column">
                                                 {% if  fir_phase.pk|is_third_phase %}
                                                     <i class="material-icons">remove</i>
@@ -983,10 +985,11 @@
                                                     {% endif %}
                                                 {% endif %}
                                             </td>
+                                            {% endcomment %}
                                         {% else %}
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
                                             <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
-                                            <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td>
+                                            {% comment %} <td class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} fir_phase_{{fir_phase.pk}} right-sticky-column"><i class="material-icons">remove</i></td> {% endcomment %}
                                         {% endif %}
                                     </tr>
 
@@ -1016,7 +1019,7 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            {% comment %} <td></td> {% endcomment %}
                                         </tr>
                                     {% endif %}
 
