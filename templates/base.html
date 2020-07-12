@@ -77,7 +77,7 @@
                         {% endif %}
                         {% if user.pk in dsp_record_keepers %}
                             <li><a href="{% url 'firBeta:list_fir_dsp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
-                            <li><a href="{% url 'firBeta:filter_fir_dsp' %}" class="teal-text text-lighten-5">Search FIRs</a></li>
+                            <li><a href="{% url 'firBeta:filter_fir_dsp' %}" class="teal-text text-lighten-5">Search/Filters</a></li>
                             <li><a href="{% url 'firBeta:dashboard_dsp' %}" class="teal-text text-lighten-5">Stats</a></li>
                         {% endif %}
                         {% if user.pk in vrk_record_keepers %}
@@ -85,7 +85,7 @@
                         {% endif %}
                         {% if user.pk in ssp_record_keepers %}
                             <li><a href="{% url 'firBeta:list_fir_ssp' %}" class="teal-text text-lighten-5">View FIRs</a></li>
-                            <li><a href="{% url 'firBeta:filter_fir_ssp' %}" class="teal-text text-lighten-5">Search FIRs</a></li>
+                            <li><a href="{% url 'firBeta:filter_fir_ssp' %}" class="teal-text text-lighten-5">Search/Filters</a></li>
                             <li><a href="{% url 'firBeta:dashboard_ssp' %}" class="teal-text text-lighten-5">Stats</a></li>
                         {% endif %}
                         <!-- <li><a href="{% url 'fir:filter_fir_data' %}" class="teal-text text-lighten-5">Search FIRs</a></li> -->
