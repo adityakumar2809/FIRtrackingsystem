@@ -960,6 +960,9 @@ def edit_fir_save_close_nc_ajax_view(request):
                     fir = models.FIR.objects.get(pk__exact = fir_phase.fir.pk)
                     fir.is_closed = True
                     fir.save()
+
+                    email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_phase.fir.police_station).user.email]
+                    send_mail('FIR File Closed', f'The FIR file with FIR No. {fir_phase.fir.fir_no} has been closed after being approved from the Naib Court.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
                     
 
                     return HttpResponse(0)
