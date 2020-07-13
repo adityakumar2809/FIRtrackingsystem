@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form method='POST' id='dashboard_form' class="center" data-police-stations-url="{% url 'firBeta:load_police_stations' %}">
+<form method='POST' id='dashboard_form' class="center" data-police-stations-url="{% url 'firBeta:load_police_stations' %}" data-selected-sub-division='{{selected_sub_division}}' data-selected-police-station='{{selected_police_station}}'>
     {% csrf_token %}
 
     <div class="row">
@@ -38,6 +38,29 @@
 </form>
 
 <script>
+
+    $(document).ready(function(){
+        var url = $("#dashboard_form").attr("data-police-stations-url");
+        var selected_sub_division = $("#dashboard_form").attr("data-selected-sub-division");
+        var selected_police_station = $("#dashboard_form").attr("data-selected-police-station");
+        if(selected_sub_division) {
+            var sub_division_pk =  selected_sub_division;
+
+            $.ajax({
+                url: url,
+                data: {
+                    'sub_division': sub_division_pk
+                },
+                success: function(data){
+                    $("#id_police_station").html(data);
+                    $('#id_sub_division').val(selected_sub_division); 
+                    $('select').formSelect();
+                    $('#id_police_station').val(selected_police_station);
+                }
+            });
+        }
+    });
+
     $("#id_sub_division").change(function(){
         var url = $("#dashboard_form").attr("data-police-stations-url");
         var sub_division_pk =  $(this).val();

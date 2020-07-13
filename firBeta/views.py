@@ -1887,6 +1887,8 @@ def dashboard_ssp_view(request):
 
                 return render(request, 'firBeta/dashboard_ssp.html', {
                                                                         'form':form,
+                                                                        'selected_sub_division': sub_division,
+                                                                        'selected_police_station': police_station,
                                                                         'firs_registered_count':firs_registered_count,
                                                                         'firs_closed_count':firs_closed_count,
                                                                         'firs_status_challan_filed_count':firs_status_challan_filed_count,
