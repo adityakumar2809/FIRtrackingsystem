@@ -455,7 +455,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -685,7 +685,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list reversed %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -896,10 +896,12 @@
             $(this).removeAttr("disabled", "disabled");
         })
         $(`.data-row.${fir_phase_pk}`).removeClass('cyan');
+        $(`.data-row.${fir_phase_pk}`).removeClass('blue');
         $(`.data-row.${fir_phase_pk}`).addClass('teal');
 
         $(`.right-sticky-column.${fir_phase_pk}`).each(function() {
             $(this).removeClass('cyan');
+            $(this).removeClass('blue');
             $(this).addClass('teal');
         })
 
@@ -951,9 +953,11 @@
                     $(`#edit_${fir_phase_id}`).removeClass('disabled');
                     $(`.vrk-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
                     $(`.data-row.${fir_phase_id}`).removeClass('teal');
+                    $(`.data-row.${fir_phase_id}`).removeClass('blue');
                     $(`.data-row.${fir_phase_id}`).addClass('cyan');
                     $(`.right-sticky-column.${fir_phase_id}`).each(function() {
                         $(this).removeClass('teal');
+                        $(this).removeClass('blue');
                         $(this).addClass('cyan');
                     })
                     $('select').formSelect();
@@ -1005,6 +1009,30 @@
             window.location.href = '/firBeta/vrk/1/';
         } else {
             window.location.href = '/firBeta/vrk/';
+        }
+    })
+
+    $('tr.data-row').click(function() {
+        // var row_pk = $(this).attr('class').split(' ')[4];
+        var row_pk = $(this).attr('data-tr-fir-phase');
+
+        if(! $(this).hasClass('teal')){
+            $('.data-row').each(function() {
+                $(this).removeClass('blue');
+                $(this).addClass('cyan');
+            })
+            $(`.right-sticky-column`).each(function() {
+                $(this).removeClass('blue');
+                $(this).addClass('cyan');
+            })
+
+            $(`.data-row.${row_pk}`).removeClass('cyan');
+            $(`.data-row.${row_pk}`).addClass('blue');
+
+            $(`.right-sticky-column.${row_pk}`).each(function() {
+                $(this).removeClass('cyan');
+                $(this).addClass('blue');
+            })
         }
     })
 </script>

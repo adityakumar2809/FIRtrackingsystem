@@ -427,7 +427,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td>
                                             <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
                                             <br>
@@ -672,7 +672,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list reversed %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td>
                                             <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
                                             <br>
@@ -961,6 +961,19 @@
         } else {
             window.location.href = '/firBeta/ssp/';
         }
+    })
+
+    $('tr.data-row').click(function() {
+        var row_pk = $(this).attr('data-tr-fir-phase');
+
+        $('.data-row').each(function() {
+            $(this).removeClass('blue');
+            $(this).addClass('cyan');
+        })
+
+        $(`.data-row.${row_pk}`).removeClass('cyan');
+        $(`.data-row.${row_pk}`).addClass('blue');
+
     })
 </script>
 {% endblock tail %}

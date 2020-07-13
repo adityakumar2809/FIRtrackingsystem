@@ -309,7 +309,7 @@
 
                         {% for fir_set in fir_list %}
                             {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                     <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                     <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                     <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -495,7 +495,7 @@
 
                         {% for fir_set in fir_list reversed %}
                             {% for fir_phase in fir_set.1 %}
-                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                     <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                     <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                     <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
@@ -738,6 +738,19 @@
         } else {
             window.location.href = '/firBeta/dsp/filter/';
         }
+    })
+
+    $('tr.data-row').click(function() {
+        var row_pk = $(this).attr('data-tr-fir-phase');
+
+        $('.data-row').each(function() {
+            $(this).removeClass('blue');
+            $(this).addClass('cyan');
+        })
+
+        $(`.data-row.${row_pk}`).removeClass('cyan');
+        $(`.data-row.${row_pk}`).addClass('blue');
+
     })
 </script>
 {% endblock tail %}
