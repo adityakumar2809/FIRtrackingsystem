@@ -153,7 +153,7 @@ class FIRFilterDSPForm(forms.Form):
         for i in range(len(police_station_name_list)):
             POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
 
-        self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
+        self.fields['police_station'] = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
 
 
 class SSPDashboardForm(forms.Form):
