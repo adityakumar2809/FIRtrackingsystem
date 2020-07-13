@@ -2094,6 +2094,7 @@ def dashboard_dsp_view(request):
                     firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
             
                 form = forms.DSPDashboardForm(user = request.user, initial = {
+                                                                                'police_station': police_station,
                                                                                 'start_date': start_date.strftime('%d/%m/%y'),
                                                                                 'end_date': end_date.strftime('%d/%m/%y'),
                                                                             })
