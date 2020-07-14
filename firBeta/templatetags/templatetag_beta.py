@@ -90,8 +90,10 @@ def gap_greater_than_3(pk, stage):
                 return True
     elif stage == 'ps-received-nc-sent':
         if (fir_phase.received_from_vrk_date) and (not fir_phase.put_in_court_date):
-            if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 3:
-                return True
+            if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 30:
+                return 'red'
+            elif (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 15:
+                return 'orange'
     elif stage == 'ps-sent-nc-received':
         if (fir_phase.put_in_court_date) and (not fir_phase.nc_receival_date):
             if (datetime.datetime.today().date() - fir_phase.put_in_court_date).days > 3:

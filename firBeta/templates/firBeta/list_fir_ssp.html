@@ -527,7 +527,9 @@
                                                 {{ fir_phase.put_in_court_date|date:'d/m/y' }}
                                             {% else %}
                                                 {% if fir_phase.pk|is_last_phase %}
-                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'red' %}
                                                         <i class="material-icons red-text text-darken-3">warning</i>
                                                     {% else %}
                                                         <i class="material-icons">remove</i>
