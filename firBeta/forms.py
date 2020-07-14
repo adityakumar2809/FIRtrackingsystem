@@ -123,7 +123,8 @@ class FIRFilterDSPForm(forms.Form):
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
-    VRK_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
 
 
@@ -141,7 +142,8 @@ class FIRFilterDSPForm(forms.Form):
     fir_pendency = forms.ChoiceField(required=False, choices=FIR_PENDENCY_CHOICES)
     expiry_date = forms.ChoiceField(required=False, choices=EXPIRY_DATE_CHOICES)
 
-    vrk_approval_pendency = forms.ChoiceField(required=False, choices=VRK_APPROVAL_PENDENCY_CHOICES)
+    vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
+    vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
 
 
