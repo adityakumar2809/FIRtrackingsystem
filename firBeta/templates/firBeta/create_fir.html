@@ -238,6 +238,8 @@
     // Detecting Changes in any form field
     $('.validate').change(function () {
 
+        var element = $(this);
+
         // Detect if the change is in current_status and enable/disable date field accordingly
         if ($(this).attr('id') === 'current_status') {
             if ($('#current_status').val() === 'Under Investigation') {
@@ -272,6 +274,12 @@
                 $(this).addClass('disabled');
             })
             $('.save-close-btn').addClass('disabled');
+        }
+
+        if (element.attr('id') === 'accused_name') {
+            if ($('#accused_status').val() == '') {
+                $('#accused_status').val($('#accused_name').val());
+            }
         }
 
 
