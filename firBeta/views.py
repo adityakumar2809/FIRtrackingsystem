@@ -1294,7 +1294,8 @@ def filter_fir_ssp_view(request, asc = 0):
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
                 expiry_date = form.cleaned_data['expiry_date']
-                vrk_approval_pendency = form.cleaned_data['vrk_approval_pendency']
+                vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
+                vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
     
                 fir_list = models.FIR.objects.all()
@@ -1432,15 +1433,26 @@ def filter_fir_ssp_view(request, asc = 0):
                                 if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
 
-                    if vrk_approval_pendency:
-                        pendency_bounds = vrk_approval_pendency.split('-')
-                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date):
+                    if vrk_before_approval_pendency:
+                        pendency_bounds = vrk_before_approval_pendency.split('-')
+                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date) or (fir_last_phase.vrk_status == 'Approved'):
                             continue
                         if pendency_bounds[1] == 'inf':
                             if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.vrk_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.vrk_receival_date).days > int(pendency_bounds[1]):
+                                continue
+
+                    if vrk_after_approval_pendency:
+                        pendency_bounds = vrk_after_approval_pendency.split('-')
+                        if (not fir_last_phase.vrk_receival_date) or (fir_last_phase.vrk_sent_back_date) or (fir_last_phase.vrk_status != 'Approved'):
+                            continue
+                        if pendency_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.vrk_status_date).days < int(pendency_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.vrk_status_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.vrk_status_date).days > int(pendency_bounds[1]):
                                 continue
 
                     if nc_approval_pendency:
@@ -1469,7 +1481,8 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
                                 'expiry_date': expiry_date,
-                                'vrk_approval_pendency': vrk_approval_pendency,
+                                'vrk_before_approval_pendency': vrk_before_approval_pendency,
+                                'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 }
 

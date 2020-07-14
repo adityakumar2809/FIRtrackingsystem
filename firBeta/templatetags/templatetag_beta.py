@@ -120,7 +120,7 @@ def any_gap_greater_than_3(pk):
         if (datetime.datetime.today().date() - fir_phase.vrk_sent_back_date).days > 3:
             return True
     if (fir_phase.received_from_vrk_date) and (not fir_phase.put_in_court_date):
-        if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 3:
+        if (datetime.datetime.today().date() - fir_phase.received_from_vrk_date).days > 15:
             return True
     if (fir_phase.put_in_court_date) and (not fir_phase.nc_receival_date):
         if (datetime.datetime.today().date() - fir_phase.put_in_court_date).days > 3:
@@ -133,3 +133,23 @@ def any_gap_greater_than_3(pk):
             return True
 
     return False
+
+
+@register.filter
+def get_pendency_status(pk, stage):
+    fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+    if stage == 'vrk-before-approval-pendency':
+        if (fir_phase.vrk_receival_date) and (not fir_phase.vrk_sent_back_date) and (fir_phase.vrk_status != 'Approved'):
+            if (datetime.datetime.today().date() - fir_phase.vrk_receival_date).days > 10:
+                return 'red'
+            elif (datetime.datetime.today().date() - fir_phase.vrk_receival_date).days > 5:
+                return 'orange'
+    elif stage == 'vrk-after-approval-pendency':
+        if (fir_phase.vrk_receival_date) and (not fir_phase.vrk_sent_back_date) and (fir_phase.vrk_status == 'Approved'):
+            if (datetime.datetime.today().date() - fir_phase.vrk_status_date).days > 10:
+                return 'red'
+            elif (datetime.datetime.today().date() - fir_phase.vrk_status_date).days > 5:
+                return 'orange'
+    
+    return False
+

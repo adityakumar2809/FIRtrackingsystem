@@ -204,9 +204,17 @@
                     <br>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
-                            {{form.vrk_approval_pendency|add_class:"filter-form-input-field-vrk-approval-pendency"}}
-                            <label>Approval Pendency from VRK</label>
-                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-approval-pendency">Clear</a>
+                            {{form.vrk_before_approval_pendency|add_class:"filter-form-input-field-vrk-before-approval-pendency"}}
+                            <label>Before Approval Pendency from VRK</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-before-approval-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.vrk_after_approval_pendency|add_class:"filter-form-input-field-vrk-after-approval-pendency"}}
+                            <label>After Approval Pendency from VRK</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-after-approval-pendency">Clear</a>
                         </div>
                     </div>
                     <br>
