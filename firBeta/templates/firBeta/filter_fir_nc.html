@@ -1,0 +1,904 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load templatetag_beta %}
+
+{% block head %}
+<style>
+    .container {
+        margin: 0 auto;
+        max-width: 1280px;
+        width: 90%;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        overflow-y: auto;
+        height: 700px;
+    }
+
+    table.data-table {
+        border-collapse: separate;
+    }
+
+    table.data-table > thead > tr.header-row-1 > th, table.data-table > thead > tr.header-row-2 > th {
+        border: 2px black solid;
+        border-left: 0px;
+        border-radius: 0;
+        z-index: 3;
+    }
+
+    tr.header-row-1 > th.header-element-1:nth-child(1) {
+        border-left: 2px black solid;
+        border-bottom-left-radius: 15px;
+        border-top-left-radius: 15px;
+    }
+
+    tr.header-row-1 > th.header-element-1:last-child {
+        border-top-right-radius: 15px;
+    }
+
+    tr.header-row-2 > th.header-element-2:last-child {
+        border-bottom-right-radius: 15px;
+    }
+
+    table.data-table > tbody > tr.data-row > td {
+        border: 1px gray solid;
+        border-radius: 0;
+    }
+
+    tr.data-row > td:nth-child(1) {
+        border-bottom-left-radius: 15px !important;
+        border-top-left-radius: 15px !important;
+    }
+
+    tr.data-row > td:last-child {
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    table.data-table > thead > tr.header-row-1 > th {
+        position: sticky !important;
+        top: 0;
+    }
+
+    table.data-table > thead > tr.header-row-2 > th {
+        position: sticky !important;
+        top: 77px;
+    }
+
+
+    tr.header-row-1 > th.header-element-1:nth-child(even),
+    tr.header-row-2 > th.header-element-2.sub-head-even {
+        background-color: #0097a7 !important;
+    }
+
+    tr.header-row-1 > th.header-element-1:nth-child(odd),
+    tr.header-row-2 > th.header-element-2.sub-head-odd {
+        background-color: #00838f !important;
+    }
+
+    tr.blank-row > td {
+        border: 0px;
+        color: #e8f5e9;
+        background-color: #e8f5e9;
+    }
+
+    #filter_form .modal{
+        height: 100%;
+        width: 100%;
+    }
+
+    input, textarea {
+        text-transform: capitalize;
+    }
+
+    input:disabled, textarea:disabled {
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+</style>
+{% endblock head %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="section">
+
+        <!-- <button class="toggle-btn btn waves-effect waves-light">Toggle Sorting Order</button> -->
+        
+        <!-- Form Modal Trigger -->
+        <a class="waves-effect waves-light btn modal-trigger" href="#filter_form">Apply/ Remove Filters</a>
+
+        <!-- Form Modal Structure -->
+        <div id="filter_form" class="modal modal-fixed-footer green lighten-5">
+            <div class="modal-content">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.fir_no|add_class:"filter-form-input-field-fir-no"}}
+                            <label>FIR No.</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-no">Clear</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.under_section|add_class:"filter-form-input-field-under-section"}}
+                            <label>Under Section</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-under-section">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.expiry_date|add_class:"filter-form-input-field-expiry-date"}}
+                            <label>Challan Period Completing In</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-expiry-date">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_sent_vrk_received|add_class:"filter-form-input-field-gap-ps-sent-vrk-received"}}
+                            <label>Gap between Sent-By-PS-Date and VRK-Received-Date</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-sent-vrk-received">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.vrk_before_approval_pendency|add_class:"filter-form-input-field-vrk-before-approval-pendency"}}
+                            <label>Before Approval Pendency from VRK</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-before-approval-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.vrk_after_approval_pendency|add_class:"filter-form-input-field-vrk-after-approval-pendency"}}
+                            <label>After Approval Pendency from VRK</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-after-approval-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_vrk_sent_ps_received|add_class:"filter-form-input-field-gap-vrk-sent-ps-received"}}
+                            <label>Gap between VRK-Sent-Back-Date and PS-Received-Date</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-vrk-sent-ps-received">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_received_nc_sent|add_class:"filter-form-input-field-gap-ps-received-nc-sent"}}
+                            <label>Gap between Received-from-VRK-Date and Put-in-Court-Date</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-received-nc-sent">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.nc_approval_pendency|add_class:"filter-form-input-field-nc-approval-pendency"}}
+                            <label>Approval Pendency from NC</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-nc-approval-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_nc_sent_ps_received|add_class:"filter-form-input-field-gap-nc-sent-ps-received"}}
+                            <label>Gap between NC-Sent-Back-Date and PS-Received-Date</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-nc-sent-ps-received">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.gap_ps_received_mark_io|add_class:"filter-form-input-field-gap-ps-received-mark-io"}}
+                            <label>Gap between PS-Recieved-Date and PS-Marked-to-IO-Date</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-received-mark-io">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.fir_pendency|add_class:"filter-form-input-field-fir-pendency"}}
+                            <label>FIR Pendency</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.is_closed|add_class:"filter-form-input-field"}}
+                            <label >Is Closed</label>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="modal-footer green lighten-5">
+                    <button class="btn waves-effect waves-light" type="submit">
+                    Submit <i class="material-icons right">send</i>
+                    </button>
+                    </form>
+                    <button class="btn waves-effect waves-light modal-close">
+                    Cancel <i class="material-icons right">close</i>
+                    </button>
+                    <!-- <button class="btn waves-effect waves-light reset-button">
+                    Reset <i class="material-icons right">delete</i>
+                    </button> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="chip cyan darken-3 white-text" style="margin-left: 1%;">
+            <b>Search Results</b> - {{ fir_list|length }}
+        </div>
+
+    </div>
+
+
+
+    <div class="section"></div>
+    <div class="section">
+        <div class="table-wrapper" data-fl-scrolls>
+            <table class="centered responsive-table data-table">
+
+                <thead>
+                    <tr class="header-row-1">
+                        <th class="header-element-1" rowspan="2">S. No.</th>
+                        <th class="header-element-1" rowspan="2">Sub Division<br>PS</th>
+                        <th class="header-element-1" rowspan="2">FIR No.<br>Date</th>
+                        <th class="header-element-1" rowspan="2">U/S</th>
+                        <th class="header-element-1" rowspan="2">I/O Name</th>
+                        <th class="header-element-1" rowspan="2">Accused Name</th>
+                        <th class="header-element-1" rowspan="2">Accused Status</th>
+                        <th class="header-element-1" rowspan="2">Challan to Court Period</th>
+                        <th class="header-element-1" colspan="2">Current Status</th>
+                        <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
+                        <th class="header-element-1" colspan="2">Post SSP Approval Details (PS)</th>
+                        <th class="header-element-1" colspan="4">Naib Court</th>
+                        <th class="header-element-1" colspan="3">Re-investigation Details (PS)</th>
+                    </tr>
+                    <tr class="header-row-2">
+                        <th class="header-element-2 sub-head-odd">Status</th>
+                        <th class="header-element-2 sub-head-odd">Date</th>
+                        <th class="header-element-2 sub-head-even">Received at VRK Branch Date</th>
+                        <th class="header-element-2 sub-head-even">Status</th>
+                        <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Received Back in PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Put in Court Date</th>
+                        <th class="header-element-2 sub-head-even">Received by Naib Court Date</th>
+                        <th class="header-element-2 sub-head-even">Status</th>
+                        <th class="header-element-2 sub-head-even">Date</th>
+                        <th class="header-element-2 sub-head-even">Sent back to PS Date</th>
+                        <th class="header-element-2 sub-head-odd">Received Back on Date</th>
+                        <th class="header-element-2 sub-head-odd">Marked to I/O Name</th>
+                        <th class="header-element-2 sub-head-odd">Date</th>
+                    </tr>
+                </thead>
+
+                {% if asc == 0 %}
+                    <tbody class="data-table-body content-descending">
+                        <tr class="blank-row">
+                            <td>//////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>/////////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                        </tr>
+
+                        {% for fir_set in fir_list %}
+                            {% for fir_phase in fir_set.1 %}
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
+                                    <td>
+                                        <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                        <br>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|any_gap_greater_than_3 %}
+                                                <i class="material-icons red-text text-darken-3">warning</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                    <td>{{ fir_phase.under_section }}</td>
+                                    <td>{{ fir_phase.io_name }}</td>
+                                    <td>{{ fir_phase.accused_name }}</td>
+                                    <td>{{ fir_phase.accused_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|will_expire_at == 0 %}
+                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                        {% else %}
+                                            {{ fir_phase.limitation_period }} days
+                                        {% endif %}
+                                        <br>
+                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                    </td>
+                                    
+                                    <td>{{ fir_phase.current_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.current_status_date %}
+                                            {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_receival_date %}
+                                            {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-sent-vrk-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status %}
+                                            {{ fir_phase.vrk_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status_date %}
+                                            {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_sent_back_date %}
+                                            {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.received_from_vrk_date %}
+                                            {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'vrk-sent-ps-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>   
+                                    <td>
+                                        {% if fir_phase.put_in_court_date %}
+                                            {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_receival_date %}
+                                            {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-sent-nc-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>    
+                                    <td>
+                                        {% if fir_phase.nc_status %}
+                                            {{ fir_phase.nc_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_status_date %}
+                                            {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_sent_back_date %}
+                                            {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.received_from_nc_date %}
+                                            {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'nc-sent-ps-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>  
+                                    <td>
+                                        {% if fir_phase.appointed_io %}
+                                            {{ fir_phase.appointed_io }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td> 
+                                    <td>
+                                        {% if fir_phase.appointed_io_date %}
+                                            {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-received_mark_io' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>       
+                                </tr>
+                                {% if fir_phase.pk|is_last_phase %}
+                                    <tr class="blank-row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                {% else %}
+                    <tbody class="data-table-body content-ascending">
+                        <tr class="blank-row">
+                            <td>//////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>/////////////////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                            <td>///////////////</td>
+                        </tr>
+
+                        {% for fir_set in fir_list reversed %}
+                            {% for fir_phase in fir_set.1 %}
+                                <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
+                                    <td>
+                                        <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                        <br>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|any_gap_greater_than_3 %}
+                                                <i class="material-icons red-text text-darken-3">warning</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
+                                    <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
+                                    <td>{{ fir_phase.under_section }}</td>
+                                    <td>{{ fir_phase.io_name }}</td>
+                                    <td>{{ fir_phase.accused_name }}</td>
+                                    <td>{{ fir_phase.accused_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.pk|is_last_phase %}
+                                            {% if fir_phase.pk|will_expire_at == 0 %}
+                                                <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                <span class="new badge orange darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                <span class="new badge amber lighten-2 black-text" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
+                                            {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                {{ fir_phase.limitation_period }} days
+                                            {% endif %}
+                                        {% else %}
+                                            {{ fir_phase.limitation_period }} days
+                                        {% endif %}
+                                        <br>
+                                        {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                    </td>
+                                    
+                                    <td>{{ fir_phase.current_status }}</td>
+
+                                    <td>
+                                        {% if fir_phase.current_status_date %}
+                                            {{ fir_phase.current_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_receival_date %}
+                                            {{ fir_phase.vrk_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-sent-vrk-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status %}
+                                            {{ fir_phase.vrk_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_status_date %}
+                                            {{ fir_phase.vrk_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.vrk_sent_back_date %}
+                                            {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.received_from_vrk_date %}
+                                            {{ fir_phase.received_from_vrk_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'vrk-sent-ps-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>   
+                                    <td>
+                                        {% if fir_phase.put_in_court_date %}
+                                            {{ fir_phase.put_in_court_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'orange' %}
+                                                    <i class="material-icons orange-text text-darken-3">warning</i>
+                                                {% elif fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'red' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_receival_date %}
+                                            {{ fir_phase.nc_receival_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-sent-nc-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>    
+                                    <td>
+                                        {% if fir_phase.nc_status %}
+                                            {{ fir_phase.nc_status }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_status_date %}
+                                            {{ fir_phase.nc_status_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.nc_sent_back_date %}
+                                            {{ fir_phase.nc_sent_back_date|date:'d/m/y' }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if fir_phase.received_from_nc_date %}
+                                            {{ fir_phase.received_from_nc_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'nc-sent-ps-received' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>  
+                                    <td>
+                                        {% if fir_phase.appointed_io %}
+                                            {{ fir_phase.appointed_io }}
+                                        {% else %}
+                                            <i class="material-icons">remove</i>
+                                        {% endif %}
+                                    </td> 
+                                    <td>
+                                        {% if fir_phase.appointed_io_date %}
+                                            {{ fir_phase.appointed_io_date|date:'d/m/y' }}
+                                        {% else %}
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|gap_greater_than_3:'ps-received_mark_io' %}
+                                                    <i class="material-icons red-text text-darken-3">warning</i>
+                                                {% else %}
+                                                    <i class="material-icons">remove</i>
+                                                {% endif %}
+                                            {% else %}
+                                                <i class="material-icons">remove</i>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>       
+                                </tr>
+
+                                {% if fir_phase.pk|is_last_phase %}
+                                    <tr class="blank-row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block tail %}
+<!-- <script>
+    // Activating corresponding fields on clicking edit button
+    $('.vrk-edit-btn').click(function() {
+        var fir_phase_pk = $(this).attr('id').substring(5); // removing the word 'edit'
+        $(this).addClass("disabled");
+        $(`.vrk-editable-fields.${fir_phase_pk}`).each(function() {
+            $(this).removeAttr("disabled", "disabled");
+        })
+        $('select').formSelect();
+    })
+
+    $('.vrk-editable-fields').change(function() {
+        var fir_phase_pk = $(this).attr('class').split(' ')[1]; // fir_phase_{{fir_phase.pk}} is the second class allotted to every editable field
+        $(`#save_${fir_phase_pk}`).removeClass('disabled');
+    })
+
+    $('.vrk-save-btn').click(function () {
+        var fir_phase_id = $(this).attr('id').substring(5);
+        var fir_phase_pk = $(this).attr('id').substring(15);
+        $.ajax({
+            type: 'POST',
+            url: '/firBeta/ajax/edit_fir_save_vrk/',
+            headers: {
+                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+            },
+            data: {
+                phase_pk: fir_phase_pk,
+                vrk_receival_date: $(`.vrk_receival_date.${fir_phase_id}`).val(),
+                vrk_status: $(`.vrk_status.${fir_phase_id}`).val(),
+                vrk_status_date: $(`.vrk_status_date.${fir_phase_id}`).val(),
+                vrk_sent_back_date: $(`.vrk_sent_back_date.${fir_phase_id}`).val(),                
+            },
+            success: function (data) {
+                if (data == 0) {
+                    $(`#save_${fir_phase_id}`).addClass('disabled');
+                    $(`#edit_${fir_phase_id}`).removeClass('disabled');
+                    $(`.vrk-editable-fields.${fir_phase_id}`).attr('disabled','disabled');
+                    $('select').formSelect();
+                    alert('FIR saved successfully!');
+                } else if (data == 1) {
+                    window.location.href = '/fault/Missing%20parameters%20for%registration';
+                } else if (data == 2) {
+                    window.location.href = '/fault/ACCESS%20DENIED!';
+                } else if (data == 3) {
+                    window.location.href = '/fault/Invalid%20Operation%20Requested';
+                } else if (data == 4) {
+                    alert('ERROR\nInvalid parameters passed, kindly recheck.' )
+                } else if (data == 5) {
+                    alert('ERROR\nCannot process FIR Status untill Receival Date is entered' )
+                } else if (data == 6) {
+                    alert('ERROR\nEnter Date along with status' )
+                } else if (data == 7) {
+                    alert('ERROR\nFIR cannot be returned before Approving it' )
+                }
+            }
+        });
+    });
+</script> -->
+<script>
+    $('.reset-button').click(function() {
+        $('.filter-form-input-field').each(function() {
+            $(this).val('');
+        })
+        $('select').formSelect();
+    })
+
+    $('.clear-btn').click(function() {
+        var input_field_name = $(this).attr('id').substring(22);
+        $(`.filter-form-input-field-${input_field_name}`).val('');
+        $('select').formSelect();
+
+    })
+
+    $('.toggle-btn').click(function() {
+        if ($('.data-table-body').hasClass('content-descending')) {
+            window.location.href = '/firBeta/dsp/filter/1/';
+        } else {
+            window.location.href = '/firBeta/dsp/filter/';
+        }
+    })
+
+    $('tr.data-row').click(function() {
+        var row_pk = $(this).attr('data-tr-fir-phase');
+
+        $('.data-row').each(function() {
+            $(this).removeClass('blue');
+            $(this).addClass('cyan');
+        })
+
+        $(`.data-row.${row_pk}`).removeClass('cyan');
+        $(`.data-row.${row_pk}`).addClass('blue');
+
+    })
+</script>
+{% endblock tail %}

@@ -55,6 +55,123 @@ class ChoosePoliceStationForm(forms.Form):
         self.fields['police_station'] = forms.ChoiceField(choices=POLICE_STATION_CHOICES)
 
 
+class FIRFilterPSForm(forms.Form):
+
+    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('next-5', 'Next 5 days'), ('next-10', 'Next 10 days'), ('next-20', 'Next 20 days'), ('next-30', 'Next Month')]
+    GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+
+    fir_no = forms.CharField(required=False)
+    under_section = forms.CharField(required=False)
+    
+    gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
+    gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
+
+    fir_pendency = forms.ChoiceField(required=False, choices=FIR_PENDENCY_CHOICES)
+    expiry_date = forms.ChoiceField(required=False, choices=EXPIRY_DATE_CHOICES)
+
+    vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
+    vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
+    nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+
+
+class FIRFilterVRKForm(forms.Form):
+
+    sub_division_name_list = [u['name'] for u in loc_models.SubDivision.objects.all().values('name')]
+    sub_division_pk_list = [u['pk'] for u in loc_models.SubDivision.objects.all().values('pk')]
+    i=0
+    SUB_DIVISION_CHOICES = [(None,'---Select---')]
+
+    for i in range(len(sub_division_name_list)):
+        SUB_DIVISION_CHOICES.append((sub_division_pk_list[i], sub_division_name_list[i]))
+
+    police_station_name_list = [u['name'] for u in loc_models.PoliceStation.objects.all().values('name')]
+    police_station_pk_list = [u['pk'] for u in loc_models.PoliceStation.objects.all().values('pk')]
+    i=0
+    POLICE_STATION_CHOICES = [(None,'---Select---')]
+
+    for i in range(len(police_station_name_list)):
+        POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
+
+    # FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('next-5', 'Next 5 days'), ('next-10', 'Next 10 days'), ('next-20', 'Next 20 days'), ('next-30', 'Next Month')]
+    GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+
+    sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
+    police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
+
+    # expiry_date_lower_limit = forms.CharField(required=False)
+    # expiry_date_upper_limit = forms.CharField(required=False)
+
+    fir_no = forms.CharField(required=False)
+    under_section = forms.CharField(required=False)
+    
+    gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
+    gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
+
+    fir_pendency = forms.ChoiceField(required=False, choices=FIR_PENDENCY_CHOICES)
+    expiry_date = forms.ChoiceField(required=False, choices=EXPIRY_DATE_CHOICES)
+
+    vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
+    vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
+    nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+
+    # is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
+
+class FIRFilterNCForm(forms.Form):
+
+    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('next-5', 'Next 5 days'), ('next-10', 'Next 10 days'), ('next-20', 'Next 20 days'), ('next-30', 'Next Month')]
+    GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
+    VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
+    NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+
+    fir_no = forms.CharField(required=False)
+    under_section = forms.CharField(required=False)
+    
+    gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
+    gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
+    gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
+
+    fir_pendency = forms.ChoiceField(required=False, choices=FIR_PENDENCY_CHOICES)
+    expiry_date = forms.ChoiceField(required=False, choices=EXPIRY_DATE_CHOICES)
+
+    vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
+    vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
+    nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+
 class FIRFilterSSPForm(forms.Form):
 
     sub_division_name_list = [u['name'] for u in loc_models.SubDivision.objects.all().values('name')]
