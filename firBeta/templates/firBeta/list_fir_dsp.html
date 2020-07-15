@@ -369,7 +369,7 @@
                         <th class="header-element-1" rowspan="2">I/O Name</th>
                         <th class="header-element-1" rowspan="2">Accused Name</th>
                         <th class="header-element-1" rowspan="2">Accused Status</th>
-                        <th class="header-element-1" rowspan="2">Limitation Period</th>
+                        <th class="header-element-1" rowspan="2">Challan to Court Period</th>
                         <th class="header-element-1" colspan="2">Current Status</th>
                         <th class="header-element-1" colspan="4">Approval Status at SSP Office</th>
                         <th class="header-element-1" colspan="2">Post SSP Approval Details (PS)</th>
@@ -427,7 +427,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td>
                                             <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
                                             <br>
@@ -497,14 +497,30 @@
                                             {% if fir_phase.vrk_status_date %}
                                                 {{ fir_phase.vrk_status_date|date:'d/m/y' }}
                                             {% else %}
-                                                <i class="material-icons">remove</i>
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'red' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         <td>
                                             {% if fir_phase.vrk_sent_back_date %}
                                                 {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
                                             {% else %}
-                                                <i class="material-icons">remove</i>
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'red' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         <td>
@@ -527,7 +543,9 @@
                                                 {{ fir_phase.put_in_court_date|date:'d/m/y' }}
                                             {% else %}
                                                 {% if fir_phase.pk|is_last_phase %}
-                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'red' %}
                                                         <i class="material-icons red-text text-darken-3">warning</i>
                                                     {% else %}
                                                         <i class="material-icons">remove</i>
@@ -672,7 +690,7 @@
                             {% csrf_token %}
                             {% for fir_set in fir_list reversed %}
                                 {% for fir_phase in fir_set.1 %}
-                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row">
+                                    <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                         <td>
                                             <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
                                             <br>
@@ -742,14 +760,30 @@
                                             {% if fir_phase.vrk_status_date %}
                                                 {{ fir_phase.vrk_status_date|date:'d/m/y' }}
                                             {% else %}
-                                                <i class="material-icons">remove</i>
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|get_pendency_status:'vrk-before-approval-pendency' == 'red' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         <td>
                                             {% if fir_phase.vrk_sent_back_date %}
                                                 {{ fir_phase.vrk_sent_back_date|date:'d/m/y' }}
                                             {% else %}
-                                                <i class="material-icons">remove</i>
+                                                {% if fir_phase.pk|is_last_phase %}
+                                                    {% if fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|get_pendency_status:'vrk-after-approval-pendency' == 'red' %}
+                                                        <i class="material-icons red-text text-darken-3">warning</i>
+                                                    {% else %}
+                                                        <i class="material-icons">remove</i>
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         <td>
@@ -772,7 +806,9 @@
                                                 {{ fir_phase.put_in_court_date|date:'d/m/y' }}
                                             {% else %}
                                                 {% if fir_phase.pk|is_last_phase %}
-                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' %}
+                                                    {% if fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'orange' %}
+                                                        <i class="material-icons orange-text text-darken-3">warning</i>
+                                                    {% elif fir_phase.pk|gap_greater_than_3:'ps-received-nc-sent' == 'red' %}
                                                         <i class="material-icons red-text text-darken-3">warning</i>
                                                     {% else %}
                                                         <i class="material-icons">remove</i>
@@ -953,13 +989,24 @@
 </script> -->
 <script>
     $('.toggle-btn').click(function() {
-        // $('tbody.content-descending').toggle();
-        // $('tbody.content-ascending').toggle();
         if ($('.data-table-body').hasClass('content-descending')) {
             window.location.href = '/firBeta/dsp/1/';
         } else {
             window.location.href = '/firBeta/dsp/';
         }
+    })
+
+    $('tr.data-row').click(function() {
+        var row_pk = $(this).attr('data-tr-fir-phase');
+
+        $('.data-row').each(function() {
+            $(this).removeClass('blue');
+            $(this).addClass('cyan');
+        })
+
+        $(`.data-row.${row_pk}`).removeClass('cyan');
+        $(`.data-row.${row_pk}`).addClass('blue');
+
     })
 </script>
 {% endblock tail %}
