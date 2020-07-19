@@ -118,6 +118,13 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
+                            {{form.is_closed|add_class:"filter-form-input-field filter-form-input-field-is-closed"}}
+                            <label>Is Closed</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-is-closed">Clear</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
                             {{form.police_station|add_class:"filter-form-input-field filter-form-input-field-police-station"}}
                             <label>Police Station</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-police-station">Clear</a>
@@ -199,6 +206,14 @@
                             {{form.nc_approval_pendency|add_class:"filter-form-input-field filter-form-input-field-nc-approval-pendency"}}
                             <label>Approval Pendency from NC</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-nc-approval-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.nc_approved_time_period|add_class:"filter-form-input-field filter-form-input-field-nc-approved-time-period"}}
+                            <label>Approved by NC</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-nc-approved-time-period">Clear</a>
                         </div>
                     </div>
                     <br>

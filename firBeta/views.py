@@ -1303,6 +1303,8 @@ def filter_fir_ps_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -1324,8 +1326,16 @@ def filter_fir_ps_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station.pk) == fir_last_phase.fir.police_station.pk):
@@ -1514,6 +1524,18 @@ def filter_fir_ps_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -1531,6 +1553,8 @@ def filter_fir_ps_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
                 return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
@@ -1568,6 +1592,8 @@ def filter_fir_vrk_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -1593,8 +1619,12 @@ def filter_fir_vrk_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
                         continue
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if sub_division:
                         if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
@@ -1786,6 +1816,17 @@ def filter_fir_vrk_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
                     
                 
@@ -1806,6 +1847,8 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'is_closed': is_closed,
                                 }
 
                 form = forms.FIRFilterVRKForm(initial = initial_data)
@@ -1844,6 +1887,8 @@ def filter_fir_nc_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -1869,8 +1914,12 @@ def filter_fir_nc_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                         continue
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station.pk) == fir_last_phase.fir.police_station.pk):
@@ -2059,6 +2108,17 @@ def filter_fir_nc_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -2076,6 +2136,8 @@ def filter_fir_nc_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
                 return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
@@ -2113,6 +2175,8 @@ def filter_fir_ssp_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -2133,8 +2197,12 @@ def filter_fir_ssp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if sub_division:
                         if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
@@ -2326,6 +2394,17 @@ def filter_fir_ssp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
                     
                 
@@ -2346,6 +2425,8 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'is_closed': is_closed,
                                 }
 
                 form = forms.FIRFilterSSPForm(initial = initial_data)
@@ -2383,6 +2464,8 @@ def filter_fir_dsp_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -2404,8 +2487,12 @@ def filter_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station) == fir_last_phase.fir.police_station.pk):
@@ -2594,6 +2681,17 @@ def filter_fir_dsp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -2612,6 +2710,8 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
                 return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})

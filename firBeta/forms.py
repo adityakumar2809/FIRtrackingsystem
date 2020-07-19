@@ -57,7 +57,7 @@ class ChoosePoliceStationForm(forms.Form):
 
 class FIRFilterPSForm(forms.Form):
 
-    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
     EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
@@ -71,6 +71,7 @@ class FIRFilterPSForm(forms.Form):
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
@@ -89,6 +90,9 @@ class FIRFilterPSForm(forms.Form):
     vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+    nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
 
 class FIRFilterVRKForm(forms.Form):
@@ -109,7 +113,7 @@ class FIRFilterVRKForm(forms.Form):
     for i in range(len(police_station_name_list)):
         POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
 
-    # FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
     EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
@@ -122,6 +126,7 @@ class FIRFilterVRKForm(forms.Form):
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -146,13 +151,14 @@ class FIRFilterVRKForm(forms.Form):
     vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+    nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
 
-    # is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
 
 class FIRFilterNCForm(forms.Form):
 
-    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
     EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
@@ -166,6 +172,7 @@ class FIRFilterNCForm(forms.Form):
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
@@ -184,6 +191,9 @@ class FIRFilterNCForm(forms.Form):
     vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+    nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
 
 class FIRFilterSSPForm(forms.Form):
@@ -204,7 +214,7 @@ class FIRFilterSSPForm(forms.Form):
     for i in range(len(police_station_name_list)):
         POLICE_STATION_CHOICES.append((police_station_pk_list[i], police_station_name_list[i]))
 
-    # FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
     EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
@@ -217,6 +227,7 @@ class FIRFilterSSPForm(forms.Form):
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -241,15 +252,16 @@ class FIRFilterSSPForm(forms.Form):
     vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+    nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
 
-    # is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
 
 class FIRFilterDSPForm(forms.Form):
 
     POLICE_STATION_CHOICES = [(None,'---Select---')]
 
-    FIR_CLOSED_CHOICES = [(None,'---Select---'),(True,'Yes'),(False,'No')]
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
     EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
@@ -263,6 +275,7 @@ class FIRFilterDSPForm(forms.Form):
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
 
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -284,6 +297,9 @@ class FIRFilterDSPForm(forms.Form):
     vrk_before_approval_pendency = forms.ChoiceField(required=False, choices=VRK_BEFORE_APPROVAL_PENDENCY_CHOICES)
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
+    nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+
+    is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
 
     def __init__(self, user, *args, **kwargs):
