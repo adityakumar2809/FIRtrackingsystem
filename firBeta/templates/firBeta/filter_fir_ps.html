@@ -148,6 +148,14 @@
                     <br>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
+                            {{form.challan_filed_time_period|add_class:"filter-form-input-field filter-form-input-field-challan-filed-time-period"}}
+                            <label>Challan Filed by PS</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-challan-filed-time-period">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
                             {{form.gap_ps_sent_vrk_received|add_class:"filter-form-input-field filter-form-input-field-gap-ps-sent-vrk-received"}}
                             <label>Gap between Sent-By-PS-Date and VRK-Received-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-sent-vrk-received">Clear</a>
@@ -212,6 +220,14 @@
                     <br>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
+                            {{form.marked_reinvestigation_time_period|add_class:"filter-form-input-field filter-form-input-field-marked-reinvestigation-time-period"}}
+                            <label>Marked Reinvestigation by NC</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-marked-reinvestigation-time-period">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
                             {{form.gap_nc_marked_reinvestigation_nc_sent|add_class:"filter-form-input-field filter-form-input-field-gap-nc-marked-reinvestigation-nc-sent"}}
                             <label>Gap between Marked-Reinvestigation-By-NC-Date and Sent-Back-to-PS-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-nc-marked-reinvestigation-nc-sent">Clear</a>
@@ -239,6 +255,14 @@
                             {{form.fir_pendency|add_class:"filter-form-input-field filter-form-input-field-fir-pendency"}}
                             <label>FIR Pendency</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-pendency">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            {{form.fir_closed_time_period|add_class:"filter-form-input-field filter-form-input-field-fir-closed-time-period"}}
+                            <label>FIR Closed</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-closed-time-period">Clear</a>
                         </div>
                     </div>
                     <!-- <div class="row">

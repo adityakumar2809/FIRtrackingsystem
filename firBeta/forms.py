@@ -72,7 +72,10 @@ class FIRFilterPSForm(forms.Form):
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
     NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
-
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
     
@@ -91,6 +94,9 @@ class FIRFilterPSForm(forms.Form):
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
     nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+    marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
+    challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
+    fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -127,6 +133,9 @@ class FIRFilterVRKForm(forms.Form):
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
     NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -152,6 +161,9 @@ class FIRFilterVRKForm(forms.Form):
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
     nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+    marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
+    challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
+    fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -173,6 +185,9 @@ class FIRFilterNCForm(forms.Form):
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
     NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
@@ -192,6 +207,9 @@ class FIRFilterNCForm(forms.Form):
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
     nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+    marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
+    challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
+    fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -228,6 +246,9 @@ class FIRFilterSSPForm(forms.Form):
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
     NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -253,6 +274,9 @@ class FIRFilterSSPForm(forms.Form):
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
     nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+    marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
+    challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
+    fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -276,6 +300,9 @@ class FIRFilterDSPForm(forms.Form):
     VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
     NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-30','11 days to 30 days'), ('31-inf','More than 30 days')]
     NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('8-15','From last 8 days to 15 days'), ('16-30','From last 16 days to 1 month'), ('31-60','From last 1 month to 2 months'), ('61-90','From last 2 months to 3 months'), ('91-180','From last 3 months to 6 months'), ('181-365','From last 6 months to 1 year'), ('366-730', 'From last 1 year to 2 years'), ('731-1825','From last 2 years to 5 years'), ('1825-inf', 'Before last 5 years')]
 
 
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -298,6 +325,9 @@ class FIRFilterDSPForm(forms.Form):
     vrk_after_approval_pendency = forms.ChoiceField(required=False, choices=VRK_AFTER_APPROVAL_PENDENCY_CHOICES)
     nc_approval_pendency = forms.ChoiceField(required=False, choices=NC_APPROVAL_PENDENCY_CHOICES)
     nc_approved_time_period = forms.ChoiceField(required=False, choices=NC_APPROVED_TIME_PERIOD_CHOICES)
+    marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
+    challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
+    fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 

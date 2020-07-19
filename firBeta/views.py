@@ -1304,6 +1304,9 @@ def filter_fir_ps_view(request, asc = 0):
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
@@ -1535,6 +1538,48 @@ def filter_fir_ps_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                 continue
 
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
 
                     fir_combined_list.append([fir, fir_phase_list])
 
@@ -1554,6 +1599,9 @@ def filter_fir_ps_view(request, asc = 0):
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
@@ -1593,6 +1641,9 @@ def filter_fir_vrk_view(request, asc = 0):
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
@@ -1827,6 +1878,48 @@ def filter_fir_vrk_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                 continue
 
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
                     
                 
@@ -1848,6 +1941,9 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
                                 'is_closed': is_closed,
                                 }
 
@@ -1888,6 +1984,9 @@ def filter_fir_nc_view(request, asc = 0):
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
@@ -2119,6 +2218,48 @@ def filter_fir_nc_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                 continue
 
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -2137,6 +2278,9 @@ def filter_fir_nc_view(request, asc = 0):
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
@@ -2176,6 +2320,9 @@ def filter_fir_ssp_view(request, asc = 0):
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
@@ -2405,6 +2552,48 @@ def filter_fir_ssp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                 continue
 
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
                     
                 
@@ -2426,6 +2615,9 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
                                 'is_closed': is_closed,
                                 }
 
@@ -2465,6 +2657,9 @@ def filter_fir_dsp_view(request, asc = 0):
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
                 nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
@@ -2692,6 +2887,48 @@ def filter_fir_dsp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                 continue
 
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -2711,6 +2948,9 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
                                 'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
