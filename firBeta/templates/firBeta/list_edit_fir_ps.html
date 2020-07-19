@@ -473,8 +473,13 @@
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                        <td>{{ fir_phase.under_section }}</td>
+                                        {% comment %} <td>{{ fir_phase.under_section }}</td> {% endcomment %}
                                         
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} under_section essential-close validate" disabled value="{{ fir_phase.under_section}}" placeholder="Enter U/S">
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="input-field">
                                                 <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} io_name essential-close validate" disabled value="{{ fir_phase.io_name}}" placeholder="Enter name">
@@ -775,7 +780,13 @@
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                        <td>{{ fir_phase.under_section }}</td>
+                                        {% comment %} <td>{{ fir_phase.under_section }}</td> {% endcomment %}
+                                        
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} under_section essential-close validate" disabled value="{{ fir_phase.under_section}}" placeholder="Enter U/S">
+                                            </div>
+                                        </td>
                                         
                                         <td>
                                             <div class="input-field">
@@ -1113,6 +1124,7 @@
             },
             data: {
                 phase_pk: fir_phase_pk,
+                under_section: $(`.under_section.${fir_phase_id}`).val(),
                 io_name: $(`.io_name.${fir_phase_id}`).val(),
                 accused_name: $(`.accused_name.${fir_phase_id}`).val(),
                 accused_status: $(`.accused_status.${fir_phase_id}`).val(),
@@ -1217,6 +1229,7 @@
             },
             data: {
                 phase_pk: fir_phase_pk,
+                under_section: $(`.under_section.${fir_phase_id}`).val(),
                 io_name: $(`.io_name.${fir_phase_id}`).val(),
                 accused_name: $(`.accused_name.${fir_phase_id}`).val(),
                 accused_status: $(`.accused_status.${fir_phase_id}`).val(),
@@ -1307,7 +1320,6 @@
             window.location.href = '/firBeta/ps/';
         }
     })
-
 
     $('tr.data-row').click(function() {
         // var row_pk = $(this).attr('class').split(' ')[4];

@@ -476,6 +476,7 @@ def edit_fir_save_ps_ajax_view(request):
                 u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
             if request.user.pk in police_station_record_keepers:
                 phase_pk = request.POST.get('phase_pk', None)
+                under_section = request.POST.get('under_section', None)
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
@@ -508,7 +509,7 @@ def edit_fir_save_ps_ajax_view(request):
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
 
-                    if not (io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
@@ -619,6 +620,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                 u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
             if request.user.pk in police_station_record_keepers:
                 phase_pk = request.POST.get('phase_pk', None)
+                under_section = request.POST.get('under_section', None)
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
@@ -651,7 +653,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                                 # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
 
-                    if not (io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
