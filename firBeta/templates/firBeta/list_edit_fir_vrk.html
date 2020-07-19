@@ -930,6 +930,10 @@
         var fir_id = $(this).attr('class').split(' ')[1] // fir_{{fir_set.0.pk}} is the second class allotted to save btn
         if ($(`.vrk_sent_back_date.${fir_phase_id}`).val()) {
             var to_be_removed = 1
+            var response = confirm('Are you sure you want to send back the file to the PS?\nIt will remove the file from your jurisdiction.');
+            if (!response) {
+                return
+            }
         }
 
         $(this).text("Wait..")
