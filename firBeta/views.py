@@ -1294,6 +1294,7 @@ def filter_fir_ps_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1374,6 +1375,19 @@ def filter_fir_ps_view(request, asc = 0):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
                                 continue
 
                     if gap_nc_sent_ps_received:
@@ -1494,6 +1508,7 @@ def filter_fir_ps_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -1529,6 +1544,7 @@ def filter_fir_vrk_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1618,6 +1634,19 @@ def filter_fir_vrk_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
                                 continue
 
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
                     if gap_nc_sent_ps_received:
                         gap = gap_nc_sent_ps_received.split('-')
                         if not fir_last_phase.nc_sent_back_date:
@@ -1739,6 +1768,7 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -1775,6 +1805,7 @@ def filter_fir_nc_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1861,6 +1892,19 @@ def filter_fir_nc_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
                                 continue
 
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
                     if gap_nc_sent_ps_received:
                         gap = gap_nc_sent_ps_received.split('-')
                         if not fir_last_phase.nc_sent_back_date:
@@ -1979,6 +2023,7 @@ def filter_fir_nc_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -2014,6 +2059,7 @@ def filter_fir_ssp_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -2096,6 +2142,19 @@ def filter_fir_ssp_view(request, asc = 0):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
                                 continue
 
                     if gap_nc_sent_ps_received:
@@ -2219,6 +2278,7 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -2254,6 +2314,7 @@ def filter_fir_dsp_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -2334,6 +2395,19 @@ def filter_fir_dsp_view(request, asc = 0):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
                                 continue
 
                     if gap_nc_sent_ps_received:
@@ -2455,6 +2529,7 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,

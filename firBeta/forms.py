@@ -64,6 +64,7 @@ class FIRFilterPSForm(forms.Form):
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
@@ -76,6 +77,7 @@ class FIRFilterPSForm(forms.Form):
     gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
     gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_ps_sent_nc_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_NC_RECEIVED_CHOICES)
     gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
 
@@ -111,6 +113,7 @@ class FIRFilterVRKForm(forms.Form):
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
@@ -129,6 +132,7 @@ class FIRFilterVRKForm(forms.Form):
     gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
     gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_ps_sent_nc_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_NC_RECEIVED_CHOICES)
     gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
 
@@ -151,6 +155,7 @@ class FIRFilterNCForm(forms.Form):
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
@@ -163,6 +168,7 @@ class FIRFilterNCForm(forms.Form):
     gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
     gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_ps_sent_nc_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_NC_RECEIVED_CHOICES)
     gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
 
@@ -198,6 +204,7 @@ class FIRFilterSSPForm(forms.Form):
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
@@ -216,6 +223,7 @@ class FIRFilterSSPForm(forms.Form):
     gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
     gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_ps_sent_nc_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_NC_RECEIVED_CHOICES)
     gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
 
@@ -240,6 +248,7 @@ class FIRFilterDSPForm(forms.Form):
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('1-15','1 day to 15 days'), ('16-30','16 days to 30 days'), ('31-90','1 month to 3 months'), ('91-180','3 months to 6 months'), ('181-inf','More than 6 months')]
     GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('1-2','1 day to 2 days'), ('3-5','3 days to 5 days'), ('6-inf','More than 5 days')]
     VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('5-10','5 days to 10 days'), ('11-inf','More than 10 days')]
@@ -255,6 +264,7 @@ class FIRFilterDSPForm(forms.Form):
     gap_ps_sent_vrk_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_VRK_RECEIVED_CHOICES)
     gap_vrk_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_VRK_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_nc_sent = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_NC_SENT_CHOICES)
+    gap_ps_sent_nc_received = forms.ChoiceField(required=False, choices=GAP_PS_SENT_NC_RECEIVED_CHOICES)
     gap_nc_sent_ps_received = forms.ChoiceField(required=False, choices=GAP_NC_SENT_PS_RECEIVED_CHOICES)
     gap_ps_received_mark_io = forms.ChoiceField(required=False, choices=GAP_PS_RECEIVED_MARK_IO_CHOICES)
 
