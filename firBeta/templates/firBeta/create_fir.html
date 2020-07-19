@@ -477,5 +477,26 @@
             }
         });
     });
+
+    var counter = 2;
+    $('#accused_name').keyup(function() {
+        var value = $(this).val()
+        if (value.substr(value.length - 1) == '\n') {
+            $(this).val(value+(counter)+'. ');
+            counter++;
+        }
+    })
+
+    $('#accused_name').focus(function() {
+        if (!$(this).val()) {
+            $(this).val('1. ');
+        }
+    })
+
+    $('#accused_name').blur(function() {
+        if ($(this).val() == '1. ') {
+            $(this).val('');
+        }
+    })
 </script>
 {% endblock tail %}
