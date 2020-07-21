@@ -2544,7 +2544,7 @@ def filter_fir_ssp_view(request, asc = 0):
 
                     if nc_approval_pendency:
                         pendency_bounds = nc_approval_pendency.split('-')
-                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_sent_back_date):
+                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_status in ['Approved','Reinvestigation']):
                             continue
                         if pendency_bounds[1] == 'inf':
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]):
