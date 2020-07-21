@@ -480,6 +480,7 @@ def edit_fir_save_ps_ajax_view(request):
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
+                limitation_period = request.POST.get('limitation_period', None)
                 current_status = request.POST.get('current_status', None)
                 current_status_date = request.POST.get('current_status_date', None)
                 received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
@@ -492,6 +493,7 @@ def edit_fir_save_ps_ajax_view(request):
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    limitation_period_old = fir_phase.limitation_period
 
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
@@ -509,7 +511,7 @@ def edit_fir_save_ps_ajax_view(request):
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
 
-                    if not (under_section and io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status and limitation_period):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
@@ -577,6 +579,7 @@ def edit_fir_save_ps_ajax_view(request):
                     fir_phase.accused_name = accused_name.title()
                     fir_phase.accused_status = accused_status.title()
                     fir_phase.current_status = current_status
+                    fir_phase.limitation_period = limitation_period
                     if current_status_date:
                         fir_phase.current_status_date = datetime.strptime(
                                 current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -594,6 +597,11 @@ def edit_fir_save_ps_ajax_view(request):
                         fir_phase.appointed_io_date = datetime.strptime(
                                 appointed_io_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
+
+                    limitation_period_new = fir_phase.limitation_period
+                    if not limitation_period_old == limitation_period_new:
+                        return HttpResponse(19)
+                        # return redirect('success', msg='FIR edited successfully') ----- BUT THE PAGE HAS TO BE RELOADED
                     
 
                     return HttpResponse(0)
@@ -624,6 +632,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
+                limitation_period = request.POST.get('limitation_period', None)
                 current_status = request.POST.get('current_status', None)
                 current_status_date = request.POST.get('current_status_date', None)
                 received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
@@ -653,7 +662,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                                 # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
 
-                    if not (under_section and io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status and limitation_period):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
@@ -723,6 +732,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                     fir_phase.accused_name = accused_name.title()
                     fir_phase.accused_status = accused_status.title()
                     fir_phase.current_status = current_status
+                    fir_phase.limitation_period = limitation_period
                     if current_status_date:
                         fir_phase.current_status_date = datetime.strptime(
                                 current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
