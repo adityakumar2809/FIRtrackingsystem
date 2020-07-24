@@ -8,6 +8,50 @@ import random, datetime
 
 
 def home(request):
+
+    last_mail_dates = fir_beta_models.LastMailDate.objects.all()
+    flag = 0
+
+    if len(last_mail_dates) == 0:
+        flag = 1
+
+    for last_mail_date in last_mail_dates:
+        if last_mail_date.date == datetime.date.today():
+            flag = 1
+            break
+
+    if flag == 0:
+        firs = fir_beta_models.FIR.objects.all()
+        for fir in firs:
+            fir_phase_list = fir.phases.all()
+            fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
+
+            if fir_last_phase.fir.is_closed == True:
+                continue
+            if fir_last_phase.phase_index == 1:
+                time_diff = (datetime.date.today() - fir_last_phase.date_registered).days
+            else:
+                fir_prev_phase = fir_beta_models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                time_diff = (datetime.date.today() - fir_prev_phase.appointed_io_date).days
+            
+            if time_diff == 20:
+                email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_last_phase.fir.police_station).user.email]
+                send_mail('Deadline Approaching', f'The FIR file with FIR No. {fir_last_phase.fir.fir_no} has only 20 days left before the expiration of Challan to Court limitation period. Kindly check and take necessary actions.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
+            elif time_diff == 10:
+                email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_last_phase.fir.police_station).user.email]
+                send_mail('Deadline Approaching', f'The FIR file with FIR No. {fir_last_phase.fir.fir_no} has only 10 days left before the expiration of Challan to Court limitation period. Kindly check and take necessary actions.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
+            elif time_diff == 5:
+                email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_last_phase.fir.police_station).user.email]
+                send_mail('Deadline Approaching', f'The FIR file with FIR No. {fir_last_phase.fir.fir_no} has only 5 days left before the expiration of Challan to Court limitation period. Kindly check and take necessary actions.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
+            elif time_diff == 0:
+                email_list = [acc_models.PoliceStationRecordKeeper.objects.get(police_station__exact = fir_last_phase.fir.police_station).user.email]
+                send_mail('Deadline Approaching', f'The FIR file with FIR No. {fir_last_phase.fir.fir_no} has only taday\'s time left before the expiration of Challan to Court limitation period. Kindly check and take necessary actions.', 'firtrackingsystem.sbsnagar@gmail.com', email_list, fail_silently = True) 
+
+        for last_mail_date in last_mail_dates:
+            last_mail_date.delete()
+            
+        fir_beta_models.LastMailDate.objects.create()
+    
     if request.user.is_authenticated:
         police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
         court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
@@ -25,7 +69,8 @@ def home(request):
             return redirect('firBeta:list_edit_fir_vrk')
         elif request.user.pk in ssp_record_keepers:
             return redirect('firBeta:list_fir_ssp')
-
+        else:
+            return redirect('account:logout')
     else:
         return redirect('account:login')
     # return render(request, 'home.html')
@@ -39,7 +84,7 @@ def success(request, msg):
     return render(request, 'success.html', {'msg': msg})
 
 
-def populate(request):
+""" def populate(request):
     police_station_list =  loc_models.PoliceStation.objects.all()
     for ps in police_station_list:
         x = 87
@@ -118,4 +163,4 @@ def populate(request):
                                                                 )
             x += 1
 
-    return redirect('success', msg='Population Successful')
+    return redirect('success', msg='Population Successful') """
