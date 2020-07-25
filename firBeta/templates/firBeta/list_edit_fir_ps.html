@@ -473,8 +473,13 @@
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                        <td>{{ fir_phase.under_section }}</td>
+                                        {% comment %} <td>{{ fir_phase.under_section }}</td> {% endcomment %}
                                         
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} under_section essential-close validate" disabled value="{{ fir_phase.under_section}}" placeholder="Enter U/S">
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="input-field">
                                                 <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} io_name essential-close validate" disabled value="{{ fir_phase.io_name}}" placeholder="Enter name">
@@ -492,7 +497,7 @@
                                         </td>
 
                                         <td>
-                                            {% if fir_phase.pk|is_last_phase %}
+                                            {% comment %} {% if fir_phase.pk|is_last_phase %}
                                                 {% if fir_phase.pk|will_expire_at == 0 %}
                                                     <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
                                                 {% elif fir_phase.pk|will_expire_at == 1 %}
@@ -504,9 +509,24 @@
                                                 {% endif %}
                                             {% else %}
                                                 {{ fir_phase.limitation_period }} days
+                                            {% endif %} 
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} {% endcomment %}
+                                            <div class="input-field">
+                                                <input type="number" class="ps-editable-fields fir_phase_{{fir_phase.pk}} limitation_period essential-close validate" value="{{ fir_phase.limitation_period }}" disabled></input>
+                                            </div>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} 
+                                                {% endif %}
+                                            {% else %}
+                                                {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} 
                                             {% endif %}
-                                            <br>
-                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
                                         </td>
                                         
                                         <td>
@@ -775,7 +795,13 @@
                                         <td><strong>{{forloop.parentloop.counter}}.{{forloop.counter}}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
-                                        <td>{{ fir_phase.under_section }}</td>
+                                        {% comment %} <td>{{ fir_phase.under_section }}</td> {% endcomment %}
+                                        
+                                        <td>
+                                            <div class="input-field">
+                                                <input type="text" class="ps-editable-fields fir_phase_{{fir_phase.pk}} under_section essential-close validate" disabled value="{{ fir_phase.under_section}}" placeholder="Enter U/S">
+                                            </div>
+                                        </td>
                                         
                                         <td>
                                             <div class="input-field">
@@ -794,7 +820,7 @@
                                         </td>
 
                                         <td>
-                                            {% if fir_phase.pk|is_last_phase %}
+                                            {% comment %} {% if fir_phase.pk|is_last_phase %}
                                                 {% if fir_phase.pk|will_expire_at == 0 %}
                                                     <span class="new badge red darken-3" data-badge-caption="days">{{ fir_phase.limitation_period }}</span>
                                                 {% elif fir_phase.pk|will_expire_at == 1 %}
@@ -808,7 +834,23 @@
                                                 {{ fir_phase.limitation_period }} days
                                             {% endif %}
                                             <br>
-                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}
+                                            {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} {% endcomment %}
+                                            <div class="input-field">
+                                                <input type="number" class="ps-editable-fields fir_phase_{{fir_phase.pk}} limitation_period essential-close validate" value="{{ fir_phase.limitation_period }}" disabled></input>
+                                            </div>
+                                            {% if fir_phase.pk|is_last_phase %}
+                                                {% if fir_phase.pk|will_expire_at == 0 %}
+                                                    <span class="new badge red darken-3" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 1 %}
+                                                    <span class="new badge orange darken-3" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 2 %}
+                                                    <span class="new badge amber lighten-2 black-text" data-badge-caption="">{{ fir_phase.pk|get_expiry_date|date:'d/m/y' }}</span>
+                                                {% elif fir_phase.pk|will_expire_at == 3 %}
+                                                    {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} 
+                                                {% endif %}
+                                            {% else %}
+                                                {{ fir_phase.pk|get_expiry_date|date:'d/m/y' }} 
+                                            {% endif %}
                                         </td>
                                         
                                         <td>
@@ -1113,9 +1155,11 @@
             },
             data: {
                 phase_pk: fir_phase_pk,
+                under_section: $(`.under_section.${fir_phase_id}`).val(),
                 io_name: $(`.io_name.${fir_phase_id}`).val(),
                 accused_name: $(`.accused_name.${fir_phase_id}`).val(),
                 accused_status: $(`.accused_status.${fir_phase_id}`).val(),
+                limitation_period: $(`.limitation_period.${fir_phase_id}`).val(),
                 current_status: $(`.current_status.${fir_phase_id}`).val(),
                 current_status_date: $(`.current_status_date.${fir_phase_id}`).val(),
                 received_from_vrk_date: $(`.received_from_vrk_date.${fir_phase_id}`).val(),
@@ -1140,6 +1184,9 @@
                     })
                     $('select').formSelect();
                     alert('FIR saved successfully!');
+                } else if (data == 19) {
+                    alert('FIR saved successfully!');
+                    window.location.href = '/firBeta/ps';
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
                 } else if (data == 2) {
@@ -1217,9 +1264,11 @@
             },
             data: {
                 phase_pk: fir_phase_pk,
+                under_section: $(`.under_section.${fir_phase_id}`).val(),
                 io_name: $(`.io_name.${fir_phase_id}`).val(),
                 accused_name: $(`.accused_name.${fir_phase_id}`).val(),
                 accused_status: $(`.accused_status.${fir_phase_id}`).val(),
+                limitation_period: $(`.limitation_period.${fir_phase_id}`).val(),
                 current_status: $(`.current_status.${fir_phase_id}`).val(),
                 current_status_date: $(`.current_status_date.${fir_phase_id}`).val(),
                 received_from_vrk_date: $(`.received_from_vrk_date.${fir_phase_id}`).val(),
@@ -1307,7 +1356,6 @@
             window.location.href = '/firBeta/ps/';
         }
     })
-
 
     $('tr.data-row').click(function() {
         // var row_pk = $(this).attr('class').split(' ')[4];

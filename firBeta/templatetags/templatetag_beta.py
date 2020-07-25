@@ -9,6 +9,8 @@ register=template.Library()
 def will_expire_at(pk):
     try:
         fir_phase = models.FIRPhase.objects.get(pk__exact=pk)
+        if fir_phase.fir.is_closed == True:
+            return 3
         if fir_phase.phase_index == 1:
             time_diff = (datetime.date.today() - fir_phase.date_registered).days
         else:
@@ -34,6 +36,7 @@ def is_last_phase(pk):
         return True
     else:
         return False
+
 
 @register.filter
 def is_third_phase(pk):

@@ -24,7 +24,6 @@ class FIR(models.Model):
         verbose_name_plural = 'FIRs'
 
 
-
 class FIRPhase(models.Model):
 
     PHASE_CHOICES = [(1, 1), (2, 2), (3, 3)]
@@ -72,3 +71,10 @@ class FIRPhase(models.Model):
         ordering = ['-fir__pk', 'phase_index']
         verbose_name = 'FIR Phase'
         verbose_name_plural = 'FIR Phases'
+
+
+class LastMailDate(models.Model):
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.date}'

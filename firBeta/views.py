@@ -63,11 +63,11 @@ def create_fir_save_ajax_view(request):
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
                     if current_status_date:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -122,11 +122,11 @@ def create_fir_save_add_ajax_view(request):
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
                     if current_status_date:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -181,11 +181,11 @@ def create_fir_save_edit_ajax_view(request):
                                                            police_station=ps_record_keeper.police_station,
                                                            fir_no=fir_no)
                     if current_status_date :
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -241,11 +241,11 @@ def create_fir_save_close_ajax_view(request):
                                                            fir_no=fir_no,
                                                            is_closed=True)
                     if current_status_date:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=1 , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -476,9 +476,11 @@ def edit_fir_save_ps_ajax_view(request):
                 u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
             if request.user.pk in police_station_record_keepers:
                 phase_pk = request.POST.get('phase_pk', None)
+                under_section = request.POST.get('under_section', None)
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
+                limitation_period = request.POST.get('limitation_period', None)
                 current_status = request.POST.get('current_status', None)
                 current_status_date = request.POST.get('current_status_date', None)
                 received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
@@ -491,6 +493,7 @@ def edit_fir_save_ps_ajax_view(request):
                 if phase_pk:
                     # Add logic to save the fir and also ensure that request is only catered if user is from same ps
                     fir_phase = models.FIRPhase.objects.get(pk__exact=phase_pk)
+                    limitation_period_old = fir_phase.limitation_period
 
                     if current_status_date == 'XXXXXXX':
                         current_status_date = None
@@ -508,7 +511,7 @@ def edit_fir_save_ps_ajax_view(request):
                         return HttpResponse(2)
                         # return redirect('fault', fault='ACCESS DENIED!')
 
-                    if not (io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status and limitation_period):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
@@ -572,10 +575,11 @@ def edit_fir_save_ps_ajax_view(request):
                             # return redirect('fault', fault='Future Dates are not permitted')
 
 
-                    fir_phase.io_name = io_name
-                    fir_phase.accused_name = accused_name
-                    fir_phase.accused_status = accused_status
+                    fir_phase.io_name = io_name.title()
+                    fir_phase.accused_name = accused_name.title()
+                    fir_phase.accused_status = accused_status.title()
                     fir_phase.current_status = current_status
+                    fir_phase.limitation_period = limitation_period
                     if current_status_date:
                         fir_phase.current_status_date = datetime.strptime(
                                 current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -588,11 +592,16 @@ def edit_fir_save_ps_ajax_view(request):
                     if received_from_nc_date:
                         fir_phase.received_from_nc_date = datetime.strptime(
                                 received_from_nc_date, '%d/%m/%y').strftime('%Y-%m-%d')
-                    fir_phase.appointed_io = appointed_io
+                    fir_phase.appointed_io = appointed_io.title()
                     if appointed_io_date:
                         fir_phase.appointed_io_date = datetime.strptime(
                                 appointed_io_date, '%d/%m/%y').strftime('%Y-%m-%d')
                     fir_phase.save()
+
+                    limitation_period_new = fir_phase.limitation_period
+                    if not limitation_period_old == limitation_period_new:
+                        return HttpResponse(19)
+                        # return redirect('success', msg='FIR edited successfully') ----- BUT THE PAGE HAS TO BE RELOADED
                     
 
                     return HttpResponse(0)
@@ -619,9 +628,11 @@ def edit_fir_save_close_ps_ajax_view(request):
                 u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
             if request.user.pk in police_station_record_keepers:
                 phase_pk = request.POST.get('phase_pk', None)
+                under_section = request.POST.get('under_section', None)
                 io_name = request.POST.get('io_name', None)
                 accused_name = request.POST.get('accused_name', None)
                 accused_status = request.POST.get('accused_status', None)
+                limitation_period = request.POST.get('limitation_period', None)
                 current_status = request.POST.get('current_status', None)
                 current_status_date = request.POST.get('current_status_date', None)
                 received_from_vrk_date = request.POST.get('received_from_vrk_date', None)
@@ -651,7 +662,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                                 # return redirect('fault', fault='Date of current status cannot be before date of appointing the new IO in previous phase')
 
 
-                    if not (io_name and accused_name and accused_status and current_status):
+                    if not (under_section and io_name and accused_name and accused_status and current_status and limitation_period):
                         return HttpResponse(5)
                         # return redirect('fault', fault='Missing essential parameters')
                     if current_status != 'Under Investigation' and not current_status_date:
@@ -717,10 +728,11 @@ def edit_fir_save_close_ps_ajax_view(request):
                             return HttpResponse(19)
                             # return redirect('fault', fault='Future Dates are not permitted')
 
-                    fir_phase.io_name = io_name
-                    fir_phase.accused_name = accused_name
-                    fir_phase.accused_status = accused_status
+                    fir_phase.io_name = io_name.title()
+                    fir_phase.accused_name = accused_name.title()
+                    fir_phase.accused_status = accused_status.title()
                     fir_phase.current_status = current_status
+                    fir_phase.limitation_period = limitation_period
                     if current_status_date:
                         fir_phase.current_status_date = datetime.strptime(
                                 current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -733,7 +745,7 @@ def edit_fir_save_close_ps_ajax_view(request):
                     if received_from_nc_date:
                         fir_phase.received_from_nc_date = datetime.strptime(
                                 received_from_nc_date, '%d/%m/%y').strftime('%Y-%m-%d')
-                    fir_phase.appointed_io = appointed_io
+                    fir_phase.appointed_io = appointed_io.title()
                     if appointed_io_date:
                         fir_phase.appointed_io_date = datetime.strptime(
                                 appointed_io_date, '%d/%m/%y').strftime('%Y-%m-%d')
@@ -1040,9 +1052,12 @@ def add_new_phase_fir_save_ajax_view(request):
                     if datetime.strptime(date, '%d/%m/%y').date() > datetime.today().date():
                         return HttpResponse(7)
                         # return redirect('fault', fault='Future Dates are not permitted')
+                    if current_status_date:
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=current_status_date)
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     return HttpResponse(0)
                     # return redirect('success', msg='FIR registered successfully')
                 else:
@@ -1099,11 +1114,12 @@ def add_new_phase_fir_save_close_ajax_view(request):
                         return HttpResponse(7)
                         # return redirect('fault', fault='Future Dates are not permitted')
 
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
+                    if current_status_date:
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status, current_status_date=datetime.strptime(current_status_date, '%d/%m/%y').strftime('%Y-%m-%d'))
                     else:
-                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name, accused_name=accused_name,
-                                                    accused_status=accused_status, limitation_period=limitation_period, current_status=current_status)
+                        models.FIRPhase.objects.create(fir=fir_object, phase_index=new_phase_index , date_registered=datetime.strptime(date, '%d/%m/%y').strftime('%Y-%m-%d'), under_section=under_section, io_name=io_name.title(), accused_name=accused_name.title(),
+                                                    accused_status=accused_status.title(), limitation_period=limitation_period, current_status=current_status)
                     
                     fir_object.is_closed = True
                     fir_object.save()
@@ -1290,6 +1306,8 @@ def filter_fir_ps_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
+                gap_nc_marked_reinvestigation_nc_sent = form.cleaned_data['gap_nc_marked_reinvestigation_nc_sent']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1297,6 +1315,11 @@ def filter_fir_ps_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -1318,8 +1341,16 @@ def filter_fir_ps_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station.pk) == fir_last_phase.fir.police_station.pk):
@@ -1370,6 +1401,32 @@ def filter_fir_ps_view(request, asc = 0):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_marked_reinvestigation_nc_sent:
+                        gap = gap_nc_marked_reinvestigation_nc_sent.split('-')
+                        if not fir_last_phase.nc_status == 'Reinvestigation':
+                            continue
+                        if fir_last_phase.nc_sent_back_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(gap[1]):
                                 continue
 
                     if gap_nc_sent_ps_received:
@@ -1423,13 +1480,31 @@ def filter_fir_ps_view(request, asc = 0):
                                 if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
                         else:
-                            if fir_last_phase.phase_index == 1:
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                            if expiry_bounds[1] == 'inf':
+                                if fir_last_phase.phase_index == 1:
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
                             else:
-                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                                if fir_last_phase.phase_index == 1:
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                        continue
+
+
+                            # if fir_last_phase.phase_index == 1:
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
+                            # else:
+                            #     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
 
                     if vrk_before_approval_pendency:
                         pendency_bounds = vrk_before_approval_pendency.split('-')
@@ -1464,6 +1539,60 @@ def filter_fir_ps_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -1472,6 +1601,8 @@ def filter_fir_ps_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
+                                'gap_nc_marked_reinvestigation_nc_sent': gap_nc_marked_reinvestigation_nc_sent,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -1479,6 +1610,11 @@ def filter_fir_ps_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
                 return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
@@ -1507,6 +1643,8 @@ def filter_fir_vrk_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
+                gap_nc_marked_reinvestigation_nc_sent = form.cleaned_data['gap_nc_marked_reinvestigation_nc_sent']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1514,6 +1652,11 @@ def filter_fir_vrk_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -1539,8 +1682,12 @@ def filter_fir_vrk_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
                         continue
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if sub_division:
                         if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
@@ -1596,6 +1743,32 @@ def filter_fir_vrk_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
                                 continue
 
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_marked_reinvestigation_nc_sent:
+                        gap = gap_nc_marked_reinvestigation_nc_sent.split('-')
+                        if not fir_last_phase.nc_status == 'Reinvestigation':
+                            continue
+                        if fir_last_phase.nc_sent_back_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(gap[1]):
+                                continue
+
                     if gap_nc_sent_ps_received:
                         gap = gap_nc_sent_ps_received.split('-')
                         if not fir_last_phase.nc_sent_back_date:
@@ -1647,13 +1820,31 @@ def filter_fir_vrk_view(request, asc = 0):
                                 if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
                         else:
-                            if fir_last_phase.phase_index == 1:
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                            if expiry_bounds[1] == 'inf':
+                                if fir_last_phase.phase_index == 1:
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
                             else:
-                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                                if fir_last_phase.phase_index == 1:
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                        continue
+
+
+                            # if fir_last_phase.phase_index == 1:
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
+                            # else:
+                            #     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
 
                     if vrk_before_approval_pendency:
                         pendency_bounds = vrk_before_approval_pendency.split('-')
@@ -1688,6 +1879,59 @@ def filter_fir_vrk_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
                     
                 
@@ -1699,6 +1943,8 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
+                                'gap_nc_marked_reinvestigation_nc_sent': gap_nc_marked_reinvestigation_nc_sent,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -1706,6 +1952,11 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
+                                'is_closed': is_closed,
                                 }
 
                 form = forms.FIRFilterVRKForm(initial = initial_data)
@@ -1735,6 +1986,8 @@ def filter_fir_nc_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
+                gap_nc_marked_reinvestigation_nc_sent = form.cleaned_data['gap_nc_marked_reinvestigation_nc_sent']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1742,6 +1995,11 @@ def filter_fir_nc_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -1767,8 +2025,12 @@ def filter_fir_nc_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                         continue
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station.pk) == fir_last_phase.fir.police_station.pk):
@@ -1819,6 +2081,32 @@ def filter_fir_nc_view(request, asc = 0):
                                 continue
                         else:
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
+                                continue
+
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_marked_reinvestigation_nc_sent:
+                        gap = gap_nc_marked_reinvestigation_nc_sent.split('-')
+                        if not fir_last_phase.nc_status == 'Reinvestigation':
+                            continue
+                        if fir_last_phase.nc_sent_back_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(gap[1]):
                                 continue
 
                     if gap_nc_sent_ps_received:
@@ -1872,13 +2160,31 @@ def filter_fir_nc_view(request, asc = 0):
                                 if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
                         else:
-                            if fir_last_phase.phase_index == 1:
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                            if expiry_bounds[1] == 'inf':
+                                if fir_last_phase.phase_index == 1:
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
                             else:
-                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                                if fir_last_phase.phase_index == 1:
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                        continue
+
+
+                            # if fir_last_phase.phase_index == 1:
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
+                            # else:
+                            #     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
 
                     if vrk_before_approval_pendency:
                         pendency_bounds = vrk_before_approval_pendency.split('-')
@@ -1913,6 +2219,59 @@ def filter_fir_nc_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -1921,6 +2280,8 @@ def filter_fir_nc_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
+                                'gap_nc_marked_reinvestigation_nc_sent': gap_nc_marked_reinvestigation_nc_sent,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -1928,6 +2289,11 @@ def filter_fir_nc_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
                 return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
@@ -1956,6 +2322,8 @@ def filter_fir_ssp_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
+                gap_nc_marked_reinvestigation_nc_sent = form.cleaned_data['gap_nc_marked_reinvestigation_nc_sent']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -1963,6 +2331,11 @@ def filter_fir_ssp_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                is_closed = form.cleaned_data['is_closed']
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -1983,8 +2356,12 @@ def filter_fir_ssp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if sub_division:
                         if not (int(sub_division) == fir_last_phase.fir.sub_division.pk):
@@ -2040,6 +2417,32 @@ def filter_fir_ssp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
                                 continue
 
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_marked_reinvestigation_nc_sent:
+                        gap = gap_nc_marked_reinvestigation_nc_sent.split('-')
+                        if not fir_last_phase.nc_status == 'Reinvestigation':
+                            continue
+                        if fir_last_phase.nc_sent_back_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(gap[1]):
+                                continue
+
                     if gap_nc_sent_ps_received:
                         gap = gap_nc_sent_ps_received.split('-')
                         if not fir_last_phase.nc_sent_back_date:
@@ -2091,13 +2494,31 @@ def filter_fir_ssp_view(request, asc = 0):
                                 if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
                         else:
-                            if fir_last_phase.phase_index == 1:
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                            if expiry_bounds[1] == 'inf':
+                                if fir_last_phase.phase_index == 1:
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
                             else:
-                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                                if fir_last_phase.phase_index == 1:
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                        continue
+
+
+                            # if fir_last_phase.phase_index == 1:
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
+                            # else:
+                            #     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
 
                     if vrk_before_approval_pendency:
                         pendency_bounds = vrk_before_approval_pendency.split('-')
@@ -2123,7 +2544,7 @@ def filter_fir_ssp_view(request, asc = 0):
 
                     if nc_approval_pendency:
                         pendency_bounds = nc_approval_pendency.split('-')
-                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_sent_back_date):
+                        if (not fir_last_phase.nc_receival_date) or (fir_last_phase.nc_status in ['Approved','Reinvestigation']):
                             continue
                         if pendency_bounds[1] == 'inf':
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]):
@@ -2131,6 +2552,59 @@ def filter_fir_ssp_view(request, asc = 0):
                         else:
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
+
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
 
                     fir_combined_list.append([fir, fir_phase_list])
                     
@@ -2143,6 +2617,8 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
+                                'gap_nc_marked_reinvestigation_nc_sent': gap_nc_marked_reinvestigation_nc_sent,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -2150,6 +2626,11 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
+                                'is_closed': is_closed,
                                 }
 
                 form = forms.FIRFilterSSPForm(initial = initial_data)
@@ -2178,6 +2659,8 @@ def filter_fir_dsp_view(request, asc = 0):
                 gap_ps_sent_vrk_received = form.cleaned_data['gap_ps_sent_vrk_received']
                 gap_vrk_sent_ps_received = form.cleaned_data['gap_vrk_sent_ps_received']
                 gap_ps_received_nc_sent = form.cleaned_data['gap_ps_received_nc_sent']
+                gap_ps_sent_nc_received = form.cleaned_data['gap_ps_sent_nc_received']
+                gap_nc_marked_reinvestigation_nc_sent = form.cleaned_data['gap_nc_marked_reinvestigation_nc_sent']
                 gap_nc_sent_ps_received = form.cleaned_data['gap_nc_sent_ps_received']
                 gap_ps_received_mark_io = form.cleaned_data['gap_ps_received_mark_io']
                 fir_pendency = form.cleaned_data['fir_pendency']
@@ -2185,6 +2668,11 @@ def filter_fir_dsp_view(request, asc = 0):
                 vrk_before_approval_pendency = form.cleaned_data['vrk_before_approval_pendency']
                 vrk_after_approval_pendency = form.cleaned_data['vrk_after_approval_pendency']
                 nc_approval_pendency = form.cleaned_data['nc_approval_pendency']
+                nc_approved_time_period = form.cleaned_data['nc_approved_time_period']
+                marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
+                challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
+                fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                is_closed = form.cleaned_data['is_closed']
                 fir_combined_list = []
 
     
@@ -2206,8 +2694,12 @@ def filter_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_last_phase = fir_phase_list[len(fir_phase_list)-1]
 
-                    if fir_last_phase.fir.is_closed == True:
-                        continue
+                    # if fir_last_phase.fir.is_closed == True:
+                    #     continue
+
+                    if is_closed:
+                        if not fir.is_closed == is_closed:
+                            continue
 
                     if police_station:
                         if not (int(police_station) == fir_last_phase.fir.police_station.pk):
@@ -2260,6 +2752,32 @@ def filter_fir_dsp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.received_from_vrk_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.received_from_vrk_date).days > int(gap[1]):
                                 continue
 
+                    if gap_ps_sent_nc_received:
+                        gap = gap_ps_sent_nc_received.split('-')
+                        if not fir_last_phase.put_in_court_date:
+                            continue
+                        if fir_last_phase.nc_receival_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.put_in_court_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.put_in_court_date).days > int(gap[1]):
+                                continue
+
+                    if gap_nc_marked_reinvestigation_nc_sent:
+                        gap = gap_nc_marked_reinvestigation_nc_sent.split('-')
+                        if not fir_last_phase.nc_status == 'Reinvestigation':
+                            continue
+                        if fir_last_phase.nc_sent_back_date:
+                            continue
+                        if gap[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(gap[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(gap[1]):
+                                continue
+
                     if gap_nc_sent_ps_received:
                         gap = gap_nc_sent_ps_received.split('-')
                         if not fir_last_phase.nc_sent_back_date:
@@ -2311,13 +2829,31 @@ def filter_fir_dsp_view(request, asc = 0):
                                 if datetime.today().date() <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                     continue
                         else:
-                            if fir_last_phase.phase_index == 1:
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                            if expiry_bounds[1] == 'inf':
+                                if fir_last_phase.phase_index == 1:
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                        continue
                             else:
-                                fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
-                                    continue
+                                if fir_last_phase.phase_index == 1:
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                        continue
+                                else:
+                                    fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                        continue
+
+
+                            # if fir_last_phase.phase_index == 1:
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
+                            # else:
+                            #     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
+                            #     if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                            #         continue
 
                     if vrk_before_approval_pendency:
                         pendency_bounds = vrk_before_approval_pendency.split('-')
@@ -2352,6 +2888,59 @@ def filter_fir_dsp_view(request, asc = 0):
                             if (datetime.today().date() - fir_last_phase.nc_receival_date).days < int(pendency_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_receival_date).days > int(pendency_bounds[1]):
                                 continue
 
+                    if nc_approved_time_period:
+                        time_period_bounds = nc_approved_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Approved'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if marked_reinvestigation_time_period:
+                        time_period_bounds = marked_reinvestigation_time_period.split('-')
+                        if (fir_last_phase.nc_status != 'Reinvestigation'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if challan_filed_time_period:
+                        time_period_bounds = challan_filed_time_period.split('-')
+                        if (fir_last_phase.current_status != 'Challan Filed'):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                continue
+
+                    if fir_closed_time_period:
+                        time_period_bounds = fir_closed_time_period.split('-')
+                        if (fir_last_phase.fir.is_closed != True):
+                            continue
+                        if time_period_bounds[1] == 'inf':
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]):
+                                    continue
+                        else:
+                            if fir_last_phase.current_status == 'Challan Filed':
+                                if (datetime.today().date() - fir_last_phase.current_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.current_status_date).days > int(time_period_bounds[1]):
+                                    continue
+                            elif fir_last_phase.nc_status == 'Approved':
+                                if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
+                                    continue
+
+
                     fir_combined_list.append([fir, fir_phase_list])
 
                 initial_data = {
@@ -2361,6 +2950,8 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'gap_ps_sent_vrk_received': gap_ps_sent_vrk_received,
                                 'gap_vrk_sent_ps_received': gap_vrk_sent_ps_received,
                                 'gap_ps_received_nc_sent': gap_ps_received_nc_sent,
+                                'gap_ps_sent_nc_received': gap_ps_sent_nc_received,
+                                'gap_nc_marked_reinvestigation_nc_sent': gap_nc_marked_reinvestigation_nc_sent,
                                 'gap_nc_sent_ps_received': gap_nc_sent_ps_received,
                                 'gap_ps_received_mark_io': gap_ps_received_mark_io,
                                 'fir_pendency': fir_pendency,
@@ -2368,6 +2959,11 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'vrk_before_approval_pendency': vrk_before_approval_pendency,
                                 'vrk_after_approval_pendency': vrk_after_approval_pendency,
                                 'nc_approval_pendency': nc_approval_pendency,
+                                'nc_approved_time_period': nc_approved_time_period,
+                                'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
+                                'challan_filed_time_period': challan_filed_time_period,
+                                'fir_closed_time_period': fir_closed_time_period,
+                                'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
                 return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})

@@ -5,3 +5,4 @@ from . import models
 
 admin.site.register(models.FIR)
 admin.site.register(models.FIRPhase)
+admin.site.register(models.LastMailDate)
