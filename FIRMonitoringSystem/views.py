@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
 from location import models as loc_models
 from account import models as acc_models
 from fir import models as fir_models
