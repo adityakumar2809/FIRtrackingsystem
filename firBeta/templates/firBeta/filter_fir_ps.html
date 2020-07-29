@@ -116,24 +116,24 @@
             <div class="modal-content">
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="row">
+                   <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.is_closed|add_class:"filter-form-input-field filter-form-input-field-is-closed"}}
-                            <label>Is Closed</label>
+                            <label><strong>1. </strong>Is Closed</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-is-closed">Clear</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.fir_no|add_class:"filter-form-input-field filter-form-input-field-fir-no"}}
-                            <label>FIR No.</label>
+                            <label><strong>2. </strong>FIR No.</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-no">Clear</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.under_section|add_class:"filter-form-input-field filter-form-input-field-under-section"}}
-                            <label>Under Section</label>
+                            <label><strong>3. </strong>Under Section</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-under-section">Clear</a>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.expiry_date|add_class:"filter-form-input-field filter-form-input-field-expiry-date"}}
-                            <label>Challan Period Completing In</label>
+                            <label><strong>4. </strong>Challan Period Completing In</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-expiry-date">Clear</a>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.challan_filed_time_period|add_class:"filter-form-input-field filter-form-input-field-challan-filed-time-period"}}
-                            <label>Challan Filed by PS</label>
+                            <label><strong>5. </strong>Challan Filed by PS</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-challan-filed-time-period">Clear</a>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_ps_sent_vrk_received|add_class:"filter-form-input-field filter-form-input-field-gap-ps-sent-vrk-received"}}
-                            <label>Gap between Sent-By-PS-Date and VRK-Received-Date</label>
+                            <label><strong>6. </strong>Gap between Sent-By-PS-Date and VRK-Received-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-sent-vrk-received">Clear</a>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.vrk_before_approval_pendency|add_class:"filter-form-input-field filter-form-input-field-vrk-before-approval-pendency"}}
-                            <label>Before Approval Pendency from SSP Office</label>
+                            <label><strong>7. </strong>Before Approval Pendency from SSP Office</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-before-approval-pendency">Clear</a>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.vrk_after_approval_pendency|add_class:"filter-form-input-field filter-form-input-field-vrk-after-approval-pendency"}}
-                            <label>After Approval Pendency from SSP Office</label>
+                            <label><strong>8. </strong>After Approval Pendency from SSP Office</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-vrk-after-approval-pendency">Clear</a>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_vrk_sent_ps_received|add_class:"filter-form-input-field filter-form-input-field-gap-vrk-sent-ps-received"}}
-                            <label>Gap between VRK-Sent-Back-Date and PS-Received-Date</label>
+                            <label><strong>9. </strong>Gap between VRK-Sent-Back-Date and PS-Received-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-vrk-sent-ps-received">Clear</a>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_ps_received_nc_sent|add_class:"filter-form-input-field filter-form-input-field-gap-ps-received-nc-sent"}}
-                            <label>Gap between Received-from-VRK-Date and Put-in-Court-Date</label>
+                            <label><strong>10. </strong>Gap between Received-from-VRK-Date and Put-in-Court-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-received-nc-sent">Clear</a>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_ps_sent_nc_received|add_class:"filter-form-input-field filter-form-input-field-gap-ps-sent-nc-received"}}
-                            <label>Gap between Put-in-Court-Date and Received-By-NC-Date</label>
+                            <label><strong>11. </strong>Gap between Put-in-Court-Date and Received-By-NC-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-sent-nc-received">Clear</a>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.nc_approval_pendency|add_class:"filter-form-input-field filter-form-input-field-nc-approval-pendency"}}
-                            <label>Approval Pendency from Court</label>
+                            <label><strong>12. </strong>Approval Pendency from Court</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-nc-approval-pendency">Clear</a>
                         </div>
                     </div>
@@ -213,7 +213,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.nc_approved_time_period|add_class:"filter-form-input-field filter-form-input-field-nc-approved-time-period"}}
-                            <label>Approved by Court</label>
+                            <label><strong>13. </strong>Approved by Court</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-nc-approved-time-period">Clear</a>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.marked_reinvestigation_time_period|add_class:"filter-form-input-field filter-form-input-field-marked-reinvestigation-time-period"}}
-                            <label>Marked Reinvestigation by Court</label>
+                            <label><strong>14. </strong>Marked Reinvestigation by Court</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-marked-reinvestigation-time-period">Clear</a>
                         </div>
                     </div>
@@ -229,7 +229,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_nc_marked_reinvestigation_nc_sent|add_class:"filter-form-input-field filter-form-input-field-gap-nc-marked-reinvestigation-nc-sent"}}
-                            <label>Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date</label>
+                            <label><strong>15. </strong>Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-nc-marked-reinvestigation-nc-sent">Clear</a>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_nc_sent_ps_received|add_class:"filter-form-input-field filter-form-input-field-gap-nc-sent-ps-received"}}
-                            <label>Gap between NC-Sent-Back-Date and PS-Received-Date</label>
+                            <label><strong>16. </strong>Gap between NC-Sent-Back-Date and PS-Received-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-nc-sent-ps-received">Clear</a>
                         </div>
                     </div>
@@ -245,7 +245,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.gap_ps_received_mark_io|add_class:"filter-form-input-field filter-form-input-field-gap-ps-received-mark-io"}}
-                            <label>Gap between PS-Recieved-Date and PS-Marked-to-IO-Date</label>
+                            <label><strong>17. </strong>Gap between PS-Recieved-Date and PS-Marked-to-IO-Date</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-gap-ps-received-mark-io">Clear</a>
                         </div>
                     </div>
@@ -253,7 +253,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.fir_pendency|add_class:"filter-form-input-field filter-form-input-field-fir-pendency"}}
-                            <label>FIR Pendency</label>
+                            <label><strong>18. </strong>FIR Pendency</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-pendency">Clear</a>
                         </div>
                     </div>
@@ -261,7 +261,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.fir_closed_time_period|add_class:"filter-form-input-field filter-form-input-field-fir-closed-time-period"}}
-                            <label>FIR Closed</label>
+                            <label><strong>19. </strong>FIR Closed</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-closed-time-period">Clear</a>
                         </div>
                     </div>
