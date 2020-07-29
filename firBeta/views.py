@@ -306,7 +306,12 @@ def list_edit_fir_vrk_view(request, asc = 0):
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+                                                                          'form': form,
+                                                                          'asc': asc,
+                                                                          'selected_sub_division': sub_division,
+                                                                          'selected_police_station': police_station,
+                                                                        })
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -344,7 +349,12 @@ def list_edit_fir_vrk_view(request, asc = 0):
                     fir_combined_list.append([fir, fir_phase_list])
 
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list, 'form': form, 'asc': asc})
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+                                                                      'form': form,
+                                                                      'asc': asc,
+                                                                      'selected_sub_division': sub_division,
+                                                                      'selected_police_station': police_station,
+                                                                  })
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
