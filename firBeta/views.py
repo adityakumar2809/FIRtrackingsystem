@@ -1313,6 +1313,27 @@ def list_fir_ssp_view(request, asc = 0):
 
 @login_required
 def filter_fir_ps_view(request, asc = 0):
+
+    FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
+    GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
+    GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
+    GAP_PS_SENT_NC_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
+    GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
+    GAP_NC_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('8-inf','More than 7 days'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days')]
+    GAP_PS_RECEIVED_MARK_IO_CHOICES = [(None, '---Select---'), ('6-inf','More than 5 days'), ('11-inf','More than 10 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('91-inf','More than 3 months'), ('181-inf','More than 6 months')]
+    VRK_BEFORE_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('8-inf','More than 7 days')]
+    VRK_AFTER_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
+    NC_APPROVAL_PENDENCY_CHOICES = [(None, '---Select---'), ('8-inf','More than 7 days'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('91-inf','More than 3 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
+    NC_APPROVED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+
+
+
     ps_record_keepers = [u['user']
                           for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
     if request.user.pk in ps_record_keepers:
@@ -1341,9 +1362,9 @@ def filter_fir_ps_view(request, asc = 0):
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
-                    is_closed == True
+                    is_closed = True
                 elif is_closed == 'False':
-                    is_closed == False
+                    is_closed = False
                 fir_combined_list = []
 
     
@@ -1678,9 +1699,9 @@ def filter_fir_vrk_view(request, asc = 0):
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
-                    is_closed == True
+                    is_closed = True
                 elif is_closed == 'False':
-                    is_closed == False
+                    is_closed = False
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -2025,9 +2046,9 @@ def filter_fir_nc_view(request, asc = 0):
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
-                    is_closed == True
+                    is_closed = True
                 elif is_closed == 'False':
-                    is_closed == False
+                    is_closed = False
                 fir_combined_list = []
 
     
@@ -2365,9 +2386,9 @@ def filter_fir_ssp_view(request, asc = 0):
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
-                    is_closed == True
+                    is_closed = True
                 elif is_closed == 'False':
-                    is_closed == False
+                    is_closed = False
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -2706,9 +2727,9 @@ def filter_fir_dsp_view(request, asc = 0):
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
-                    is_closed == True
+                    is_closed = True
                 elif is_closed == 'False':
-                    is_closed == False
+                    is_closed = False
                 fir_combined_list = []
 
     
