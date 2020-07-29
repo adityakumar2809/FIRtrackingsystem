@@ -1181,7 +1181,7 @@ def list_fir_dsp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
-                form = forms.ChoosePoliceStationForm(user = request.user)
+                form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
                 return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
@@ -1217,7 +1217,7 @@ def list_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
 
-            form = forms.ChoosePoliceStationForm(user = request.user)
+            form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
             return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
