@@ -1320,6 +1320,10 @@ def filter_fir_ps_view(request, asc = 0):
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
+                if is_closed == 'True':
+                    is_closed == True
+                elif is_closed == 'False':
+                    is_closed == False
                 fir_combined_list = []
 
     
@@ -1344,11 +1348,7 @@ def filter_fir_ps_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed:
-                        if not fir.is_closed == is_closed:
-                            continue
-
-                    if is_closed:
+                    if is_closed is not None:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -1657,6 +1657,10 @@ def filter_fir_vrk_view(request, asc = 0):
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
+                if is_closed == 'True':
+                    is_closed == True
+                elif is_closed == 'False':
+                    is_closed == False
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -1685,7 +1689,7 @@ def filter_fir_vrk_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed:
+                    if is_closed is not None:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2000,6 +2004,10 @@ def filter_fir_nc_view(request, asc = 0):
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
+                if is_closed == 'True':
+                    is_closed == True
+                elif is_closed == 'False':
+                    is_closed == False
                 fir_combined_list = []
 
     
@@ -2028,7 +2036,7 @@ def filter_fir_nc_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed:
+                    if is_closed is not None:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2336,6 +2344,10 @@ def filter_fir_ssp_view(request, asc = 0):
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
+                if is_closed == 'True':
+                    is_closed == True
+                elif is_closed == 'False':
+                    is_closed == False
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
@@ -2359,7 +2371,7 @@ def filter_fir_ssp_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed:
+                    if is_closed is not None:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2673,6 +2685,10 @@ def filter_fir_dsp_view(request, asc = 0):
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
                 is_closed = form.cleaned_data['is_closed']
+                if is_closed == 'True':
+                    is_closed == True
+                elif is_closed == 'False':
+                    is_closed == False
                 fir_combined_list = []
 
     
@@ -2697,7 +2713,7 @@ def filter_fir_dsp_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed:
+                    if is_closed is not None:
                         if not fir.is_closed == is_closed:
                             continue
 
