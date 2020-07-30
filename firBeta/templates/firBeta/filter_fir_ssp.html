@@ -306,6 +306,12 @@
             <b>Search Results</b> - {{ fir_list|length }}
         </div>
 
+        <br><br>
+
+        {% for filter in filter_list %}
+            <div class="chip"><b>{{ filter.0 }}: </b>{{ filter.1 }}</div>
+        {% endfor %}
+
     </div>
     <div class="section"></div>
     <div class="section">
