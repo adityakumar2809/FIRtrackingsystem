@@ -1365,6 +1365,8 @@ def filter_fir_ps_view(request, asc = 0):
                     is_closed = True
                 elif is_closed == 'False':
                     is_closed = False
+                elif is_closed == 'None':
+                    is_closed = None
                 fir_combined_list = []
                 
                 """ filter_combined_list = [
@@ -1390,7 +1392,7 @@ def filter_fir_ps_view(request, asc = 0):
                 ] """
 
                 filter_combined_list = []
-                if is_closed is not None:
+                if is_closed in [True, False]:
                     filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if fir_no:
                     filter_combined_list.append(['2. FIR No.', fir_no])
@@ -1452,7 +1454,7 @@ def filter_fir_ps_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed is not None:
+                    if is_closed in [True, False]:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -1784,13 +1786,15 @@ def filter_fir_vrk_view(request, asc = 0):
                     is_closed = True
                 elif is_closed == 'False':
                     is_closed = False
+                elif is_closed == 'None':
+                    is_closed = None
     
                 fir_list = models.FIR.objects.all()
                 fir_combined_list = []
 
 
                 filter_combined_list = []
-                if is_closed is not None:
+                if is_closed in [True, False]:
                     filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if sub_division:
                     filter_combined_list.append(['2. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
@@ -1857,7 +1861,7 @@ def filter_fir_vrk_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed is not None:
+                    if is_closed in [True, False]:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2195,10 +2199,12 @@ def filter_fir_nc_view(request, asc = 0):
                     is_closed = True
                 elif is_closed == 'False':
                     is_closed = False
+                elif is_closed == 'None':
+                    is_closed = None
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed is not None:
+                if is_closed in [True, False]:
                     filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if fir_no:
                     filter_combined_list.append(['2. FIR No.', fir_no])
@@ -2263,7 +2269,7 @@ def filter_fir_nc_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed is not None:
+                    if is_closed in [True, False]:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2599,7 +2605,7 @@ def filter_fir_ssp_view(request, asc = 0):
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed is not None:
+                if is_closed in [True, False]:
                     filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if sub_division:
                     filter_combined_list.append(['2. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
@@ -2661,7 +2667,7 @@ def filter_fir_ssp_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed is not None:
+                    if is_closed in [True, False]:
                         if not fir.is_closed == is_closed:
                             continue
 
@@ -2998,10 +3004,12 @@ def filter_fir_dsp_view(request, asc = 0):
                     is_closed = True
                 elif is_closed == 'False':
                     is_closed = False
+                elif is_closed == 'None':
+                    is_closed = None
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed is not None:
+                if is_closed in [True, False]:
                     filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if police_station:
                     filter_combined_list.append(['2. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
@@ -3064,7 +3072,7 @@ def filter_fir_dsp_view(request, asc = 0):
                     # if fir_last_phase.fir.is_closed == True:
                     #     continue
 
-                    if is_closed is not None:
+                    if is_closed in [True, False]:
                         if not fir.is_closed == is_closed:
                             continue
 
