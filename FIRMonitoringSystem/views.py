@@ -85,10 +85,10 @@ def success(request, msg):
     return render(request, 'success.html', {'msg': msg})
 
 
-def populate(request):
+""" def populate(request):
     ps = loc_models.PoliceStation.objects.get(name__iexact = 'City NSR')
 
-    x = 19
+    x = 34
     fir_object = fir_beta_models.FIR.objects.create(fir_no = f'{x}/20', sub_division = ps.sub_division, police_station = ps)
 
     accused_name = random.choice(['Aman', 'Sahid', 'Kamlesh', 'Kirti', 'Lokesh', 'Suresh', 'Amrish', 'Palak', 'Kajal'])
@@ -96,16 +96,30 @@ def populate(request):
     accused_status = f'{accused_name} - {temp}'
     fir_phase = fir_beta_models.FIRPhase.objects.create(fir = fir_object, 
                                                         phase_index = 1, 
-                                                        date_registered = datetime.date(2020, 7, 3),
+                                                        date_registered = datetime.date(2020, 5, 3),
                                                         under_section = random.randint(100,200),
                                                         io_name = random.choice(['Raj','Kabir','Anand','Manik']),
                                                         accused_name = accused_name,
                                                         accused_status = accused_status,
-                                                        limitation_period = 90,
-                                                        current_status = 'Under Investigation'
+                                                        limitation_period = 180,
+                                                        current_status = 'Cancelled',
+                                                        current_status_date = datetime.date(2020, 5, 17),
+                                                        vrk_receival_date = datetime.date(2020, 5, 20),
+                                                        vrk_status = 'Approved',
+                                                        vrk_status_date = datetime.date(2020, 5, 24),
+                                                        vrk_sent_back_date = datetime.date(2020, 5, 30),
+                                                        received_from_vrk_date = datetime.date(2020, 6, 2),
+                                                        put_in_court_date = datetime.date(2020, 6, 4),
+                                                        nc_receival_date = datetime.date(2020, 6, 15),
+                                                        nc_status = 'Reinvestigation',
+                                                        nc_status_date = datetime.date(2020, 6, 18),
+                                                        nc_sent_back_date = datetime.date(2020, 6, 25),
+                                                        received_from_nc_date = datetime.date(2020, 6, 28)
                                                         )
 
     return redirect('success', msg='Population Successful')
+
+ """
 
 
 """ def populate(request):

@@ -24,7 +24,7 @@ urlpatterns = [
     path('firBeta/', include('firBeta.urls')),
     path('fault/<str:fault>/', views.fault, name='fault'),
     path('success/<str:msg>/', views.success, name='success'),
-    path('populate/', views.populate, name='populate'),
+    # path('populate/', views.populate, name='populate'),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
 ]
