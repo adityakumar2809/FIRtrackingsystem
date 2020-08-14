@@ -60,7 +60,7 @@ class FIRFilterPSForm(forms.Form):
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -120,7 +120,7 @@ class FIRFilterVRKForm(forms.Form):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -172,7 +172,7 @@ class FIRFilterNCForm(forms.Form):
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -233,7 +233,7 @@ class FIRFilterSSPForm(forms.Form):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -287,7 +287,7 @@ class FIRFilterDSPForm(forms.Form):
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
 
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]

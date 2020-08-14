@@ -85,6 +85,29 @@ def success(request, msg):
     return render(request, 'success.html', {'msg': msg})
 
 
+def populate(request):
+    ps = loc_models.PoliceStation.objects.get(name__iexact = 'City NSR')
+
+    x = 15
+    fir_object = fir_beta_models.FIR.objects.create(fir_no = f'{x}/20', sub_division = ps.sub_division, police_station = ps)
+
+    accused_name = random.choice(['Aman', 'Sahid', 'Kamlesh', 'Kirti', 'Lokesh', 'Suresh', 'Amrish', 'Palak', 'Kajal'])
+    temp = random.choice(['Arrested','Not Arrested', 'P.O.'])
+    accused_status = f'{accused_name} - {temp}'
+    fir_phase = fir_beta_models.FIRPhase.objects.create(fir = fir_object, 
+                                                        phase_index = 1, 
+                                                        date_registered = datetime.date(2020, 7, 5),
+                                                        under_section = random.randint(100,200),
+                                                        io_name = random.choice(['Raj','Kabir','Anand','Manik']),
+                                                        accused_name = accused_name,
+                                                        accused_status = accused_status,
+                                                        limitation_period = 40,
+                                                        current_status = 'Under Investigation'
+                                                        )
+
+    return redirect('success', msg='Population Successful')
+
+
 """ def populate(request):
     police_station_list =  loc_models.PoliceStation.objects.all()
     for ps in police_station_list:
