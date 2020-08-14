@@ -1588,11 +1588,11 @@ def filter_fir_ps_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
@@ -1998,11 +1998,11 @@ def filter_fir_vrk_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
@@ -2403,11 +2403,11 @@ def filter_fir_nc_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
@@ -2804,11 +2804,11 @@ def filter_fir_ssp_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
@@ -3206,11 +3206,11 @@ def filter_fir_dsp_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
