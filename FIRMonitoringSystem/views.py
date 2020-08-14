@@ -86,28 +86,69 @@ def success(request, msg):
 
 
 """ def populate(request):
+    ps = loc_models.PoliceStation.objects.get(name__iexact = 'City NSR')
+
+    x = 34
+    fir_object = fir_beta_models.FIR.objects.create(fir_no = f'{x}/20', sub_division = ps.sub_division, police_station = ps)
+
+    accused_name = random.choice(['Aman', 'Sahid', 'Kamlesh', 'Kirti', 'Lokesh', 'Suresh', 'Amrish', 'Palak', 'Kajal'])
+    temp = random.choice(['Arrested','Not Arrested', 'P.O.'])
+    accused_status = f'{accused_name} - {temp}'
+    fir_phase = fir_beta_models.FIRPhase.objects.create(fir = fir_object, 
+                                                        phase_index = 1, 
+                                                        date_registered = datetime.date(2020, 5, 3),
+                                                        under_section = random.randint(100,200),
+                                                        io_name = random.choice(['Raj','Kabir','Anand','Manik']),
+                                                        accused_name = accused_name,
+                                                        accused_status = accused_status,
+                                                        limitation_period = 180,
+                                                        current_status = 'Cancelled',
+                                                        current_status_date = datetime.date(2020, 5, 17),
+                                                        vrk_receival_date = datetime.date(2020, 5, 20),
+                                                        vrk_status = 'Approved',
+                                                        vrk_status_date = datetime.date(2020, 5, 24),
+                                                        vrk_sent_back_date = datetime.date(2020, 5, 30),
+                                                        received_from_vrk_date = datetime.date(2020, 6, 2),
+                                                        put_in_court_date = datetime.date(2020, 6, 4),
+                                                        nc_receival_date = datetime.date(2020, 6, 15),
+                                                        nc_status = 'Reinvestigation',
+                                                        nc_status_date = datetime.date(2020, 6, 18),
+                                                        nc_sent_back_date = datetime.date(2020, 6, 25),
+                                                        received_from_nc_date = datetime.date(2020, 6, 28)
+                                                        )
+
+    return redirect('success', msg='Population Successful')
+
+ """
+
+
+""" def populate(request):
     police_station_list =  loc_models.PoliceStation.objects.all()
     for ps in police_station_list:
-        x = 87
+        x = 1
         y = random.randint(x,x+12)
         while(x <= y):
             fir_object = fir_beta_models.FIR.objects.create(fir_no = f'{x}/20', sub_division = ps.sub_division, police_station = ps)
 
+            date_registered = datetime.datetime.today() - datetime.timedelta(days=random.randint(1,60))
+            current_status_date = date_registered + datetime.timedelta(days=random.randint(1,10))
+
             fir_phase = fir_beta_models.FIRPhase.objects.create(fir = fir_object, 
                                                                 phase_index = 1, 
-                                                                date_registered = datetime.datetime.today() - datetime.timedelta(days=random.randint(1,10)),
+                                                                date_registered = date_registered,
                                                                 under_section = random.randint(100,200),
                                                                 io_name = random.choice(['PQR','STU','VWX','XYZ']),
                                                                 accused_name = random.choice(['ABC','DEF','GHI','JKL','MNO']),
                                                                 accused_status = random.choice(['Arrested','Not Arrested', 'P.O.']),
-                                                                limitation_period = random.randint(10,35),
+                                                                limitation_period = random.randint(55,90),
                                                                 current_status = random.choice(['Untraced', 'Cancelled']),
-                                                                current_status_date = datetime.datetime.today() + datetime.timedelta(days=random.randint(1,3))
+                                                                current_status_date = current_status_date
                                                                 )
                                                                 
             fir_phase = fir_beta_models.FIRPhase.objects.get(pk__exact = fir_phase.pk)
             if random.choice([True, True, True, True, False]):
-                fir_phase.vrk_receival_date = datetime.datetime.today() + datetime.timedelta(days=random.randint(3,4))
+                vrk_receival_date = current_status_date + datetime.timedelta(days=random.randint(1,10))
+                fir_phase.vrk_receival_date = vrk_receival_date
                 if random.choice([True, True, True, True, False]):
                     fir_phase.vrk_status = 'Approved'
                     fir_phase.vrk_status_date = datetime.datetime.today() + datetime.timedelta(days=random.randint(4,5))
@@ -163,5 +204,7 @@ def success(request, msg):
                                                                 current_status_date = datetime.datetime.today() + datetime.timedelta(days=random.randint(1,5))                                                               
                                                                 )
             x += 1
+
+        break
 
     return redirect('success', msg='Population Successful') """

@@ -1316,7 +1316,7 @@ def filter_fir_ps_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -1392,44 +1392,44 @@ def filter_fir_ps_view(request, asc = 0):
                 ] """
 
                 filter_combined_list = []
-                if is_closed in [True, False]:
-                    filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if fir_no:
-                    filter_combined_list.append(['2. FIR No.', fir_no])
+                    filter_combined_list.append(['1. FIR No.', fir_no])
                 if under_section:
-                    filter_combined_list.append(['3. Under Section', under_section])
+                    filter_combined_list.append(['2. Under Section', under_section])
                 if expiry_date:
-                    filter_combined_list.append(['4. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
+                    filter_combined_list.append(['3. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
                 if challan_filed_time_period:
-                    filter_combined_list.append(['5. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
+                    filter_combined_list.append(['4. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
                 if gap_ps_sent_vrk_received:
-                    filter_combined_list.append(['6. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
+                    filter_combined_list.append(['5. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
                 if vrk_before_approval_pendency:
-                    filter_combined_list.append(['7. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
+                    filter_combined_list.append(['6. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
                 if vrk_after_approval_pendency:
-                    filter_combined_list.append(['8. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
+                    filter_combined_list.append(['7. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
                 if gap_vrk_sent_ps_received:
-                    filter_combined_list.append(['9. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
+                    filter_combined_list.append(['8. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
                 if gap_ps_received_nc_sent:
-                    filter_combined_list.append(['10. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
+                    filter_combined_list.append(['9. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
                 if gap_ps_sent_nc_received:
-                    filter_combined_list.append(['11. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
+                    filter_combined_list.append(['10. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
                 if nc_approval_pendency:
-                    filter_combined_list.append(['12. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
+                    filter_combined_list.append(['11. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
                 if nc_approved_time_period:
-                    filter_combined_list.append(['13. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
+                    filter_combined_list.append(['12. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
                 if marked_reinvestigation_time_period:
-                    filter_combined_list.append(['14. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
+                    filter_combined_list.append(['13. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
                 if gap_nc_marked_reinvestigation_nc_sent:
-                    filter_combined_list.append(['15. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
+                    filter_combined_list.append(['14. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
                 if gap_nc_sent_ps_received:
-                    filter_combined_list.append(['16. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
+                    filter_combined_list.append(['15. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
                 if gap_ps_received_mark_io:
-                    filter_combined_list.append(['17. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
+                    filter_combined_list.append(['16. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
-                    filter_combined_list.append(['18. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                    filter_combined_list.append(['17. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['18. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                if is_closed in [True, False]:
+                    filter_combined_list.append(['19. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
 
     
@@ -1588,19 +1588,19 @@ def filter_fir_ps_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
                                         continue
 
 
@@ -1739,7 +1739,7 @@ def filter_fir_vrk_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -1794,48 +1794,48 @@ def filter_fir_vrk_view(request, asc = 0):
 
 
                 filter_combined_list = []
-                if is_closed in [True, False]:
-                    filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if sub_division:
-                    filter_combined_list.append(['2. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
+                    filter_combined_list.append(['1. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
                 if police_station:
-                    filter_combined_list.append(['3. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
+                    filter_combined_list.append(['2. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
                 if fir_no:
-                    filter_combined_list.append(['4. FIR No.', fir_no])
+                    filter_combined_list.append(['3. FIR No.', fir_no])
                 if under_section:
-                    filter_combined_list.append(['5. Under Section', under_section])
+                    filter_combined_list.append(['4. Under Section', under_section])
                 if expiry_date:
-                    filter_combined_list.append(['6. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
+                    filter_combined_list.append(['5. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
                 if challan_filed_time_period:
-                    filter_combined_list.append(['7. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
+                    filter_combined_list.append(['6. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
                 if gap_ps_sent_vrk_received:
-                    filter_combined_list.append(['8. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
+                    filter_combined_list.append(['7. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
                 if vrk_before_approval_pendency:
-                    filter_combined_list.append(['9. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
+                    filter_combined_list.append(['8. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
                 if vrk_after_approval_pendency:
-                    filter_combined_list.append(['10. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
+                    filter_combined_list.append(['9. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
                 if gap_vrk_sent_ps_received:
-                    filter_combined_list.append(['11. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
+                    filter_combined_list.append(['10. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
                 if gap_ps_received_nc_sent:
-                    filter_combined_list.append(['12. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
+                    filter_combined_list.append(['11. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
                 if gap_ps_sent_nc_received:
-                    filter_combined_list.append(['13. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
+                    filter_combined_list.append(['12. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
                 if nc_approval_pendency:
-                    filter_combined_list.append(['14. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
+                    filter_combined_list.append(['13. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
                 if nc_approved_time_period:
-                    filter_combined_list.append(['15. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
+                    filter_combined_list.append(['14. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
                 if marked_reinvestigation_time_period:
-                    filter_combined_list.append(['16. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
+                    filter_combined_list.append(['15. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
                 if gap_nc_marked_reinvestigation_nc_sent:
-                    filter_combined_list.append(['17. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
+                    filter_combined_list.append(['16. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
                 if gap_nc_sent_ps_received:
-                    filter_combined_list.append(['18. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
+                    filter_combined_list.append(['17. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
                 if gap_ps_received_mark_io:
-                    filter_combined_list.append(['19. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
+                    filter_combined_list.append(['18. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
-                    filter_combined_list.append(['20. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                    filter_combined_list.append(['19. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['21. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                if is_closed in [True, False]:
+                    filter_combined_list.append(['21. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
                 try:
                     fir_list = sorted(fir_list, 
@@ -1998,19 +1998,19 @@ def filter_fir_vrk_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
                                         continue
 
 
@@ -2152,7 +2152,7 @@ def filter_fir_nc_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -2204,44 +2204,45 @@ def filter_fir_nc_view(request, asc = 0):
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed in [True, False]:
-                    filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if fir_no:
-                    filter_combined_list.append(['2. FIR No.', fir_no])
+                    filter_combined_list.append(['1. FIR No.', fir_no])
                 if under_section:
-                    filter_combined_list.append(['3. Under Section', under_section])
+                    filter_combined_list.append(['2. Under Section', under_section])
                 if expiry_date:
-                    filter_combined_list.append(['4. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
+                    filter_combined_list.append(['3. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
                 if challan_filed_time_period:
-                    filter_combined_list.append(['5. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
+                    filter_combined_list.append(['4. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
                 if gap_ps_sent_vrk_received:
-                    filter_combined_list.append(['6. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
+                    filter_combined_list.append(['5. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
                 if vrk_before_approval_pendency:
-                    filter_combined_list.append(['7. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
+                    filter_combined_list.append(['6. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
                 if vrk_after_approval_pendency:
-                    filter_combined_list.append(['8. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
+                    filter_combined_list.append(['7. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
                 if gap_vrk_sent_ps_received:
-                    filter_combined_list.append(['9. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
+                    filter_combined_list.append(['8. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
                 if gap_ps_received_nc_sent:
-                    filter_combined_list.append(['10. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
+                    filter_combined_list.append(['9. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
                 if gap_ps_sent_nc_received:
-                    filter_combined_list.append(['11. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
+                    filter_combined_list.append(['10. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
                 if nc_approval_pendency:
-                    filter_combined_list.append(['12. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
+                    filter_combined_list.append(['11. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
                 if nc_approved_time_period:
-                    filter_combined_list.append(['13. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
+                    filter_combined_list.append(['12. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
                 if marked_reinvestigation_time_period:
-                    filter_combined_list.append(['14. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
+                    filter_combined_list.append(['13. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
                 if gap_nc_marked_reinvestigation_nc_sent:
-                    filter_combined_list.append(['15. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
+                    filter_combined_list.append(['14. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
                 if gap_nc_sent_ps_received:
-                    filter_combined_list.append(['16. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
+                    filter_combined_list.append(['15. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
                 if gap_ps_received_mark_io:
-                    filter_combined_list.append(['17. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
+                    filter_combined_list.append(['16. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
-                    filter_combined_list.append(['18. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                    filter_combined_list.append(['17. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['18. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                if is_closed in [True, False]:
+                    filter_combined_list.append(['19. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+
 
     
                 fir_list = models.FIR.objects.all().filter(police_station__pk__exact=acc_models.CourtRecordKeeper.objects.get(user__pk__exact=request.user.pk).police_station.pk)
@@ -2403,19 +2404,19 @@ def filter_fir_nc_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
                                         continue
 
 
@@ -2553,7 +2554,7 @@ def filter_fir_ssp_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -2605,49 +2606,50 @@ def filter_fir_ssp_view(request, asc = 0):
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed in [True, False]:
-                    filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                
                 if sub_division:
-                    filter_combined_list.append(['2. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
+                    filter_combined_list.append(['1. Sub Division', loc_models.SubDivision.objects.get(pk__exact=int(sub_division))])
                 if police_station:
-                    filter_combined_list.append(['3. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
+                    filter_combined_list.append(['2. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
                 if fir_no:
-                    filter_combined_list.append(['4. FIR No.', fir_no])
+                    filter_combined_list.append(['3. FIR No.', fir_no])
                 if under_section:
-                    filter_combined_list.append(['5. Under Section', under_section])
+                    filter_combined_list.append(['4. Under Section', under_section])
                 if expiry_date:
-                    filter_combined_list.append(['6. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
+                    filter_combined_list.append(['5. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
                 if challan_filed_time_period:
-                    filter_combined_list.append(['7. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
+                    filter_combined_list.append(['6. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
                 if gap_ps_sent_vrk_received:
-                    filter_combined_list.append(['8. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
+                    filter_combined_list.append(['7. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
                 if vrk_before_approval_pendency:
-                    filter_combined_list.append(['9. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
+                    filter_combined_list.append(['8. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
                 if vrk_after_approval_pendency:
-                    filter_combined_list.append(['10. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
+                    filter_combined_list.append(['9. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
                 if gap_vrk_sent_ps_received:
-                    filter_combined_list.append(['11. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
+                    filter_combined_list.append(['10. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
                 if gap_ps_received_nc_sent:
-                    filter_combined_list.append(['12. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
+                    filter_combined_list.append(['11. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
                 if gap_ps_sent_nc_received:
-                    filter_combined_list.append(['13. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
+                    filter_combined_list.append(['12. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
                 if nc_approval_pendency:
-                    filter_combined_list.append(['14. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
+                    filter_combined_list.append(['13. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
                 if nc_approved_time_period:
-                    filter_combined_list.append(['15. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
+                    filter_combined_list.append(['14. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
                 if marked_reinvestigation_time_period:
-                    filter_combined_list.append(['16. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
+                    filter_combined_list.append(['15. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
                 if gap_nc_marked_reinvestigation_nc_sent:
-                    filter_combined_list.append(['17. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
+                    filter_combined_list.append(['16. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
                 if gap_nc_sent_ps_received:
-                    filter_combined_list.append(['18. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
+                    filter_combined_list.append(['17. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
                 if gap_ps_received_mark_io:
-                    filter_combined_list.append(['19. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
+                    filter_combined_list.append(['18. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
-                    filter_combined_list.append(['20. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                    filter_combined_list.append(['19. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['21. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
-
+                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                if is_closed in [True, False]:
+                    filter_combined_list.append(['21. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                
                 try:
                     fir_list = sorted(fir_list, 
                                     key = lambda fir: (
@@ -2804,19 +2806,19 @@ def filter_fir_ssp_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
                                         continue
 
 
@@ -2958,7 +2960,7 @@ def filter_fir_dsp_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
     FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('1-5', '1 day to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -3009,46 +3011,46 @@ def filter_fir_dsp_view(request, asc = 0):
                 fir_combined_list = []
 
                 filter_combined_list = []
-                if is_closed in [True, False]:
-                    filter_combined_list.append(['1. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 if police_station:
-                    filter_combined_list.append(['2. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
+                    filter_combined_list.append(['1. Police Station', loc_models.PoliceStation.objects.get(pk__exact=int(police_station))])
                 if fir_no:
-                    filter_combined_list.append(['3. FIR No.', fir_no])
+                    filter_combined_list.append(['2. FIR No.', fir_no])
                 if under_section:
-                    filter_combined_list.append(['4. Under Section', under_section])
+                    filter_combined_list.append(['3. Under Section', under_section])
                 if expiry_date:
-                    filter_combined_list.append(['5. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
+                    filter_combined_list.append(['4. Challan Period Completing In', [item[1] for item in EXPIRY_DATE_CHOICES if item[0] == expiry_date][0]])
                 if challan_filed_time_period:
-                    filter_combined_list.append(['6. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
+                    filter_combined_list.append(['5. Challan Filed by PS', [item[1] for item in CHALLAN_FILED_TIME_PERIOD_CHOICES if item[0] == challan_filed_time_period][0]])
                 if gap_ps_sent_vrk_received:
-                    filter_combined_list.append(['7. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
+                    filter_combined_list.append(['6. Gap between Sent-By-PS-Date and VRK-Received-Date', [item[1] for item in GAP_PS_SENT_VRK_RECEIVED_CHOICES if item[0] == gap_ps_sent_vrk_received][0]])
                 if vrk_before_approval_pendency:
-                    filter_combined_list.append(['8. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
+                    filter_combined_list.append(['7. Before Approval Pendency from SSP Office', [item[1] for item in VRK_BEFORE_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_before_approval_pendency][0]])
                 if vrk_after_approval_pendency:
-                    filter_combined_list.append(['9. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
+                    filter_combined_list.append(['8. After Approval Pendency from SSP Office', [item[1] for item in VRK_AFTER_APPROVAL_PENDENCY_CHOICES if item[0] == vrk_after_approval_pendency][0]])
                 if gap_vrk_sent_ps_received:
-                    filter_combined_list.append(['10. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
+                    filter_combined_list.append(['9. Gap between VRK-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_VRK_SENT_PS_RECEIVED_CHOICES if item[0] == gap_vrk_sent_ps_received][0]])
                 if gap_ps_received_nc_sent:
-                    filter_combined_list.append(['11. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
+                    filter_combined_list.append(['10. Gap between Received-from-VRK-Date and Put-in-Court-Date', [item[1] for item in GAP_PS_RECEIVED_NC_SENT_CHOICES if item[0] == gap_ps_received_nc_sent][0]])
                 if gap_ps_sent_nc_received:
-                    filter_combined_list.append(['12. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
+                    filter_combined_list.append(['11. Gap between Put-in-Court-Date and Received-By-NC-Date', [item[1] for item in GAP_PS_SENT_NC_RECEIVED_CHOICES if item[0] == gap_ps_sent_nc_received][0]])
                 if nc_approval_pendency:
-                    filter_combined_list.append(['13. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
+                    filter_combined_list.append(['12. Approval Pendency from Court', [item[1] for item in NC_APPROVAL_PENDENCY_CHOICES if item[0] == nc_approval_pendency][0]])
                 if nc_approved_time_period:
-                    filter_combined_list.append(['14. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
+                    filter_combined_list.append(['13. Approved by Court', [item[1] for item in NC_APPROVED_TIME_PERIOD_CHOICES if item[0] == nc_approved_time_period][0]])
                 if marked_reinvestigation_time_period:
-                    filter_combined_list.append(['15. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
+                    filter_combined_list.append(['14. Marked Reinvestigation by Court', [item[1] for item in MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES if item[0] == marked_reinvestigation_time_period][0]])
                 if gap_nc_marked_reinvestigation_nc_sent:
-                    filter_combined_list.append(['16. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
+                    filter_combined_list.append(['15. Gap between Marked-Reinvestigation-By-Court-Date and Sent-Back-to-PS-Date', [item[1] for item in GAP_NC_MARKED_REINVESTIGATION_NC_SENT_CHOICES if item[0] == gap_nc_marked_reinvestigation_nc_sent][0]])
                 if gap_nc_sent_ps_received:
-                    filter_combined_list.append(['17. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
+                    filter_combined_list.append(['16. Gap between NC-Sent-Back-Date and PS-Received-Date', [item[1] for item in GAP_NC_SENT_PS_RECEIVED_CHOICES if item[0] == gap_nc_sent_ps_received][0]])
                 if gap_ps_received_mark_io:
-                    filter_combined_list.append(['18. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
+                    filter_combined_list.append(['17. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
-                    filter_combined_list.append(['19. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                    filter_combined_list.append(['18. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                if is_closed in [True, False]:
+                    filter_combined_list.append(['20. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
     
                 fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
@@ -3206,19 +3208,19 @@ def filter_fir_dsp_view(request, asc = 0):
                         else:
                             if expiry_bounds[1] == 'inf':
                                 if fir_last_phase.phase_index == 1:
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
+                                    if datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_last_phase.limitation_period or 0):
                                         continue
                             else:
                                 if fir_last_phase.phase_index == 1:
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_last_phase.date_registered + timedelta(fir_last_phase.limitation_period or 0)):
                                         continue
                                 else:
                                     fir_prev_phase = models.FIRPhase.objects.get(fir__exact = fir_last_phase.fir, phase_index__exact = fir_last_phase.phase_index - 1)
-                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) <= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) >= fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
+                                    if (datetime.today().date() + timedelta(int(expiry_bounds[1])) < fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)) or (datetime.today().date() + timedelta(int(expiry_bounds[0])) > fir_prev_phase.appointed_io_date + timedelta(fir_prev_phase.limitation_period or 0)):
                                         continue
 
 
