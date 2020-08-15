@@ -208,3 +208,51 @@ def success(request, msg):
         break
 
     return redirect('success', msg='Population Successful') """
+
+
+""" def populate(request):
+    police_station_list =  loc_models.PoliceStation.objects.all()
+    fir_list = fir_beta_models.FIR.objects.all().filter(police_station__name = 'City NSR')
+
+    for ps in police_station_list:
+        if ps.name == 'City NSR':
+            continue
+        
+        for fir in fir_list:
+            fir_phase_list = fir.phases.all()
+
+            fir.police_station = ps
+            fir.sub_division = ps.sub_division
+            fir.pk = None
+            fir.save()
+
+            for fir_phase in fir_phase_list:
+                accused_name = random.choice(['Aman', 'Sahid', 'Kamlesh', 'Kirti', 'Lokesh', 'Suresh', 'Amrish', 'Palak', 'Kajal'])
+                temp = random.choice(['Arrested','Not Arrested', 'P.O.'])
+                accused_status = f'{accused_name} - {temp}'
+
+                fir_phase.fir = fir
+                fir_phase.under_section = random.randint(100,200)
+                fir_phase.io_name = random.choice(['Raj','Kabir','Anand','Manik'])
+                fir_phase.accused_name = accused_name
+                fir_phase.accused_status = accused_status
+                fir_phase.pk = None
+                fir_phase.save()
+
+    return redirect('success', msg='Population Successful') """
+
+ 
+""" def populate(request):
+    fir_list = fir_beta_models.FIR.objects.all()
+
+    for fir in fir_list:
+        if fir.police_station.name == 'City NSR':
+            continue
+
+        else:
+            x = random.randint(100,200)
+            if x > 150:
+                fir.delete()
+
+    return redirect('success', msg='Population Successful') """
+
