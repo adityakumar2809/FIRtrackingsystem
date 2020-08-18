@@ -1186,7 +1186,7 @@
                     alert('FIR saved successfully!');
                 } else if (data == 19) {
                     alert('FIR saved successfully!');
-                    window.location.href = '/firBeta/ps';
+                    // window.location.href = '/firBeta/ps';
                 } else if (data == 1) {
                     window.location.href = '/fault/Missing%20parameters%20for%registration';
                 } else if (data == 2) {
@@ -1225,7 +1225,8 @@
                     alert('ERROR:\nFuture Dates are not permitted')
                 }
 
-                if (data == 0){
+                // Check if new phase can be added (0 for all data saved and 19 for all data saved along with change in limitation period)
+                if (data == 0 || data == 19) {
                     $.ajax({
                         type: 'GET',
                         url: '/firBeta/ajax/all_fields_filled/',
@@ -1241,6 +1242,11 @@
                             }
                         }
                     })
+                }
+
+                // If the previous condition does not match and the value is 19, means the page has to be reloaded as limitation period is changed
+                if (data != 0 && data == 19) {
+                    window.location.href = '/firBeta/ps';
                 }
 
                 $(`#save_${fir_phase_id}`).text("SAVE");

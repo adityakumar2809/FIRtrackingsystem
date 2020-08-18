@@ -589,7 +589,10 @@ def edit_fir_save_ps_ajax_view(request):
                     fir_phase.accused_name = accused_name.title()
                     fir_phase.accused_status = accused_status.title()
                     fir_phase.current_status = current_status
-                    fir_phase.limitation_period = limitation_period
+                    try:
+                        fir_phase.limitation_period = int(limitation_period)
+                    except:
+                        pass
                     if current_status_date:
                         fir_phase.current_status_date = datetime.strptime(
                                 current_status_date, '%d/%m/%y').strftime('%Y-%m-%d')
