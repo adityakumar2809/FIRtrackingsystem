@@ -260,8 +260,16 @@
                     <br>
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
+                            {{form.fir_registered_time_period|add_class:"filter-form-input-field filter-form-input-field-fir-registered-time-period"}}
+                            <label><strong>19. </strong>FIR Registered</label>
+                            <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-registered-time-period">Clear</a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
                             {{form.fir_closed_time_period|add_class:"filter-form-input-field filter-form-input-field-fir-closed-time-period"}}
-                            <label><strong>19. </strong>FIR Closed</label>
+                            <label><strong>20. </strong>FIR Closed</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-fir-closed-time-period">Clear</a>
                         </div>
                     </div>
@@ -269,7 +277,7 @@
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
                             {{form.is_closed|add_class:"filter-form-input-field filter-form-input-field-is-closed"}}
-                            <label><strong>20. </strong>Is Closed</label>
+                            <label><strong>21. </strong>Is Closed</label>
                             <a href="#!" class="btn clear-btn" id="filter-form-clear-btn-is-closed">Clear</a>
                         </div>
                     </div>

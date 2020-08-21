@@ -75,6 +75,7 @@ class FIRFilterPSForm(forms.Form):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
     
@@ -96,6 +97,7 @@ class FIRFilterPSForm(forms.Form):
     marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
     challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
     fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
+    fir_registered_time_period = forms.ChoiceField(required=False, choices=FIR_REGISTERED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -135,6 +137,7 @@ class FIRFilterVRKForm(forms.Form):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -163,6 +166,7 @@ class FIRFilterVRKForm(forms.Form):
     marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
     challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
     fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
+    fir_registered_time_period = forms.ChoiceField(required=False, choices=FIR_REGISTERED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -187,6 +191,7 @@ class FIRFilterNCForm(forms.Form):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
 
     fir_no = forms.CharField(required=False)
     under_section = forms.CharField(required=False)
@@ -209,6 +214,7 @@ class FIRFilterNCForm(forms.Form):
     marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
     challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
     fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
+    fir_registered_time_period = forms.ChoiceField(required=False, choices=FIR_REGISTERED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -248,6 +254,7 @@ class FIRFilterSSPForm(forms.Form):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
 
     sub_division = forms.ChoiceField(required=False, choices=SUB_DIVISION_CHOICES)
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -276,6 +283,7 @@ class FIRFilterSSPForm(forms.Form):
     marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
     challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
     fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
+    fir_registered_time_period = forms.ChoiceField(required=False, choices=FIR_REGISTERED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
@@ -302,6 +310,7 @@ class FIRFilterDSPForm(forms.Form):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
 
 
     police_station = forms.ChoiceField(required=False, choices=POLICE_STATION_CHOICES)
@@ -327,6 +336,7 @@ class FIRFilterDSPForm(forms.Form):
     marked_reinvestigation_time_period = forms.ChoiceField(required=False, choices=MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES)
     challan_filed_time_period = forms.ChoiceField(required=False, choices=CHALLAN_FILED_TIME_PERIOD_CHOICES)
     fir_closed_time_period = forms.ChoiceField(required=False, choices=FIR_CLOSED_TIME_PERIOD_CHOICES)
+    fir_registered_time_period = forms.ChoiceField(required=False, choices=FIR_REGISTERED_TIME_PERIOD_CHOICES)
 
     is_closed = forms.ChoiceField(required=False, choices=FIR_CLOSED_CHOICES)
 
