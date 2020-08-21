@@ -1334,6 +1334,7 @@ def filter_fir_ps_view(request, asc = 0):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
 
 
 
@@ -1363,6 +1364,7 @@ def filter_fir_ps_view(request, asc = 0):
                 marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                fir_registered_time_period = form.cleaned_data['fir_registered_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
                     is_closed = True
@@ -1429,10 +1431,12 @@ def filter_fir_ps_view(request, asc = 0):
                     filter_combined_list.append(['16. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
                     filter_combined_list.append(['17. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                if fir_registered_time_period:
+                    filter_combined_list.append(['18. FIR Registered', [item[1] for item in FIR_REGISTERED_TIME_PERIOD_CHOICES if item[0] == fir_registered_time_period][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['18. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
                 if is_closed in [True, False]:
-                    filter_combined_list.append(['19. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                    filter_combined_list.append(['20. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
 
     
@@ -1699,6 +1703,15 @@ def filter_fir_ps_view(request, asc = 0):
                             elif fir_last_phase.nc_status == 'Approved':
                                 if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                     continue
+                    
+                    if fir_registered_time_period:
+                        time_period_bounds = fir_registered_time_period.split('-')
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(time_period_bounds[1]):
+                                continue
 
 
 
@@ -1723,6 +1736,7 @@ def filter_fir_ps_view(request, asc = 0):
                                 'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
                                 'challan_filed_time_period': challan_filed_time_period,
                                 'fir_closed_time_period': fir_closed_time_period,
+                                'fir_registered_time_period': fir_registered_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
@@ -1757,6 +1771,7 @@ def filter_fir_vrk_view(request, asc = 0):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
 
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
@@ -1784,6 +1799,7 @@ def filter_fir_vrk_view(request, asc = 0):
                 marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                fir_registered_time_period = form.cleaned_data['fir_registered_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
                     is_closed = True
@@ -1835,10 +1851,12 @@ def filter_fir_vrk_view(request, asc = 0):
                     filter_combined_list.append(['18. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
                     filter_combined_list.append(['19. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                if fir_registered_time_period:
+                    filter_combined_list.append(['20. FIR Registered', [item[1] for item in FIR_REGISTERED_TIME_PERIOD_CHOICES if item[0] == fir_registered_time_period][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['21. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
                 if is_closed in [True, False]:
-                    filter_combined_list.append(['21. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                    filter_combined_list.append(['22. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
                 try:
                     fir_list = sorted(fir_list, 
@@ -2110,6 +2128,15 @@ def filter_fir_vrk_view(request, asc = 0):
                                 if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                     continue
 
+                    if fir_registered_time_period:
+                        time_period_bounds = fir_registered_time_period.split('-')
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(time_period_bounds[1]):
+                                continue
+
 
                     fir_combined_list.append([fir, fir_phase_list])
                     
@@ -2135,6 +2162,7 @@ def filter_fir_vrk_view(request, asc = 0):
                                 'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
                                 'challan_filed_time_period': challan_filed_time_period,
                                 'fir_closed_time_period': fir_closed_time_period,
+                                'fir_registered_time_period': fir_registered_time_period,
                                 'is_closed': is_closed,
                                 }
 
@@ -2170,6 +2198,7 @@ def filter_fir_nc_view(request, asc = 0):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
 
     nc_record_keepers = [u['user']
                           for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
@@ -2197,6 +2226,7 @@ def filter_fir_nc_view(request, asc = 0):
                 marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                fir_registered_time_period = form.cleaned_data['fir_registered_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
                     is_closed = True
@@ -2241,10 +2271,12 @@ def filter_fir_nc_view(request, asc = 0):
                     filter_combined_list.append(['16. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
                     filter_combined_list.append(['17. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                if fir_registered_time_period:
+                    filter_combined_list.append(['18. FIR Registered', [item[1] for item in FIR_REGISTERED_TIME_PERIOD_CHOICES if item[0] == fir_registered_time_period][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['18. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
                 if is_closed in [True, False]:
-                    filter_combined_list.append(['19. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                    filter_combined_list.append(['20. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
 
     
@@ -2516,6 +2548,15 @@ def filter_fir_nc_view(request, asc = 0):
                                 if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                     continue
 
+                    if fir_registered_time_period:
+                        time_period_bounds = fir_registered_time_period.split('-')
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(time_period_bounds[1]):
+                                continue
+
 
                     fir_combined_list.append([fir, fir_phase_list])
 
@@ -2538,6 +2579,7 @@ def filter_fir_nc_view(request, asc = 0):
                                 'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
                                 'challan_filed_time_period': challan_filed_time_period,
                                 'fir_closed_time_period': fir_closed_time_period,
+                                'fir_registered_time_period': fir_registered_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
@@ -2572,6 +2614,7 @@ def filter_fir_ssp_view(request, asc = 0):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
 
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
@@ -2599,6 +2642,7 @@ def filter_fir_ssp_view(request, asc = 0):
                 marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                fir_registered_time_period = form.cleaned_data['fir_registered_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
                     is_closed = True
@@ -2648,10 +2692,12 @@ def filter_fir_ssp_view(request, asc = 0):
                     filter_combined_list.append(['18. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
                     filter_combined_list.append(['19. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                if fir_registered_time_period:
+                    filter_combined_list.append(['20. FIR Registered', [item[1] for item in FIR_REGISTERED_TIME_PERIOD_CHOICES if item[0] == fir_registered_time_period][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['21. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
                 if is_closed in [True, False]:
-                    filter_combined_list.append(['21. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                    filter_combined_list.append(['22. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
                 
                 try:
                     fir_list = sorted(fir_list, 
@@ -2918,6 +2964,15 @@ def filter_fir_ssp_view(request, asc = 0):
                                 if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                     continue
 
+                    if fir_registered_time_period:
+                        time_period_bounds = fir_registered_time_period.split('-')
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(time_period_bounds[1]):
+                                continue
+
 
                     fir_combined_list.append([fir, fir_phase_list])
                     
@@ -2943,6 +2998,7 @@ def filter_fir_ssp_view(request, asc = 0):
                                 'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
                                 'challan_filed_time_period': challan_filed_time_period,
                                 'fir_closed_time_period': fir_closed_time_period,
+                                'fir_registered_time_period': fir_registered_time_period,
                                 'is_closed': is_closed,
                                 }
 
@@ -2978,6 +3034,7 @@ def filter_fir_dsp_view(request, asc = 0):
     MARKED_REINVESTIGATION_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     CHALLAN_FILED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')]
     FIR_CLOSED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
+    FIR_REGISTERED_TIME_PERIOD_CHOICES = [(None, '---Select---'), ('0-7','Within last 7 days'), ('0-15','Within last 15 days'), ('0-30','Within last 1 month'), ('0-60','Within last 2 months'), ('0-90','Within last 3 months'), ('0-180','Within last 6 months'), ('0-365','Within last 1 year'), ('0-730', 'Within last 2 years'), ('0-1825','Within last 5 years')] 
 
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
@@ -3004,6 +3061,7 @@ def filter_fir_dsp_view(request, asc = 0):
                 marked_reinvestigation_time_period = form.cleaned_data['marked_reinvestigation_time_period']
                 challan_filed_time_period = form.cleaned_data['challan_filed_time_period']
                 fir_closed_time_period = form.cleaned_data['fir_closed_time_period']
+                fir_registered_time_period = form.cleaned_data['fir_registered_time_period']
                 is_closed = form.cleaned_data['is_closed']
                 if is_closed == 'True':
                     is_closed = True
@@ -3050,10 +3108,12 @@ def filter_fir_dsp_view(request, asc = 0):
                     filter_combined_list.append(['17. Gap between PS-Recieved-Date and PS-Marked-to-IO-Date', [item[1] for item in GAP_PS_RECEIVED_MARK_IO_CHOICES if item[0] == gap_ps_received_mark_io][0]])
                 if fir_pendency:
                     filter_combined_list.append(['18. FIR Pendency', [item[1] for item in FIR_PENDENCY_CHOICES if item[0] == fir_pendency][0]])
+                if fir_registered_time_period:
+                    filter_combined_list.append(['19. FIR Registered', [item[1] for item in FIR_REGISTERED_TIME_PERIOD_CHOICES if item[0] == fir_registered_time_period][0]])
                 if fir_closed_time_period:
-                    filter_combined_list.append(['19. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
+                    filter_combined_list.append(['20. FIR Closed', [item[1] for item in FIR_CLOSED_TIME_PERIOD_CHOICES if item[0] == fir_closed_time_period][0]])
                 if is_closed in [True, False]:
-                    filter_combined_list.append(['20. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
+                    filter_combined_list.append(['21. Is Closed', [item[1] for item in FIR_CLOSED_CHOICES if item[0] == is_closed][0]])
 
     
                 fir_list = models.FIR.objects.all().filter(sub_division__pk__exact=acc_models.DSPRecordKeeper.objects.get(user__pk__exact=request.user.pk).sub_division.pk)
@@ -3320,6 +3380,15 @@ def filter_fir_dsp_view(request, asc = 0):
                                 if (datetime.today().date() - fir_last_phase.nc_status_date).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.nc_status_date).days > int(time_period_bounds[1]):
                                     continue
 
+                    if fir_registered_time_period:
+                        time_period_bounds = fir_registered_time_period.split('-')
+                        if time_period_bounds[1] == 'inf':
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]):
+                                continue
+                        else:
+                            if (datetime.today().date() - fir_last_phase.date_registered).days < int(time_period_bounds[0]) or (datetime.today().date() - fir_last_phase.date_registered).days > int(time_period_bounds[1]):
+                                continue
+
 
                     fir_combined_list.append([fir, fir_phase_list])
 
@@ -3343,6 +3412,7 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'marked_reinvestigation_time_period': marked_reinvestigation_time_period,
                                 'challan_filed_time_period': challan_filed_time_period,
                                 'fir_closed_time_period': fir_closed_time_period,
+                                'fir_registered_time_period': fir_registered_time_period,
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
