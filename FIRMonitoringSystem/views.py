@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+from django.http import JsonResponse
+
 from location import models as loc_models
 from account import models as acc_models
 from fir import models as fir_models
@@ -7,9 +9,7 @@ from firBeta import models as fir_beta_models
 
 import random, datetime
 
-
-def home(request):
-
+def send_mails_for_the_day(request):
     last_mail_dates = fir_beta_models.LastMailDate.objects.all()
     flag = 0
 
@@ -50,9 +50,15 @@ def home(request):
 
         for last_mail_date in last_mail_dates:
             last_mail_date.delete()
-            
+
         fir_beta_models.LastMailDate.objects.create()
-    
+        
+        return JsonResponse({"Status":"Returned when flag was 0", "Date": datetime.datetime.now()})
+
+    return JsonResponse({"Status":"Returned when flag was 1", "Date": datetime.datetime.now()})
+
+
+def home(request):
     if request.user.is_authenticated:
         police_station_record_keepers = [u['user'] for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
         court_record_keepers = [u['user'] for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
