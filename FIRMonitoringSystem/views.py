@@ -262,3 +262,9 @@ def success(request, msg):
 
     return redirect('success', msg='Population Successful') """
 
+
+""" def delete(request):
+    firs = fir_beta_models.FIR.objects.all()
+    for fir in firs:
+        fir.delete()
+    return redirect('success', msg='Deletion Successful') """
