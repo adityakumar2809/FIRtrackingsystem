@@ -27,6 +27,7 @@ urlpatterns = [
     path('send_mails_for_the_day/', views.send_mails_for_the_day, name='send_mails_for_the_day'),
     # path('populate/', views.populate, name='populate'),
     # path('delete/', views.delete, name='delete'),
+    # path('change_passwords/', views.change_passwords, name='change_passwords'),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
 ]

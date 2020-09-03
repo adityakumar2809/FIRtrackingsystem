@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 from location import models as loc_models
 from account import models as acc_models
@@ -268,3 +269,18 @@ def success(request, msg):
     for fir in firs:
         fir.delete()
     return redirect('success', msg='Deletion Successful') """
+
+
+""" def change_passwords(request):
+    users = User.objects.all()
+
+    for user in users:
+        if user.username in ['auth_developer', 'test']:
+            continue
+
+        pwd = f'{user.username}-{random.randint(101,999)}'
+        print(user.username, pwd)
+        user.set_password(pwd)
+        user.save()
+
+    return redirect('success', msg='Password Modification Successful') """
