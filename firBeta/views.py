@@ -500,7 +500,7 @@ def list_edit_fir_ps_view(request, asc = 0):
 
         fir_combined_list = []
 
-        for fir in paginated_fir_list:
+        for fir in fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
 
