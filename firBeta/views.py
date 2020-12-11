@@ -1354,8 +1354,9 @@ def filter_fir_ps_view(request, asc = 0):
     ps_record_keepers = [u['user']
                           for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
     if request.user.pk in ps_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterPSForm(data = request.POST)
+        # if request.method == 'POST':
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterPSForm(data = request.GET)
             if form.is_valid():
                 police_station = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk).police_station
@@ -1727,8 +1728,19 @@ def filter_fir_ps_view(request, asc = 0):
                                 continue
 
 
-
                     fir_combined_list.append([fir, fir_phase_list])
+                    
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+                    
 
                 initial_data = {
                                 'fir_no': fir_no,
@@ -1753,7 +1765,7 @@ def filter_fir_ps_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1789,8 +1801,8 @@ def filter_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterVRKForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterVRKForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -2152,6 +2164,17 @@ def filter_fir_vrk_view(request, asc = 0):
 
 
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
                     
                 
                 initial_data = {
@@ -2180,7 +2203,7 @@ def filter_fir_vrk_view(request, asc = 0):
                                 }
 
                 form = forms.FIRFilterVRKForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_vrk.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_vrk.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -2216,8 +2239,8 @@ def filter_fir_nc_view(request, asc = 0):
     nc_record_keepers = [u['user']
                           for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
     if request.user.pk in nc_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterNCForm(data = request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterNCForm(data = request.GET)
             if form.is_valid():
                 police_station = acc_models.CourtRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk).police_station
@@ -2573,6 +2596,18 @@ def filter_fir_nc_view(request, asc = 0):
 
                     fir_combined_list.append([fir, fir_phase_list])
 
+                
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 initial_data = {
                                 'fir_no': fir_no,
                                 'under_section': under_section,
@@ -2596,7 +2631,7 @@ def filter_fir_nc_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -2632,8 +2667,8 @@ def filter_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterSSPForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterSSPForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -2988,6 +3023,17 @@ def filter_fir_ssp_view(request, asc = 0):
 
 
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
                     
                 
                 initial_data = {
@@ -3016,7 +3062,7 @@ def filter_fir_ssp_view(request, asc = 0):
                                 }
 
                 form = forms.FIRFilterSSPForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -3052,8 +3098,8 @@ def filter_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterDSPForm(data = request.POST, user = request.user)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterDSPForm(data = request.GET, user = request.user)
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
@@ -3405,6 +3451,17 @@ def filter_fir_dsp_view(request, asc = 0):
 
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 initial_data = {
                                 'police_station': police_station,
                                 'fir_no': fir_no,
@@ -3429,7 +3486,7 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
-                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
