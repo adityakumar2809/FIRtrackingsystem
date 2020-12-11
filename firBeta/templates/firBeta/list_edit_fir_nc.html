@@ -451,7 +451,7 @@
                             {% for fir_set in fir_list %}
                                 {% for fir_phase in fir_set.1 %}
                                     <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
-                                        <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
+                                        <td><strong>{{ forloop.parentloop.counter0|add:pagination_object.start_index }}.{{ forloop.counter }}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
                                         <td>{{ fir_phase.under_section }}</td>
@@ -707,7 +707,7 @@
                             {% for fir_set in fir_list reversed %}
                                 {% for fir_phase in fir_set.1 %}
                                     <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_{{fir_set.0.pk}} fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
-                                        <td><strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong></td>
+                                        <td><strong>{{ forloop.parentloop.counter0|add:pagination_object.start_index }}.{{ forloop.counter }}</strong></td>
                                         <td>{{ fir_set.0.sub_division }}<br>({{ fir_set.0.police_station }})</td>
                                         <td><strong>{{ fir_set.0.fir_no }}</strong><br>{{ fir_phase.date_registered|date:'d/m/y' }}</td>
                                         <td>{{ fir_phase.under_section }}</td>
@@ -931,6 +931,29 @@
                 {% endif %}
             </table>
         </div>
+        <!-- PAGINATION CODE BEGINS -->
+        {% if pagination_object.has_other_pages %}
+            <ul class="pagination">
+                {% if pagination_object.has_previous %}
+                    <li><a href="?page={{ pagination_object.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in pagination_object.paginator.page_range %}
+                    {% if pagination_object.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if pagination_object.has_next %}
+                    <li><a href="?page={{ pagination_object.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        <!-- PAGINATION CODE ENDS -->
     </div>
 </div>
 {% endblock content %}

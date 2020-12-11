@@ -826,7 +826,18 @@ def list_edit_fir_nc_view(request, asc = 0):
             if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list, 'asc':asc})
+
+        # PAGINATION CODE STARTS
+        requested_page = request.GET.get('page', 1)
+        paginator_object = paginator.Paginator(fir_combined_list, 20)
+        try:
+            paginated_fir_combined_list = paginator_object.page(requested_page)
+        except paginator.PageNotAnInteger:
+            paginated_fir_combined_list = paginator_object.page(1)
+        except paginator.EmptyPage:
+            paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+        # PAGINATION CODE ENDS
+        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': paginated_fir_combined_list, 'asc':asc, 'pagination_object':paginated_fir_combined_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
