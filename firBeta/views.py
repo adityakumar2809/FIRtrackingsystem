@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.core import paginator
 
 from datetime import datetime, timedelta
 
@@ -469,11 +470,23 @@ def list_edit_fir_ps_view(request, asc = 0):
         except:
             pass
 
+        # PAGINATION CODE STARTS
+        requested_page = request.GET.get('page', 1)
+        paginator_object = paginator.Paginator(fir_list, 20)
+        try:
+            paginated_fir_list = paginator_object.page(requested_page)
+        except paginator.PageNotAnInteger:
+            paginated_fir_list = paginator_object.page(1)
+        except paginator.EmptyPage:
+            paginated_fir_list = paginator_object.page(paginator_object.num_pages)
+        # PAGINATION CODE ENDS
+
         fir_combined_list = []
-        for fir in fir_list:
+
+        for fir in paginated_fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list, 'asc': asc})
+        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list, 'asc': asc, 'pagination_object': paginated_fir_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
