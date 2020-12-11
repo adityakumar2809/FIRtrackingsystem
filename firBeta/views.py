@@ -268,8 +268,8 @@ def list_edit_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
-        if request.method == 'POST':
-            form = forms.ChooseLocationForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.ChooseLocationForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -306,12 +306,25 @@ def list_edit_fir_vrk_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': paginated_fir_combined_list,
                                                                           'form': form,
                                                                           'asc': asc,
                                                                           'selected_sub_division': sub_division,
                                                                           'selected_police_station': police_station,
+                                                                          'pagination_object' : paginated_fir_combined_list
                                                                         })
             else:
                 return redirect('fault', fault='Invalid Parameters!')
@@ -349,12 +362,27 @@ def list_edit_fir_vrk_view(request, asc = 0):
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+            else:
+                paginated_fir_combined_list = None
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': paginated_fir_combined_list,
                                                                       'form': form,
                                                                       'asc': asc,
                                                                       'selected_sub_division': sub_division,
                                                                       'selected_police_station': police_station,
+                                                                      'pagination_object' : paginated_fir_combined_list
                                                                   })
     else:
         return redirect('fault', fault='ACCESS DENIED!')
