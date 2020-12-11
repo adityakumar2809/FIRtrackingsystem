@@ -1181,8 +1181,8 @@ def list_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
-        if request.method == 'POST':
-            form = forms.ChoosePoliceStationForm(data = request.POST, user = request.user)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.ChoosePoliceStationForm(data = request.GET, user = request.user)
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 fir_combined_list = []
@@ -1208,8 +1208,20 @@ def list_fir_dsp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
-                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
+                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'form': form, 'asc':asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1244,8 +1256,19 @@ def list_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
             form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
-            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
+            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'form': form, 'asc':asc, 'pagination_object' : paginated_fir_combined_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
