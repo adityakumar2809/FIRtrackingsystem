@@ -395,7 +395,8 @@
                     </tr>
                 </thead>
 
-                {% if asc == 0 %}
+                <!-- CONDITIONAL RENDER IS NOW NOT REQUIRED HENCE ELSE BLOCK FOR THE FOLLOWING CONDITION WILL NEVER WORK -->
+                {% if asc == 0 or asc == 1 %}
                     <tbody class="data-table-body content-descending">
                         <tr class="blank-row">
                             <td>//////////</td>

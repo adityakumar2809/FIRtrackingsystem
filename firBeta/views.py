@@ -306,6 +306,11 @@ def list_edit_fir_vrk_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
+                
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
 
                 # PAGINATION CODE STARTS
                 requested_page = request.GET.get('page', 1)
@@ -503,6 +508,11 @@ def list_edit_fir_ps_view(request, asc = 0):
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
+
+        # TOGGLE CODE STARTS
+        if asc == 1:
+            fir_combined_list = fir_combined_list[::-1]
+        # TOGGLE CODE ENDS
 
         # PAGINATION CODE STARTS
         requested_page = request.GET.get('page', 1)
@@ -854,6 +864,11 @@ def list_edit_fir_nc_view(request, asc = 0):
             if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
+
+        # TOGGLE CODE STARTS
+        if asc == 1:
+            fir_combined_list = fir_combined_list[::-1]
+        # TOGGLE CODE ENDS
 
         # PAGINATION CODE STARTS
         requested_page = request.GET.get('page', 1)
@@ -1237,6 +1252,11 @@ def list_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+
                 # PAGINATION CODE STARTS
                 requested_page = request.GET.get('page', 1)
                 paginator_object = paginator.Paginator(fir_combined_list, 20)
@@ -1283,6 +1303,11 @@ def list_fir_dsp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
 
                 # PAGINATION CODE STARTS
                 requested_page = request.GET.get('page', 1)
@@ -1341,6 +1366,11 @@ def list_fir_ssp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
                 
                 # PAGINATION CODE STARTS
                 requested_page = request.GET.get('page', 1)
@@ -1392,6 +1422,11 @@ def list_fir_ssp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
                 
                 # PAGINATION CODE STARTS
                 requested_page = request.GET.get('page', 1)
