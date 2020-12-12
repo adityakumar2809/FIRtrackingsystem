@@ -1,0 +1,53 @@
+{% load templatetag_beta %}
+<center>
+    {% if pagination_object.has_other_pages %}
+        <ul class="pagination">
+            {% if pagination_object.has_previous %}
+                <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+                <li class="disabled"><i class="material-icons">chevron_left</i></li>
+            {% endif %}
+
+            {% with lower_bound=pagination_object.paginator.num_pages|get_pagination_lower_bound:pagination_object.number upper_bound=pagination_object.paginator.num_pages|get_pagination_upper_bound:pagination_object.number %}
+                {% if lower_bound > 1 %}
+                    <li><i class="material-icons">more_horiz</i></li>
+                {% endif %}
+                {% for i in pagination_object.paginator.num_pages|get_pagination_range:pagination_object.number %}
+                    {% if pagination_object.number == i %}
+                        <li class="active teal"><a href="javascript:void(0)">{{ i }}</a></li>
+                    {% else %}
+                        <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if upper_bound < pagination_object.paginator.num_pages %}
+                    <li><i class="material-icons">more_horiz</i></li>
+                {% endif %}
+            {% endwith %}
+
+            {% if pagination_object.has_next %}
+                <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+                <li class="disabled"><i class="material-icons">chevron_right</i></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</center>
+
+<script>
+    function updateQueryStringParameter(uri, key, value) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    $('a.page-link').click(function() {
+        var page_number = $(this).attr('data-page-number');
+        updated_query_string_parameter = updateQueryStringParameter(window.location.href, "page", page_number)
+        window.location.href = updated_query_string_parameter;
+    })
+</script>

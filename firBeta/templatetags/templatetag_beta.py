@@ -156,3 +156,62 @@ def get_pendency_status(pk, stage):
     
     return False
 
+
+@register.filter
+def subtract(arg1, arg2):
+    return (arg1 - arg2)
+
+
+@register.filter
+def get_pagination_range(num_pages, current_page):
+    if num_pages <= 9:
+        lower_bound = 1
+        upper_bound = num_pages
+    else:
+        lower_bound = current_page - 4
+        upper_bound = current_page + 4
+
+        if lower_bound <= 0:
+            upper_bound = current_page + 4 + (-1 * lower_bound) + 1
+            lower_bound = 1
+        if upper_bound > num_pages:
+            lower_bound = lower_bound - (upper_bound - num_pages)
+            upper_bound = num_pages
+
+    return range(lower_bound, upper_bound + 1)
+
+@register.filter
+def get_pagination_lower_bound(num_pages, current_page):
+    if num_pages <= 9:
+        lower_bound = 1
+        upper_bound = num_pages
+    else:
+        lower_bound = current_page - 4
+        upper_bound = current_page + 4
+
+        if lower_bound <= 0:
+            upper_bound = current_page + 4 + (-1 * lower_bound) + 1
+            lower_bound = 1
+        if upper_bound > num_pages:
+            lower_bound = lower_bound - (upper_bound - num_pages)
+            upper_bound = num_pages
+
+    return lower_bound
+
+@register.filter
+def get_pagination_upper_bound(num_pages, current_page):
+    if num_pages <= 9:
+        lower_bound = 1
+        upper_bound = num_pages
+    else:
+        lower_bound = current_page - 4
+        upper_bound = current_page + 4
+
+        if lower_bound <= 0:
+            upper_bound = current_page + 4 + (-1 * lower_bound) + 1
+            lower_bound = 1
+        if upper_bound > num_pages:
+            lower_bound = lower_bound - (upper_bound - num_pages)
+            upper_bound = num_pages
+
+    return upper_bound
