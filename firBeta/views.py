@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.core import paginator
 
 from datetime import datetime, timedelta
 
@@ -267,8 +268,8 @@ def list_edit_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
-        if request.method == 'POST':
-            form = forms.ChooseLocationForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.ChooseLocationForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -305,12 +306,30 @@ def list_edit_fir_vrk_view(request, asc = 0):
                     if fir_phase_list[len(fir_phase_list)-1].vrk_sent_back_date:
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
+                
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+                return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': paginated_fir_combined_list,
                                                                           'form': form,
                                                                           'asc': asc,
                                                                           'selected_sub_division': sub_division,
                                                                           'selected_police_station': police_station,
+                                                                          'pagination_object' : paginated_fir_combined_list
                                                                         })
             else:
                 return redirect('fault', fault='Invalid Parameters!')
@@ -348,12 +367,27 @@ def list_edit_fir_vrk_view(request, asc = 0):
                         continue
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+            else:
+                paginated_fir_combined_list = None
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': fir_combined_list,
+            return render(request, 'firBeta/list_edit_fir_vrk.html', {'fir_list': paginated_fir_combined_list,
                                                                       'form': form,
                                                                       'asc': asc,
                                                                       'selected_sub_division': sub_division,
                                                                       'selected_police_station': police_station,
+                                                                      'pagination_object' : paginated_fir_combined_list
                                                                   })
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -470,10 +504,27 @@ def list_edit_fir_ps_view(request, asc = 0):
             pass
 
         fir_combined_list = []
+
         for fir in fir_list:
             fir_phase_list = fir.phases.all()
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': fir_combined_list, 'asc': asc})
+
+        # TOGGLE CODE STARTS
+        if asc == 1:
+            fir_combined_list = fir_combined_list[::-1]
+        # TOGGLE CODE ENDS
+
+        # PAGINATION CODE STARTS
+        requested_page = request.GET.get('page', 1)
+        paginator_object = paginator.Paginator(fir_combined_list, 20)
+        try:
+            paginated_fir_combined_list = paginator_object.page(requested_page)
+        except paginator.PageNotAnInteger:
+            paginated_fir_combined_list = paginator_object.page(1)
+        except paginator.EmptyPage:
+            paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+        # PAGINATION CODE ENDS
+        return render(request, 'firBeta/list_edit_fir_ps.html', {'fir_list': paginated_fir_combined_list, 'asc': asc, 'pagination_object': paginated_fir_combined_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -813,7 +864,23 @@ def list_edit_fir_nc_view(request, asc = 0):
             if fir_phase_list[len(fir_phase_list)-1].nc_sent_back_date:
                 continue
             fir_combined_list.append([fir, fir_phase_list])
-        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': fir_combined_list, 'asc':asc})
+
+        # TOGGLE CODE STARTS
+        if asc == 1:
+            fir_combined_list = fir_combined_list[::-1]
+        # TOGGLE CODE ENDS
+
+        # PAGINATION CODE STARTS
+        requested_page = request.GET.get('page', 1)
+        paginator_object = paginator.Paginator(fir_combined_list, 20)
+        try:
+            paginated_fir_combined_list = paginator_object.page(requested_page)
+        except paginator.PageNotAnInteger:
+            paginated_fir_combined_list = paginator_object.page(1)
+        except paginator.EmptyPage:
+            paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+        # PAGINATION CODE ENDS
+        return render(request, 'firBeta/list_edit_fir_nc.html', {'fir_list': paginated_fir_combined_list, 'asc':asc, 'pagination_object':paginated_fir_combined_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -1157,8 +1224,8 @@ def list_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
-        if request.method == 'POST':
-            form = forms.ChoosePoliceStationForm(data = request.POST, user = request.user)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.ChoosePoliceStationForm(data = request.GET, user = request.user)
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 fir_combined_list = []
@@ -1184,8 +1251,25 @@ def list_fir_dsp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
-                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
+                return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'form': form, 'asc':asc, 'pagination_object' : paginated_fir_combined_list})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1220,8 +1304,26 @@ def list_fir_dsp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+            else:
+                paginated_fir_combined_list = None
+
             form = forms.ChoosePoliceStationForm(user = request.user, initial = {'police_station': police_station})
-            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': fir_combined_list, 'form': form, 'asc':asc})
+            return render(request, 'firBeta/list_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'form': form, 'asc':asc, 'pagination_object' : paginated_fir_combined_list})
     else:
         return redirect('fault', fault='ACCESS DENIED!')
 
@@ -1231,8 +1333,8 @@ def list_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
-        if request.method == 'POST':
-            form = forms.ChooseLocationForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.ChooseLocationForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -1264,12 +1366,30 @@ def list_fir_ssp_view(request, asc = 0):
                 for fir in fir_list:
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+                
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
                 form = forms.ChooseLocationForm()
-                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 
+                return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': paginated_fir_combined_list, 
                                                                      'form': form, 
                                                                      'asc': asc, 
                                                                      'selected_sub_division': sub_division,
                                                                      'selected_police_station': police_station,
+                                                                     'pagination_object':paginated_fir_combined_list
                                                                     })
             else:
                 return redirect('fault', fault='Invalid Parameters!')
@@ -1303,12 +1423,31 @@ def list_fir_ssp_view(request, asc = 0):
                     fir_phase_list = fir.phases.all()
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # TOGGLE CODE STARTS
+                if asc == 1:
+                    fir_combined_list = fir_combined_list[::-1]
+                # TOGGLE CODE ENDS
+                
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+            else:
+                paginated_fir_combined_list = None
+
             form = forms.ChooseLocationForm()
-            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': fir_combined_list, 
+            return render(request, 'firBeta/list_fir_ssp.html', {'fir_list': paginated_fir_combined_list, 
                                                                  'form': form,
                                                                  'asc':asc,
                                                                  'selected_sub_division': sub_division,
                                                                  'selected_police_station': police_station,
+                                                                 'pagination_object':paginated_fir_combined_list
                                                                 })
     else:
         return redirect('fault', fault='ACCESS DENIED!')
@@ -1318,8 +1457,8 @@ def list_fir_ssp_view(request, asc = 0):
 def filter_fir_ps_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
-    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('0-180', 'Upto 6 months'), ('0-365', 'Upto 1 year'), ('0-730', 'Upto 2 years'), ('0-1825','Upto 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'In next 5 days'), ('0-10', 'In next 10 days'), ('0-20', 'In next 20 days'), ('0-30', 'In next 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -1341,8 +1480,9 @@ def filter_fir_ps_view(request, asc = 0):
     ps_record_keepers = [u['user']
                           for u in acc_models.PoliceStationRecordKeeper.objects.all().values('user')]
     if request.user.pk in ps_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterPSForm(data = request.POST)
+        # if request.method == 'POST':
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterPSForm(data = request.GET)
             if form.is_valid():
                 police_station = acc_models.PoliceStationRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk).police_station
@@ -1714,8 +1854,121 @@ def filter_fir_ps_view(request, asc = 0):
                                 continue
 
 
-
                     fir_combined_list.append([fir, fir_phase_list])
+                    
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+                # SUMMARY CODE STARTS
+                filtered_fir_pk_list = [u[0].pk for u in fir_combined_list]
+                
+                firs_registered_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, phase_index__exact = 1).count()
+
+                firs_closed_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, fir__is_closed__exact = True).count()
+                
+                firs_status_challan_filed = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Challan Filed')
+                firs_status_challan_filed_count = firs_status_challan_filed.count()
+                firs_status_challan_filed_unique_count = len(set([u['fir__pk'] for u in firs_status_challan_filed.values('fir__pk')]))
+
+                firs_status_under_investigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Under Investigation')
+                firs_status_under_investigation_count = firs_status_under_investigation.count()
+                firs_status_under_investigation_unique_count = len(set([u['fir__pk'] for u in firs_status_under_investigation.values('fir__pk')]))
+
+                firs_status_untraced = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Untraced')
+                firs_status_untraced_count = firs_status_untraced.count()
+                firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Cancelled')
+                firs_status_cancelled_count = firs_status_cancelled.count()
+                firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                firs_vrk_received = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_receival_date__isnull = False)
+                firs_vrk_received_count = firs_vrk_received.count()
+                firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_status__exact = 'Approved')
+                firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_sent_back_date__isnull = False)
+                firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_vrk_date__isnull = False)
+                firs_received_from_vrk_count = firs_received_from_vrk.count()
+                firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                firs_put_in_court = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, put_in_court_date__isnull = False)
+                firs_put_in_court_count = firs_put_in_court.count()
+                firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                firs_nc_receival = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_receival_date__isnull = False)
+                firs_nc_receival_count = firs_nc_receival.count()
+                firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Approved')
+                firs_nc_status_approved_count = firs_nc_status_approved.count()
+                firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Reinvestigation')
+                firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_sent_back_date__isnull = False)
+                firs_nc_sent_back_count = firs_nc_sent_back.count()
+                firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_nc_date__isnull = False)
+                firs_received_from_nc_count = firs_received_from_nc.count()
+                firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                firs_appointed_io = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, appointed_io_date__isnull = False)
+                firs_appointed_io_count = firs_appointed_io.count()
+                firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                summary = {
+                            'firs_registered_count':firs_registered_count,
+                            'firs_closed_count':firs_closed_count,
+                            'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                            'firs_status_under_investigation_count':firs_status_under_investigation_count,
+                            'firs_status_under_investigation_unique_count':firs_status_under_investigation_unique_count,
+                            'firs_status_untraced_count':firs_status_untraced_count,
+                            'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                            'firs_status_cancelled_count':firs_status_cancelled_count,
+                            'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                            'firs_vrk_received_count':firs_vrk_received_count,
+                            'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                            'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                            'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                            'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                            'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                            'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                            'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                            'firs_put_in_court_count':firs_put_in_court_count,
+                            'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                            'firs_nc_receival_count':firs_nc_receival_count,
+                            'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                            'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                            'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                            'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                            'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                            'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                            'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                            'firs_received_from_nc_count':firs_received_from_nc_count,
+                            'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                            'firs_appointed_io_count':firs_appointed_io_count,
+                            'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                        }
+                # SUMMARY CODE ENDS
+                    
 
                 initial_data = {
                                 'fir_no': fir_no,
@@ -1740,7 +1993,7 @@ def filter_fir_ps_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterPSForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_ps.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list, 'summary' : summary})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -1755,8 +2008,8 @@ def filter_fir_ps_view(request, asc = 0):
 def filter_fir_vrk_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
-    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('0-180', 'Upto 6 months'), ('0-365', 'Upto 1 year'), ('0-730', 'Upto 2 years'), ('0-1825','Upto 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'In next 5 days'), ('0-10', 'In next 10 days'), ('0-20', 'In next 20 days'), ('0-30', 'In next 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -1776,8 +2029,8 @@ def filter_fir_vrk_view(request, asc = 0):
     vrk_record_keepers = [u['user']
                           for u in acc_models.VRKRecordKeeper.objects.all().values('user')]
     if request.user.pk in vrk_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterVRKForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterVRKForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -2139,6 +2392,119 @@ def filter_fir_vrk_view(request, asc = 0):
 
 
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+                # SUMMARY CODE STARTS
+                filtered_fir_pk_list = [u[0].pk for u in fir_combined_list]
+                
+                firs_registered_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, phase_index__exact = 1).count()
+
+                firs_closed_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, fir__is_closed__exact = True).count()
+                
+                firs_status_challan_filed = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Challan Filed')
+                firs_status_challan_filed_count = firs_status_challan_filed.count()
+                firs_status_challan_filed_unique_count = len(set([u['fir__pk'] for u in firs_status_challan_filed.values('fir__pk')]))
+
+                firs_status_under_investigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Under Investigation')
+                firs_status_under_investigation_count = firs_status_under_investigation.count()
+                firs_status_under_investigation_unique_count = len(set([u['fir__pk'] for u in firs_status_under_investigation.values('fir__pk')]))
+
+                firs_status_untraced = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Untraced')
+                firs_status_untraced_count = firs_status_untraced.count()
+                firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Cancelled')
+                firs_status_cancelled_count = firs_status_cancelled.count()
+                firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                firs_vrk_received = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_receival_date__isnull = False)
+                firs_vrk_received_count = firs_vrk_received.count()
+                firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_status__exact = 'Approved')
+                firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_sent_back_date__isnull = False)
+                firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_vrk_date__isnull = False)
+                firs_received_from_vrk_count = firs_received_from_vrk.count()
+                firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                firs_put_in_court = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, put_in_court_date__isnull = False)
+                firs_put_in_court_count = firs_put_in_court.count()
+                firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                firs_nc_receival = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_receival_date__isnull = False)
+                firs_nc_receival_count = firs_nc_receival.count()
+                firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Approved')
+                firs_nc_status_approved_count = firs_nc_status_approved.count()
+                firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Reinvestigation')
+                firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_sent_back_date__isnull = False)
+                firs_nc_sent_back_count = firs_nc_sent_back.count()
+                firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_nc_date__isnull = False)
+                firs_received_from_nc_count = firs_received_from_nc.count()
+                firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                firs_appointed_io = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, appointed_io_date__isnull = False)
+                firs_appointed_io_count = firs_appointed_io.count()
+                firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                summary = {
+                            'firs_registered_count':firs_registered_count,
+                            'firs_closed_count':firs_closed_count,
+                            'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                            'firs_status_under_investigation_count':firs_status_under_investigation_count,
+                            'firs_status_under_investigation_unique_count':firs_status_under_investigation_unique_count,
+                            'firs_status_untraced_count':firs_status_untraced_count,
+                            'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                            'firs_status_cancelled_count':firs_status_cancelled_count,
+                            'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                            'firs_vrk_received_count':firs_vrk_received_count,
+                            'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                            'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                            'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                            'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                            'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                            'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                            'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                            'firs_put_in_court_count':firs_put_in_court_count,
+                            'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                            'firs_nc_receival_count':firs_nc_receival_count,
+                            'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                            'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                            'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                            'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                            'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                            'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                            'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                            'firs_received_from_nc_count':firs_received_from_nc_count,
+                            'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                            'firs_appointed_io_count':firs_appointed_io_count,
+                            'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                        }
+                # SUMMARY CODE ENDS
                     
                 
                 initial_data = {
@@ -2167,7 +2533,7 @@ def filter_fir_vrk_view(request, asc = 0):
                                 }
 
                 form = forms.FIRFilterVRKForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_vrk.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_vrk.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list, 'summary':summary})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -2182,8 +2548,8 @@ def filter_fir_vrk_view(request, asc = 0):
 def filter_fir_nc_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
-    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('0-180', 'Upto 6 months'), ('0-365', 'Upto 1 year'), ('0-730', 'Upto 2 years'), ('0-1825','Upto 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'In next 5 days'), ('0-10', 'In next 10 days'), ('0-20', 'In next 20 days'), ('0-30', 'In next 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -2203,8 +2569,8 @@ def filter_fir_nc_view(request, asc = 0):
     nc_record_keepers = [u['user']
                           for u in acc_models.CourtRecordKeeper.objects.all().values('user')]
     if request.user.pk in nc_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterNCForm(data = request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterNCForm(data = request.GET)
             if form.is_valid():
                 police_station = acc_models.CourtRecordKeeper.objects.get(
                         user__pk__exact=request.user.pk).police_station
@@ -2560,6 +2926,120 @@ def filter_fir_nc_view(request, asc = 0):
 
                     fir_combined_list.append([fir, fir_phase_list])
 
+                
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+                # SUMMARY CODE STARTS
+                filtered_fir_pk_list = [u[0].pk for u in fir_combined_list]
+                
+                firs_registered_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, phase_index__exact = 1).count()
+
+                firs_closed_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, fir__is_closed__exact = True).count()
+                
+                firs_status_challan_filed = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Challan Filed')
+                firs_status_challan_filed_count = firs_status_challan_filed.count()
+                firs_status_challan_filed_unique_count = len(set([u['fir__pk'] for u in firs_status_challan_filed.values('fir__pk')]))
+
+                firs_status_under_investigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Under Investigation')
+                firs_status_under_investigation_count = firs_status_under_investigation.count()
+                firs_status_under_investigation_unique_count = len(set([u['fir__pk'] for u in firs_status_under_investigation.values('fir__pk')]))
+
+                firs_status_untraced = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Untraced')
+                firs_status_untraced_count = firs_status_untraced.count()
+                firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Cancelled')
+                firs_status_cancelled_count = firs_status_cancelled.count()
+                firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                firs_vrk_received = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_receival_date__isnull = False)
+                firs_vrk_received_count = firs_vrk_received.count()
+                firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_status__exact = 'Approved')
+                firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_sent_back_date__isnull = False)
+                firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_vrk_date__isnull = False)
+                firs_received_from_vrk_count = firs_received_from_vrk.count()
+                firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                firs_put_in_court = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, put_in_court_date__isnull = False)
+                firs_put_in_court_count = firs_put_in_court.count()
+                firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                firs_nc_receival = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_receival_date__isnull = False)
+                firs_nc_receival_count = firs_nc_receival.count()
+                firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Approved')
+                firs_nc_status_approved_count = firs_nc_status_approved.count()
+                firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Reinvestigation')
+                firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_sent_back_date__isnull = False)
+                firs_nc_sent_back_count = firs_nc_sent_back.count()
+                firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_nc_date__isnull = False)
+                firs_received_from_nc_count = firs_received_from_nc.count()
+                firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                firs_appointed_io = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, appointed_io_date__isnull = False)
+                firs_appointed_io_count = firs_appointed_io.count()
+                firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                summary = {
+                            'firs_registered_count':firs_registered_count,
+                            'firs_closed_count':firs_closed_count,
+                            'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                            'firs_status_under_investigation_count':firs_status_under_investigation_count,
+                            'firs_status_under_investigation_unique_count':firs_status_under_investigation_unique_count,
+                            'firs_status_untraced_count':firs_status_untraced_count,
+                            'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                            'firs_status_cancelled_count':firs_status_cancelled_count,
+                            'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                            'firs_vrk_received_count':firs_vrk_received_count,
+                            'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                            'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                            'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                            'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                            'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                            'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                            'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                            'firs_put_in_court_count':firs_put_in_court_count,
+                            'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                            'firs_nc_receival_count':firs_nc_receival_count,
+                            'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                            'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                            'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                            'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                            'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                            'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                            'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                            'firs_received_from_nc_count':firs_received_from_nc_count,
+                            'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                            'firs_appointed_io_count':firs_appointed_io_count,
+                            'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                        }
+                # SUMMARY CODE ENDS
+
                 initial_data = {
                                 'fir_no': fir_no,
                                 'under_section': under_section,
@@ -2583,7 +3063,7 @@ def filter_fir_nc_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterNCForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_nc.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list, 'summary':summary})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -2598,8 +3078,8 @@ def filter_fir_nc_view(request, asc = 0):
 def filter_fir_ssp_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
-    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('0-180', 'Upto 6 months'), ('0-365', 'Upto 1 year'), ('0-730', 'Upto 2 years'), ('0-1825','Upto 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'In next 5 days'), ('0-10', 'In next 10 days'), ('0-20', 'In next 20 days'), ('0-30', 'In next 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -2619,8 +3099,8 @@ def filter_fir_ssp_view(request, asc = 0):
     ssp_record_keepers = [u['user']
                           for u in acc_models.SSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in ssp_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterSSPForm(request.POST)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterSSPForm(request.GET)
             if form.is_valid():
                 sub_division = form.cleaned_data['sub_division']
                 police_station = form.cleaned_data['police_station']
@@ -2975,6 +3455,119 @@ def filter_fir_ssp_view(request, asc = 0):
 
 
                     fir_combined_list.append([fir, fir_phase_list])
+
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+                # SUMMARY CODE STARTS
+                filtered_fir_pk_list = [u[0].pk for u in fir_combined_list]
+                
+                firs_registered_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, phase_index__exact = 1).count()
+
+                firs_closed_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, fir__is_closed__exact = True).count()
+                
+                firs_status_challan_filed = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Challan Filed')
+                firs_status_challan_filed_count = firs_status_challan_filed.count()
+                firs_status_challan_filed_unique_count = len(set([u['fir__pk'] for u in firs_status_challan_filed.values('fir__pk')]))
+
+                firs_status_under_investigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Under Investigation')
+                firs_status_under_investigation_count = firs_status_under_investigation.count()
+                firs_status_under_investigation_unique_count = len(set([u['fir__pk'] for u in firs_status_under_investigation.values('fir__pk')]))
+
+                firs_status_untraced = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Untraced')
+                firs_status_untraced_count = firs_status_untraced.count()
+                firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Cancelled')
+                firs_status_cancelled_count = firs_status_cancelled.count()
+                firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                firs_vrk_received = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_receival_date__isnull = False)
+                firs_vrk_received_count = firs_vrk_received.count()
+                firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_status__exact = 'Approved')
+                firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_sent_back_date__isnull = False)
+                firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_vrk_date__isnull = False)
+                firs_received_from_vrk_count = firs_received_from_vrk.count()
+                firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                firs_put_in_court = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, put_in_court_date__isnull = False)
+                firs_put_in_court_count = firs_put_in_court.count()
+                firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                firs_nc_receival = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_receival_date__isnull = False)
+                firs_nc_receival_count = firs_nc_receival.count()
+                firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Approved')
+                firs_nc_status_approved_count = firs_nc_status_approved.count()
+                firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Reinvestigation')
+                firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_sent_back_date__isnull = False)
+                firs_nc_sent_back_count = firs_nc_sent_back.count()
+                firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_nc_date__isnull = False)
+                firs_received_from_nc_count = firs_received_from_nc.count()
+                firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                firs_appointed_io = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, appointed_io_date__isnull = False)
+                firs_appointed_io_count = firs_appointed_io.count()
+                firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                summary = {
+                            'firs_registered_count':firs_registered_count,
+                            'firs_closed_count':firs_closed_count,
+                            'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                            'firs_status_under_investigation_count':firs_status_under_investigation_count,
+                            'firs_status_under_investigation_unique_count':firs_status_under_investigation_unique_count,
+                            'firs_status_untraced_count':firs_status_untraced_count,
+                            'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                            'firs_status_cancelled_count':firs_status_cancelled_count,
+                            'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                            'firs_vrk_received_count':firs_vrk_received_count,
+                            'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                            'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                            'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                            'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                            'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                            'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                            'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                            'firs_put_in_court_count':firs_put_in_court_count,
+                            'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                            'firs_nc_receival_count':firs_nc_receival_count,
+                            'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                            'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                            'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                            'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                            'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                            'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                            'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                            'firs_received_from_nc_count':firs_received_from_nc_count,
+                            'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                            'firs_appointed_io_count':firs_appointed_io_count,
+                            'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                        }
+                # SUMMARY CODE ENDS
                     
                 
                 initial_data = {
@@ -3003,7 +3596,7 @@ def filter_fir_ssp_view(request, asc = 0):
                                 }
 
                 form = forms.FIRFilterSSPForm(initial = initial_data)
-                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_ssp.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list, 'summary':summary})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -3018,8 +3611,8 @@ def filter_fir_ssp_view(request, asc = 0):
 def filter_fir_dsp_view(request, asc = 0):
 
     FIR_CLOSED_CHOICES = [(None,'Any'),(True,'Yes'),(False,'No')]
-    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('91-180', '3 months to 6 months'), ('181-365', '6 months to 1 year'), ('366-730', '1 year to 2 years'), ('731-1825','2 years to 5 years'), ('1825-inf', 'More than 5 years')]
-    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'Today to 5 days'), ('6-10', '6 days to 10 days'), ('11-20', '11 days to 20 days'), ('21-30', '21 days to 1 month'), ('31-inf', 'More than 1 month')]
+    FIR_PENDENCY_CHOICES = [(None, '---Select---'), ('0-90','Upto 3 months'), ('0-180', 'Upto 6 months'), ('0-365', 'Upto 1 year'), ('0-730', 'Upto 2 years'), ('0-1825','Upto 5 years'), ('1825-inf', 'More than 5 years')]
+    EXPIRY_DATE_CHOICES = [(None, '---Select---'), ('overdue-0', 'Overdue'), ('0-5', 'In next 5 days'), ('0-10', 'In next 10 days'), ('0-20', 'In next 20 days'), ('0-30', 'In next 1 month'), ('31-inf', 'More than 1 month')]
     GAP_PS_SENT_VRK_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_VRK_SENT_PS_RECEIVED_CHOICES = [(None, '---Select---'), ('4-inf','More than 3 days')]
     GAP_PS_RECEIVED_NC_SENT_CHOICES = [(None, '---Select---'), ('16-inf','More than 15 days'), ('31-inf','More than 30 days'), ('61-inf','More than 2 months'), ('181-inf','More than 6 months'), ('366-inf','More than 1 year')]
@@ -3039,8 +3632,8 @@ def filter_fir_dsp_view(request, asc = 0):
     dsp_record_keepers = [u['user']
                           for u in acc_models.DSPRecordKeeper.objects.all().values('user')]
     if request.user.pk in dsp_record_keepers:
-        if request.method == 'POST':
-            form = forms.FIRFilterDSPForm(data = request.POST, user = request.user)
+        if request.GET.get('csrfmiddlewaretoken', None) :
+            form = forms.FIRFilterDSPForm(data = request.GET, user = request.user)
             if form.is_valid():
                 police_station = form.cleaned_data['police_station']
                 fir_no = form.cleaned_data['fir_no']
@@ -3392,6 +3985,119 @@ def filter_fir_dsp_view(request, asc = 0):
 
                     fir_combined_list.append([fir, fir_phase_list])
 
+                # PAGINATION CODE STARTS
+                requested_page = request.GET.get('page', 1)
+                paginator_object = paginator.Paginator(fir_combined_list, 20)
+                try:
+                    paginated_fir_combined_list = paginator_object.page(requested_page)
+                except paginator.PageNotAnInteger:
+                    paginated_fir_combined_list = paginator_object.page(1)
+                except paginator.EmptyPage:
+                    paginated_fir_combined_list = paginator_object.page(paginator_object.num_pages)
+                # PAGINATION CODE ENDS
+
+                # SUMMARY CODE STARTS
+                filtered_fir_pk_list = [u[0].pk for u in fir_combined_list]
+                
+                firs_registered_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, phase_index__exact = 1).count()
+
+                firs_closed_count = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, fir__is_closed__exact = True).count()
+                
+                firs_status_challan_filed = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Challan Filed')
+                firs_status_challan_filed_count = firs_status_challan_filed.count()
+                firs_status_challan_filed_unique_count = len(set([u['fir__pk'] for u in firs_status_challan_filed.values('fir__pk')]))
+
+                firs_status_under_investigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Under Investigation')
+                firs_status_under_investigation_count = firs_status_under_investigation.count()
+                firs_status_under_investigation_unique_count = len(set([u['fir__pk'] for u in firs_status_under_investigation.values('fir__pk')]))
+
+                firs_status_untraced = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Untraced')
+                firs_status_untraced_count = firs_status_untraced.count()
+                firs_status_untraced_unique_count = len(set([u['fir__pk'] for u in firs_status_untraced.values('fir__pk')]))
+
+                firs_status_cancelled = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, current_status__exact='Cancelled')
+                firs_status_cancelled_count = firs_status_cancelled.count()
+                firs_status_cancelled_unique_count = len(set([u['fir__pk'] for u in firs_status_cancelled.values('fir__pk')]))
+
+                firs_vrk_received = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_receival_date__isnull = False)
+                firs_vrk_received_count = firs_vrk_received.count()
+                firs_vrk_received_unique_count = len(set([u['fir__pk'] for u in firs_vrk_received.values('fir__pk')]))
+
+                firs_vrk_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_status__exact = 'Approved')
+                firs_vrk_status_approved_count = firs_vrk_status_approved.count()
+                firs_vrk_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_vrk_status_approved.values('fir__pk')]))
+
+                firs_vrk_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, vrk_sent_back_date__isnull = False)
+                firs_vrk_sent_back_count = firs_vrk_sent_back.count()
+                firs_vrk_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_vrk_sent_back.values('fir__pk')]))
+
+                firs_received_from_vrk = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_vrk_date__isnull = False)
+                firs_received_from_vrk_count = firs_received_from_vrk.count()
+                firs_received_from_vrk_unique_count = len(set([u['fir__pk'] for u in firs_received_from_vrk.values('fir__pk')]))
+
+                firs_put_in_court = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, put_in_court_date__isnull = False)
+                firs_put_in_court_count = firs_put_in_court.count()
+                firs_put_in_court_unique_count = len(set([u['fir__pk'] for u in firs_put_in_court.values('fir__pk')]))
+
+                firs_nc_receival = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_receival_date__isnull = False)
+                firs_nc_receival_count = firs_nc_receival.count()
+                firs_nc_receival_unique_count = len(set([u['fir__pk'] for u in firs_nc_receival.values('fir__pk')]))
+
+                firs_nc_status_approved = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Approved')
+                firs_nc_status_approved_count = firs_nc_status_approved.count()
+                firs_nc_status_approved_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_approved.values('fir__pk')]))
+
+                firs_nc_status_reinvestigation = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_status__exact = 'Reinvestigation')
+                firs_nc_status_reinvestigation_count = firs_nc_status_reinvestigation.count()
+                firs_nc_status_reinvestigation_unique_count = len(set([u['fir__pk'] for u in firs_nc_status_reinvestigation.values('fir__pk')]))
+
+                firs_nc_sent_back = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, nc_sent_back_date__isnull = False)
+                firs_nc_sent_back_count = firs_nc_sent_back.count()
+                firs_nc_sent_back_unique_count = len(set([u['fir__pk'] for u in firs_nc_sent_back.values('fir__pk')]))
+
+                firs_received_from_nc = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, received_from_nc_date__isnull = False)
+                firs_received_from_nc_count = firs_received_from_nc.count()
+                firs_received_from_nc_unique_count = len(set([u['fir__pk'] for u in firs_received_from_nc.values('fir__pk')]))
+
+                firs_appointed_io = models.FIRPhase.objects.all().filter(fir__pk__in = filtered_fir_pk_list, appointed_io_date__isnull = False)
+                firs_appointed_io_count = firs_appointed_io.count()
+                firs_appointed_io_unique_count = len(set([u['fir__pk'] for u in firs_appointed_io.values('fir__pk')]))
+
+                summary = {
+                            'firs_registered_count':firs_registered_count,
+                            'firs_closed_count':firs_closed_count,
+                            'firs_status_challan_filed_count':firs_status_challan_filed_count,
+                            'firs_status_under_investigation_count':firs_status_under_investigation_count,
+                            'firs_status_under_investigation_unique_count':firs_status_under_investigation_unique_count,
+                            'firs_status_untraced_count':firs_status_untraced_count,
+                            'firs_status_untraced_unique_count':firs_status_untraced_unique_count,
+                            'firs_status_cancelled_count':firs_status_cancelled_count,
+                            'firs_status_cancelled_unique_count':firs_status_cancelled_unique_count,
+                            'firs_vrk_received_count':firs_vrk_received_count,
+                            'firs_vrk_received_unique_count':firs_vrk_received_unique_count,
+                            'firs_vrk_status_approved_count':firs_vrk_status_approved_count,
+                            'firs_vrk_status_approved_unique_count':firs_vrk_status_approved_unique_count,
+                            'firs_vrk_sent_back_count':firs_vrk_sent_back_count,
+                            'firs_vrk_sent_back_unique_count':firs_vrk_sent_back_unique_count,
+                            'firs_received_from_vrk_count':firs_received_from_vrk_count,
+                            'firs_received_from_vrk_unique_count':firs_received_from_vrk_unique_count,
+                            'firs_put_in_court_count':firs_put_in_court_count,
+                            'firs_put_in_court_unique_count':firs_put_in_court_unique_count,
+                            'firs_nc_receival_count':firs_nc_receival_count,
+                            'firs_nc_receival_unique_count':firs_nc_receival_unique_count,
+                            'firs_nc_status_approved_count':firs_nc_status_approved_count,
+                            'firs_nc_status_approved_unique_count':firs_nc_status_approved_unique_count,
+                            'firs_nc_status_reinvestigation_count':firs_nc_status_reinvestigation_count,
+                            'firs_nc_status_reinvestigation_unique_count':firs_nc_status_reinvestigation_unique_count,
+                            'firs_nc_sent_back_count':firs_nc_sent_back_count,
+                            'firs_nc_sent_back_unique_count':firs_nc_sent_back_unique_count,
+                            'firs_received_from_nc_count':firs_received_from_nc_count,
+                            'firs_received_from_nc_unique_count':firs_received_from_nc_unique_count,
+                            'firs_appointed_io_count':firs_appointed_io_count,
+                            'firs_appointed_io_unique_count':firs_appointed_io_unique_count,
+                        }
+                # SUMMARY CODE ENDS
+
                 initial_data = {
                                 'police_station': police_station,
                                 'fir_no': fir_no,
@@ -3416,7 +4122,7 @@ def filter_fir_dsp_view(request, asc = 0):
                                 'is_closed': is_closed,
                                 }
                 form = forms.FIRFilterDSPForm(initial = initial_data, user = request.user)
-                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc})
+                return render(request, 'firBeta/filter_fir_dsp.html', {'fir_list': paginated_fir_combined_list, 'filter_list':filter_combined_list, 'form': form, 'asc': asc, 'pagination_object' : paginated_fir_combined_list, 'summary':summary})
             else:
                 return redirect('fault', fault='Invalid Parameters!')
         else:
@@ -3443,6 +4149,7 @@ def dashboard_ssp_view(request):
                 if sub_division == 'all':
                     firs_registered_count = models.FIRPhase.objects.all().filter(phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
     
+                    # CHALLAN FILED CAN ONLY BE ACCEPTED HERE IF FIR IS CLOSED. IT IS NOT THE SAME IN FILTER VIEW SUMMARY
                     firs_closed_count = models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
                     firs_status_challan_filed_count = firs_closed_count
                     firs_closed_count += models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
@@ -3716,6 +4423,7 @@ def dashboard_dsp_view(request):
                 if police_station == 'all':
                     firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
 
+                    # CHALLAN FILED CAN ONLY BE ACCEPTED HERE IF FIR IS CLOSED. IT IS NOT THE SAME IN FILTER VIEW SUMMARY
                     firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
                     firs_status_challan_filed_count = firs_closed_count
                     firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()

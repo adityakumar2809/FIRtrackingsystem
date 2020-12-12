@@ -114,7 +114,7 @@
         <!-- Form Modal Structure -->
         <div id="filter_form" class="modal modal-fixed-footer green lighten-5">
             <div class="modal-content">
-                <form method="POST">
+                <form method="GET">
                     {% csrf_token %}
                     <div class="row">
                         <div class="input-field col s8 offset-s2">
@@ -297,7 +297,11 @@
         </div>
 
         <div class="chip cyan darken-3 white-text" style="margin-left: 1%;">
-            <b>Search Results</b> - {{ fir_list|length }}
+            {% if pagination_object %} 
+                <b>Search Results</b> : &nbsp; {{ pagination_object.start_index }} - {{ pagination_object.end_index }} of {{ pagination_object.paginator.count }}
+            {% else %}
+                <b>Search Results</b> : &nbsp; 0 - 0 of 0
+            {% endif %}
         </div>
 
         <br><br>
@@ -382,7 +386,7 @@
                             {% for fir_phase in fir_set.1 %}
                                 <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                     <td>
-                                        <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                        <strong>{{ forloop.parentloop.counter0|add:pagination_object.start_index }}.{{ forloop.counter }}</strong>
                                         <br>
                                         {% if fir_phase.pk|is_last_phase %}
                                             {% if fir_phase.pk|any_gap_greater_than_3 %}
@@ -641,7 +645,7 @@
                             {% for fir_phase in fir_set.1 %}
                                 <tr class="cyan lighten-{{fir_phase.phase_index|get_color_shade}} data-row fir_phase_{{fir_phase.pk}}" data-tr-fir-phase="fir_phase_{{fir_phase.pk}}">
                                     <td>
-                                        <strong>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</strong>
+                                        <strong>{{ forloop.parentloop.counter0|add:pagination_object.start_index }}.{{ forloop.counter }}</strong>
                                         <br>
                                         {% if fir_phase.pk|is_last_phase %}
                                             {% if fir_phase.pk|any_gap_greater_than_3 %}
@@ -872,8 +876,33 @@
                 {% endif %}
             </table>
         </div>
+        <!-- PAGINATION CODE BEGINS -->
+        {% if pagination_object.has_other_pages %}
+            <ul class="pagination">
+                {% if pagination_object.has_previous %}
+                    <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in pagination_object.paginator.page_range %}
+                    {% if pagination_object.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                        <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if pagination_object.has_next %}
+                    <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        <!-- PAGINATION CODE ENDS -->
     </div>
 </div>
+<br><br>
+{% include "firBeta/_filter_summary.html" %}
 {% endblock content %}
 
 {% block tail %}
@@ -982,6 +1011,23 @@
                 }
             })
         }
+    })
+
+    function updateQueryStringParameter(uri, key, value) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    $('a.page-link').click(function() {
+        var page_number = $(this).attr('data-page-number');
+        updated_query_string_parameter = updateQueryStringParameter(window.location.href, "page", page_number)
+        window.location.href = updated_query_string_parameter;
     })
 </script>
 {% endblock tail %}

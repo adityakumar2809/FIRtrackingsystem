@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form method='POST' id='location_form' class="center" data-police-stations-url="{% url 'firBeta:load_police_stations' %}" data-selected-sub-division='{{selected_sub_division}}' data-selected-police-station='{{selected_police_station}}'>
+<form method='GET' id='location_form' class="center" data-police-stations-url="{% url 'firBeta:load_police_stations' %}" data-selected-sub-division='{{selected_sub_division}}' data-selected-police-station='{{selected_police_station}}'>
     {% csrf_token %}
 
     <div class="row">
