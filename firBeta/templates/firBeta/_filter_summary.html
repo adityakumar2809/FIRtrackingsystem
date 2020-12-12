@@ -1,91 +1,93 @@
-<div class="container">
-    <div class="row">
-        <div class="card horizontal green lighten-4 col s6">
-            <div class="card-content center">
-                <p class="card-title"><strong>Aggregate</strong><br>FIRs Registered</p>
-                <p class="card-title">{{ summary.firs_registered_count }}</p>
+{% if summary %}
+    <div class="container">
+        <div class="row">
+            <div class="card horizontal green lighten-4 col s6">
+                <div class="card-content center">
+                    <p class="card-title"><strong>Aggregate</strong><br>FIRs Registered</p>
+                    <p class="card-title">{{ summary.firs_registered_count }}</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>Aggregate</strong><br>FIRs Closed</p>
+                    <p class="card-title">{{ summary.firs_closed_count }}</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>Status</strong><br>Under Investigation</p>
+                    <p class="card-title">{{summary.firs_status_under_investigation_unique_count}} ({{summary.firs_status_under_investigation_count}})</p>
+                </div>
             </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>Aggregate</strong><br>FIRs Closed</p>
-                <p class="card-title">{{ summary.firs_closed_count }}</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>Status</strong><br>Under Investigation</p>
-                <p class="card-title">{{summary.firs_status_under_investigation_unique_count}} ({{summary.firs_status_under_investigation_count}})</p>
+            <div class="col s1"></div>
+            <div class="card horizontal green lighten-4 col s5">
+                <div class="card-content center">
+                    <p class="card-title"><strong>Status</strong><br>Untraced</p>
+                    <p class="card-title">{{summary.firs_status_untraced_unique_count}} ({{summary.firs_status_untraced_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>Status</strong><br>Cancelled</p>
+                    <p class="card-title">{{summary.firs_status_cancelled_unique_count}} ({{summary.firs_status_cancelled_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>Status</strong><br>Challan Filed</p>
+                    <p class="card-title">{{summary.firs_status_challan_filed_count}}</p>
+                </div>
             </div>
         </div>
-        <div class="col s1"></div>
-        <div class="card horizontal green lighten-4 col s5">
-            <div class="card-content center">
-                <p class="card-title"><strong>Status</strong><br>Untraced</p>
-                <p class="card-title">{{summary.firs_status_untraced_unique_count}} ({{summary.firs_status_untraced_count}})</p>
+        <div class="row">
+            <div class="card horizontal green lighten-4 col s6">
+                <div class="card-content center">
+                    <p class="card-title"><strong>VRK</strong><br>Received</p>
+                    <p class="card-title">{{summary.firs_vrk_received_unique_count}} ({{summary.firs_vrk_received_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>VRK</strong><br>Approved</p>
+                    <p class="card-title">{{summary.firs_vrk_status_approved_unique_count}} ({{summary.firs_vrk_status_approved_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>VRK</strong><br>Sent Back</p>
+                    <p class="card-title">{{summary.firs_vrk_sent_back_unique_count}} ({{summary.firs_vrk_sent_back_count}})</p>
+                </div>
             </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>Status</strong><br>Cancelled</p>
-                <p class="card-title">{{summary.firs_status_cancelled_unique_count}} ({{summary.firs_status_cancelled_count}})</p>
+            <div class="col s1"></div>
+            <div class="card horizontal green lighten-4 col s5">
+                <div class="card-content center">
+                    <p class="card-title"><strong>PS</strong><br>Received from VRK</p>
+                    <p class="card-title">{{ summary.firs_received_from_vrk_unique_count }} ({{summary.firs_received_from_vrk_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>PS</strong><br>Put in Court</p>
+                    <p class="card-title">{{ summary.firs_put_in_court_unique_count }} ({{summary.firs_put_in_court_count}})</p>
+                </div>
             </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>Status</strong><br>Challan Filed</p>
-                <p class="card-title">{{summary.firs_status_challan_filed_count}}</p>
+        </div>
+        <div class="row">
+            <div class="card horizontal green lighten-4 col s6">
+                <div class="card-content center">
+                    <p class="card-title"><strong>NC</strong><br>Received</p>
+                    <p class="card-title">{{summary.firs_nc_receival_unique_count}} ({{summary.firs_nc_receival_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>NC</strong><br>Approved</p>
+                    <p class="card-title">{{summary.firs_nc_status_approved_unique_count}} ({{summary.firs_nc_status_approved_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>NC</strong><br>Reinvestigation</p>
+                    <p class="card-title">{{summary.firs_nc_status_reinvestigation_unique_count}} ({{summary.firs_nc_status_reinvestigation_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>NC</strong><br>SentBack</p>
+                    <p class="card-title">{{summary.firs_nc_sent_back_unique_count}} ({{summary.firs_nc_sent_back_count}})</p>
+                </div>
+            </div>
+            <div class="col s1"></div>
+            <div class="card horizontal green lighten-4 col s5">
+                <div class="card-content center">
+                    <p class="card-title"><strong>PS</strong><br>Received from NC</p>
+                    <p class="card-title">{{ summary.firs_received_from_nc_unique_count }} ({{summary.firs_received_from_nc_count}})</p>
+                </div>
+                <div class="card-content center">
+                    <p class="card-title"><strong>PS</strong><br>Marked to IO</p>
+                    <p class="card-title">{{ summary.firs_appointed_io_unique_count }} ({{summary.firs_appointed_io_count}})</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="card horizontal green lighten-4 col s6">
-            <div class="card-content center">
-                <p class="card-title"><strong>VRK</strong><br>Received</p>
-                <p class="card-title">{{summary.firs_vrk_received_unique_count}} ({{summary.firs_vrk_received_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>VRK</strong><br>Approved</p>
-                <p class="card-title">{{summary.firs_vrk_status_approved_unique_count}} ({{summary.firs_vrk_status_approved_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>VRK</strong><br>Sent Back</p>
-                <p class="card-title">{{summary.firs_vrk_sent_back_unique_count}} ({{summary.firs_vrk_sent_back_count}})</p>
-            </div>
-        </div>
-        <div class="col s1"></div>
-        <div class="card horizontal green lighten-4 col s5">
-            <div class="card-content center">
-                <p class="card-title"><strong>PS</strong><br>Received from VRK</p>
-                <p class="card-title">{{ summary.firs_received_from_vrk_unique_count }} ({{summary.firs_received_from_vrk_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>PS</strong><br>Put in Court</p>
-                <p class="card-title">{{ summary.firs_put_in_court_unique_count }} ({{summary.firs_put_in_court_count}})</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="card horizontal green lighten-4 col s6">
-            <div class="card-content center">
-                <p class="card-title"><strong>NC</strong><br>Received</p>
-                <p class="card-title">{{summary.firs_nc_receival_unique_count}} ({{summary.firs_nc_receival_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>NC</strong><br>Approved</p>
-                <p class="card-title">{{summary.firs_nc_status_approved_unique_count}} ({{summary.firs_nc_status_approved_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>NC</strong><br>Reinvestigation</p>
-                <p class="card-title">{{summary.firs_nc_status_reinvestigation_unique_count}} ({{summary.firs_nc_status_reinvestigation_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>NC</strong><br>SentBack</p>
-                <p class="card-title">{{summary.firs_nc_sent_back_unique_count}} ({{summary.firs_nc_sent_back_count}})</p>
-            </div>
-        </div>
-        <div class="col s1"></div>
-        <div class="card horizontal green lighten-4 col s5">
-            <div class="card-content center">
-                <p class="card-title"><strong>PS</strong><br>Received from NC</p>
-                <p class="card-title">{{ summary.firs_received_from_nc_unique_count }} ({{summary.firs_received_from_nc_count}})</p>
-            </div>
-            <div class="card-content center">
-                <p class="card-title"><strong>PS</strong><br>Marked to IO</p>
-                <p class="card-title">{{ summary.firs_appointed_io_unique_count }} ({{summary.firs_appointed_io_count}})</p>
-            </div>
-        </div>
-    </div>
-</div>
+{% endif %}
