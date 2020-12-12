@@ -877,27 +877,7 @@
             </table>
         </div>
         <!-- PAGINATION CODE BEGINS -->
-        {% if pagination_object.has_other_pages %}
-            <ul class="pagination">
-                {% if pagination_object.has_previous %}
-                    <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.previous_page_number }}">&laquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&laquo;</span></li>
-                {% endif %}
-                {% for i in pagination_object.paginator.page_range %}
-                    {% if pagination_object.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                    {% else %}
-                        <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ i }}">{{ i }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if pagination_object.has_next %}
-                    <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.next_page_number }}">&raquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&raquo;</span></li>
-                {% endif %}
-            </ul>
-            {% endif %}
+        {% include "firBeta/_pagination.html" %}
         <!-- PAGINATION CODE ENDS -->
     </div>
 </div>
