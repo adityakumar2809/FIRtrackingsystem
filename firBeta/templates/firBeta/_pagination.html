@@ -1,24 +1,37 @@
-{% if pagination_object.has_other_pages %}
-    <ul class="pagination">
-        {% if pagination_object.has_previous %}
-            <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in pagination_object.paginator.page_range %}
-            {% if pagination_object.number == i %}
-                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+{% load templatetag_beta %}
+<center>
+    {% if pagination_object.has_other_pages %}
+        <ul class="pagination">
+            {% if pagination_object.has_previous %}
+                <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
             {% else %}
-                <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ i }}">{{ i }}</a></li>
+                <li class="disabled"><i class="material-icons">chevron_left</i></li>
             {% endif %}
-        {% endfor %}
-        {% if pagination_object.has_next %}
-            <li><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.next_page_number }}">&raquo;</a></li>
-        {% else %}
-            <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-    </ul>
-{% endif %}
+
+            {% with lower_bound=pagination_object.paginator.num_pages|get_pagination_lower_bound:pagination_object.number upper_bound=pagination_object.paginator.num_pages|get_pagination_upper_bound:pagination_object.number %}
+                {% if lower_bound > 1 %}
+                    <li><i class="material-icons">more_horiz</i></li>
+                {% endif %}
+                {% for i in pagination_object.paginator.num_pages|get_pagination_range:pagination_object.number %}
+                    {% if pagination_object.number == i %}
+                        <li class="active teal"><a href="javascript:void(0)">{{ i }}</a></li>
+                    {% else %}
+                        <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if upper_bound < pagination_object.paginator.num_pages %}
+                    <li><i class="material-icons">more_horiz</i></li>
+                {% endif %}
+            {% endwith %}
+
+            {% if pagination_object.has_next %}
+                <li class="waves-effect"><a href="javascript:void(0)" class="page-link" data-page-number="{{ pagination_object.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+                <li class="disabled"><i class="material-icons">chevron_right</i></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</center>
 
 <script>
     function updateQueryStringParameter(uri, key, value) {
