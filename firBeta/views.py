@@ -4149,6 +4149,7 @@ def dashboard_ssp_view(request):
                 if sub_division == 'all':
                     firs_registered_count = models.FIRPhase.objects.all().filter(phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
     
+                    # CHALLAN FILED CAN ONLY BE ACCEPTED HERE IF FIR IS CLOSED. IT IS NOT THE SAME IN FILTER VIEW SUMMARY
                     firs_closed_count = models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
                     firs_status_challan_filed_count = firs_closed_count
                     firs_closed_count += models.FIRPhase.objects.all().filter(fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
@@ -4422,6 +4423,7 @@ def dashboard_dsp_view(request):
                 if police_station == 'all':
                     firs_registered_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, phase_index__exact = 1, date_registered__gte = start_date, date_registered__lte = end_date).count()
 
+                    # CHALLAN FILED CAN ONLY BE ACCEPTED HERE IF FIR IS CLOSED. IT IS NOT THE SAME IN FILTER VIEW SUMMARY
                     firs_closed_count = models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, current_status__exact='Challan Filed', current_status_date__gte = start_date, current_status_date__lte = end_date).count()
                     firs_status_challan_filed_count = firs_closed_count
                     firs_closed_count += models.FIRPhase.objects.all().filter(fir__sub_division__exact = sub_division, fir__is_closed__exact = True, nc_status__exact='Approved', nc_status_date__gte = start_date, nc_status_date__lte = end_date).count()
